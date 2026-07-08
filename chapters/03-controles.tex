@@ -58,23 +58,23 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 \control{C13}{1}{Preventivo}{Configuración}
   {Limitar el volumen total de contexto inyectado al LLM por sesión.}
-  {LLM01:2025}
+  {LLM01:2025, LLM02:2025}
 
 \control{C15}{1}{Preventivo}{Configuración}
   {Restringir el rol, capacidades y limitaciones del modelo en el prompt del sistema.}
-  {LLM01:2025}
+  {LLM01:2025, LLM02:2025}
 
 \control{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad externo e independiente del LLM.}
-  {LLM01:2025}
+  {LLM01:2025, LLM02:2025}
 
 \control{C21}{1}{Preventivo}{Configuración}
   {Restringir credenciales y tokens de API al entorno de código.}
-  {LLM01:2025}
+  {LLM01:2025, LLM02:2025}
 
 \control{C30}{1}{Gobernanza}{Declarativo}
   {Verificar procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
-  {Ley 21.663}
+  {Ley 21.663, LLM08:2025}
 
 \control{C03}{2}{Detectivo}{Experimental}
   {Detectar patrones sintácticos de inyección en el prompt de entrada.}
@@ -86,7 +86,7 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 \control{C05}{2}{Preventivo}{Experimental}
   {Ocultar el contenido del prompt del sistema al usuario, impidiendo su extracción.}
-  {LLM01:2025}
+  {LLM01:2025, LLM07:2025}
 
 \control{C31}{3}{Detectivo}{Experimental}
   {Registrar y auditar todos los prompts rechazados con el motivo del rechazo.}
@@ -94,9 +94,23 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 \control{C32}{3}{Preventivo}{Configuración}
   {Validar que el prompt del sistema no ha sido modificado entre sesiones.}
+  {LLM01:2025, LLM07:2025}
+
+\control{C33}{4}{Preventivo}{Declarativo}
+  {Ajustar dinámicamente los umbrales de detección de inyección según tasas de falsos positivos observadas.}
   {LLM01:2025}
 
+\control{C34}{4}{Detectivo}{Declarativo}
+  {Medir y reportar periódicamente la tasa de prompts rechazados por categoría de ataque.}
+  {LLM01:2025}
 
+\control{C35}{5}{Preventivo}{Declarativo}
+  {Actualizar los patrones de detección ante nuevas técnicas de inyección documentadas.}
+  {LLM01:2025}
+
+\control{C36}{5}{Preventivo}{Declarativo}
+  {Revisar y ajustar el prompt del sistema ante cambios en el modelo base.}
+  {LLM01:2025}
 
 
 % ══════════════════════════════════════════════
@@ -107,12 +121,86 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 La subdimensión D2 agrupa 18 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
 
-% TODO: Trasladar los 18 controles de D2 desde la Tabla 3.30 de la tesis.
+\control{C06}{1}{Preventivo}{Configuración}
+  {Segregar e identificar contenido externo en el prompt mediante delimitadores explícitos.}
+  {LLM01:2025, LLM02:2025}
 
-\begin{infobox}[title=Pendiente]
-  Trasladar los 18 controles de D2 desde la Tabla 3.30 de la tesis.
-\end{infobox}
+\control{C07}{1}{Preventivo}{Configuración}
+  {Restringir las fuentes de información del modelo a documentos autorizados y verificados.}
+  {LLM02:2025}
 
+\control{C10}{1}{Preventivo}{Configuración}
+  {Controlar la cantidad de fragmentos recuperados por consulta para limitar exposición del corpus.}
+  {LLM02:2025}
+
+\control{C13}{1}{Preventivo}{Configuración}
+  {Limitar el volumen total de contexto inyectado al LLM por sesión.}
+  {LLM02:2025}
+
+\control{C15}{1}{Preventivo}{Configuración}
+  {Restringir el rol, capacidades y limitaciones del modelo en el prompt del sistema.}
+  {LLM01:2025, LLM02:2025}
+
+\control{C16}{1}{Preventivo}{Configuración}
+  {Interponer un proxy de seguridad externo e independiente del LLM.}
+  {LLM01:2025, LLM02:2025}
+
+\control{C21}{1}{Preventivo}{Configuración}
+  {Restringir credenciales y tokens de API al entorno de código.}
+  {LLM01:2025, LLM02:2025}
+
+\control{C30}{1}{Gobernanza}{Declarativo}
+  {Verificar procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
+  {Ley 21.663, LLM08:2025}
+
+\control{C08}{2}{Preventivo}{Configuración}
+  {Particionar el \textit{vector store} por nivel de sensibilidad para prevenir acceso cruzado.}
+  {LLM02:2025, LLM08:2025}
+
+\control{C09}{2}{Preventivo/Detectivo}{Experimental}
+  {Validar integridad del corpus y fragmentos recuperados antes de inyectarlos al contexto del LLM.}
+  {LLM02:2025, LLM08:2025}
+
+\control{C11}{2}{Preventivo}{Experimental}
+  {Validar semánticamente la \textit{query} generada hacia el \textit{vector store} antes de ejecutar el \textit{retrieval}.}
+  {LLM02:2025, LLM08:2025}
+
+\control{C14}{2}{Correctivo}{Experimental}
+  {Suprimir o redactar metadatos de documentos indexados en las respuestas del modelo.}
+  {LLM02:2025}
+
+\control{C17}{2}{Preventivo/Detectivo}{Experimental}
+  {Restringir respuestas a información fundamentada en el contexto recuperado.}
+  {LLM02:2025}
+
+\control{C22}{2}{Preventivo/Detectivo}{Declarativo}
+  {Controlar y auditar el acceso por sesión a los documentos del \textit{vector store}.}
+  {LLM02:2025}
+
+
+\control{C12}{3}{Detectivo}{Experimental}
+  {Detectar consultas al \textit{vector store} diseñadas para reconocimiento sistemático del corpus.}
+  {LLM02:2025, LLM08:2025}
+
+\control{C62}{3}{Detectivo}{Configuración}
+  {Mantener un registro versionado del corpus indexado que permita identificar qué documentos estaban activos en cada sesión y rastrear cambios entre versiones.}
+  {LLM02:2025, LLM08:2025}
+
+\control{C37}{4}{Detectivo}{Declarativo}
+  {Medir y reportar periódicamente la tasa de recuperación de fragmentos sensibles ante consultas de prueba.}
+  {LLM02:2025}
+
+\control{C38}{4}{Preventivo}{Declarativo}
+  {Ajustar los parámetros de \textit{retrieval} según métricas de exposición observadas.}
+  {LLM02:2025}
+
+\control{C39}{5}{Preventivo}{Declarativo}
+  {Actualizar el particionamiento del \textit{vector store} ante cambios en la clasificación de sensibilidad del corpus.}
+  {LLM02:2025, LLM08:2025}
+
+\control{C40}{5}{Preventivo}{Declarativo}
+  {Revisar proactivamente los fragmentos indexados ante nuevas amenazas de exfiltración documentadas.}
+  {LLM02:2025, LLM08:2025}
 
 % ══════════════════════════════════════════════
 % D3: Gestión de salida (10 controles)
