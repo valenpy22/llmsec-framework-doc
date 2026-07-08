@@ -210,11 +210,46 @@ La subdimensión D2 agrupa 18 controles orientados a regular el acceso, la expos
 
 La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
 
-% TODO: Trasladar los 10 controles de D3 desde la Tabla 3.31 de la tesis.
+\control{C16}{1}{Preventivo}{Configuración}
+  {Interponer un proxy de seguridad externo e independiente del LLM.}
+  {LLM01:2025, LLM02:2025, LLM07:2025}
 
-\begin{infobox}[title=Pendiente]
-  Trasladar los 10 controles de D3 desde la Tabla 3.31 de la tesis.
-\end{infobox}
+\control{C14}{2}{Correctivo}{Experimental}
+  {Suprimir o redactar metadatos de documentos indexados en las respuestas del modelo.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C17}{2}{Preventivo/Detectivo}{Experimental}
+  {Restringir respuestas a información fundamentada en el contexto recuperado.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C18}{2}{Correctivo}{Experimental}
+  {Sanitizar la salida del modelo eliminando contenido con patrones sintácticos sensibles.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C19}{2}{Detectivo/Correctivo}{Experimental}
+  {Detectar y suprimir fragmentos marcados como confidenciales en la salida del modelo.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C20}{3}{Detectivo}{Experimental}
+  {Validar que la salida no reproduzca literalmente fragmentos del corpus sensible indexado.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C41}{4}{Detectivo}{Declarativo}
+  {Ajustar dinámicamente los umbrales de sanitización según métricas de falsos positivos en la salida.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C42}{4}{Detectivo}{Declarativo}
+  {Medir y reportar la tasa de supresión de fragmentos confidenciales por tipo de ataque.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C43}{5}{Detectivo}{Declarativo}
+  {Revisar y actualizar los patrones de detección de contenido sensible en la salida ante nuevas técnicas de exfitlración.}
+  {LLM02:2025, LLM07:2025}
+
+\control{C44}{5}{Detectivo}{Declarativo}
+  {Incorporar retroalimentación de incidentes reales al conjunto de patrones de sanitización.}
+  {LLM02:2025, LLM07:2025}
+
 
 
 % ══════════════════════════════════════════════
