@@ -250,8 +250,6 @@ La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas 
   {Incorporar retroalimentación de incidentes reales al conjunto de patrones de sanitización.}
   {LLM02:2025, LLM07:2025}
 
-
-
 % ══════════════════════════════════════════════
 % D4: Monitoreo y trazabilidad (9 controles)
 % ══════════════════════════════════════════════
@@ -260,11 +258,41 @@ La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas 
 
 La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos a partir de N2. D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva.
 
-% TODO: Trasladar los 9 controles de D4 desde la Tabla 3.32 de la tesis.
+\control{C26}{2}{Gobernanza}{Declarativo}
+  {Definir y documentar la política de umbrales de detección y bloqueo previo a la operación.}
+  {Ley 21.663}
 
-\begin{infobox}[title=Pendiente]
-  Trasladar los 9 controles de D4 desde la Tabla 3.32 de la tesis.
-\end{infobox}
+\control{C27}{2}{Gobernanza}{Declarativo}
+  {Establecer procedimiento formal de notificación de seguridad ante autoridades.}
+  {Ley 21.663}
+  
+\control{C28}{2}{Gobernanza}{Declarativo}
+  {Definir política de retención y eliminación de datos de sesión conforme a normativa aplicable.}
+  {Ley 21.719}
+
+\control{C23}{3}{Detectivo}{Experimental}
+  {Registrar cada decisión de bloqueo en la entrada y salida con identificación del mecanismo y vector.}
+  {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\control{C25}{3}{Detectivo}{Experimental}
+  {Registrar y analizar la latencia del flujo de inferencia para detectar comportamiento anómalo.}
+  {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\control{C29}{3}{Gobernanza}{Declarativo}
+  {Documentar y ejecutar plan de pruebas de seguridad ofensiva previo a cada despliegue.}
+  {Ley 21.663}
+
+\control{C24}{4}{Detectivo}{Experimental}
+  {Monitorear patrones de consulta anómalos que sugieran reconocimiento sistemático del corpus.}
+  {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\control{C45}{5}{Detectivo}{Declarativo}
+  {Revisar y actualizar los patrones de detección de anomalías ante nuevas amenazas documentadas.}
+  {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\control{C46}{5}{Correctivo}{Declarativo}
+  {Incorporar retroalimentación de incidentes al sistema de alertas de forma sistemática y periódica.}
+  {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
 
 
 % ══════════════════════════════════════════════
