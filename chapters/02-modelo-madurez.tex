@@ -1,0 +1,269 @@
+\chapter{Modelo de madurez}
+\label{ch:modelo-madurez}
+
+\section{Identificación de activos del sistema RAG}
+\label{sec:activos}
+
+Toda evaluación de seguridad requiere, como paso previo a la definición de controles, la identificación de los activos sobre los cuales opera el riesgo. Esta práctica está establecida en el NIST CSF 2.0, cuya función \textit{Identify} define la gestión de activos como condición necesaria antes de seleccionar e implementar medidas de protección. En consecuencia, esta sección declara los activos del sistema RAG que el marco LLM-Sec tiene por objeto proteger, delimitando el perímetro de evaluación sobre el cual se articulan los componentes del marco.
+
+A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataque distribuida en múltiples componentes encadenados, cada uno de los cuales constituye un activo susceptible de ser comprometido de forma independiente. La Tabla~\ref{tab:activos} presenta los cinco activos identificados, su descripción funcional dentro del flujo RAG y el riesgo principal asociado a cada uno.
+
+\begin{table}[H]
+\centering
+\caption{Activos del sistema RAG y riesgos asociados.}
+\label{tab:activos}
+\rowcolors{2}{llmsec-gray}{white}
+\begin{tabularx}{\textwidth}{@{} c l X l @{}}
+  \toprule
+  \textbf{ID} & \textbf{Activo} & \textbf{Riesgo principal} & \textbf{Referencia} \\
+  \midrule
+  A1 & LLM &
+    Manipulación del comportamiento del modelo mediante inyección de instrucciones maliciosas en lenguaje natural. &
+    LLM01:2025 \\
+  A2 & Base de datos vectorial &
+    Recuperación no autorizada de fragmentos indexados e intoxicación del corpus mediante documentos maliciosos. &
+    LLM08:2025 \\
+  A3 & Corpus de conocimiento &
+    Exposición de información sensible contenida en los documentos indexados mediante consultas diseñadas para exfiltración. &
+    LLM02:2025 \\
+  A4 & Canales de entrada y salida &
+    Transporte de instrucciones maliciosas en la entrada y filtración de información del corpus o del prompt del sistema en la salida. &
+    LLM01, LLM07 \\
+  A5 & Mecanismos de acceso y sesión &
+    Acceso no autorizado a información sensible por ausencia de control de identidad o segregación de permisos. &
+    NIST AI RMF \\
+  \bottomrule
+\end{tabularx}
+\end{table}
+
+Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, lo que determina qué vectores de amenaza le son aplicables y, en consecuencia, qué subdimensión del modelo de madurez lo cubre:
+
+\begin{fichabox}{Mapeo activo $\rightarrow$ subdimensión}
+  \begin{tabularx}{\textwidth}{@{} c l l l @{}}
+    \toprule
+    \textbf{Activo} & \textbf{Etapa del flujo} & \textbf{Subdimensión} & \textbf{Vectores} \\
+    \midrule
+    A1 (LLM)                  & Inferencia          & D1, D3       & LLM01 \\
+    A2 (Base vectorial)       & Recuperación         & D2           & LLM08 \\
+    A3 (Corpus)               & Recuperación         & D2           & LLM02 \\
+    A4 (Canales E/S)          & Entrada y salida     & D1, D3       & LLM01, LLM07 \\
+    A5 (Acceso y sesión)      & Transversal          & D4, D5       & Transversal \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{6pt}
+
+Este mapeo justifica la existencia de exactamente cinco subdimensiones y no un número arbitrario: cada subdimensión protege un subconjunto distinto del flujo RAG, y el modelo de madurez evalúa cada uno de forma independiente antes de agregar un nivel global mediante la regla de piso mínimo (sección~\ref{sec:piso-minimo}).
+
+\begin{infobox}
+  La identificación de activos no constituye un componente del marco sino una condición previa a su aplicación. LLM-Sec es un instrumento de evaluación de postura que recibe como entrada un sistema cuyo perímetro ya ha sido delimitado y produce como salida un nivel de madurez verificado. Esta separación es coherente con el diseño agnóstico al dominio: al no fijar el perímetro de activos dentro del marco, este puede aplicarse a cualquier sistema RAG con independencia de su dominio de despliegue.
+\end{infobox}
+
+
+\section{Valoración de riesgo por activo}
+\label{sec:valoracion-riesgo}
+
+Una vez identificados los activos, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663, que lo formula en términos de \textbf{probabilidad de ocurrencia} de un incidente y el \textbf{impacto de sus consecuencias}. Esta formulación exige que la valoración no sea cualitativa sino cuantificable, lo que justifica el uso de una matriz de riesgo como instrumento de priorización.
+
+\subsection{Escala de valoración}
+
+La valoración emplea dos ejes, cada uno con tres niveles:
+
+\begin{fichabox}{Escalas de probabilidad e impacto}
+  \begin{minipage}[t]{0.48\textwidth}
+    \textbf{Probabilidad de explotación}
+    \begin{tabularx}{\textwidth}{@{} c l X @{}}
+      \toprule
+      & \textbf{Nivel} & \textbf{Criterio} \\
+      \midrule
+      3 & Alta  & Explotable con herramientas automatizadas de acceso público. \\
+      2 & Media & Requiere conocimiento técnico específico del sistema. \\
+      1 & Baja  & Requiere acceso privilegiado o condiciones poco frecuentes. \\
+      \bottomrule
+    \end{tabularx}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \textbf{Impacto de compromiso}
+    \begin{tabularx}{\textwidth}{@{} c l X @{}}
+      \toprule
+      & \textbf{Nivel} & \textbf{Criterio} \\
+      \midrule
+      3 & Alto   & Exfiltración de datos sensibles o pérdida de control del modelo. \\
+      2 & Medio  & Degradación del servicio o exposición parcial de información. \\
+      1 & Bajo   & Impacto operacional contenido, sin exposición de datos. \\
+      \bottomrule
+    \end{tabularx}
+  \end{minipage}
+\end{fichabox}
+
+
+\subsection{Matriz de riesgo}
+
+La Tabla~\ref{tab:matriz-riesgo} presenta la valoración de riesgo para cada activo identificado en la sección anterior. El nivel de riesgo se obtiene como el producto de probabilidad e impacto, clasificado en tres categorías: \textbf{Alto} ($\geq 6$), \textbf{Medio} ($3$--$4$) y \textbf{Bajo} ($\leq 2$).
+
+\begin{table}[H]
+\centering
+\caption{Matriz de valoración de riesgo por activo del sistema RAG.}
+\label{tab:matriz-riesgo}
+\begin{tabularx}{\textwidth}{@{} c l C{2.2cm} C{2.2cm} C{1.5cm} C{2cm} @{}}
+  \toprule
+  \textbf{ID} & \textbf{Activo} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Riesgo} & \textbf{Clasificación} \\
+  \midrule
+  A4 & Canales de E/S        & 3 (Alta)  & 3 (Alto)  & 9 & \badge{ctrl-preventivo}{Alto} \\[4pt]
+  A1 & LLM                   & 3 (Alta)  & 3 (Alto)  & 9 & \badge{ctrl-preventivo}{Alto} \\[4pt]
+  A3 & Corpus                & 3 (Alta)  & 3 (Alto)  & 9 & \badge{ctrl-preventivo}{Alto} \\[4pt]
+  A2 & Base vectorial        & 2 (Media) & 3 (Alto)  & 6 & \badge{ctrl-preventivo}{Alto} \\[4pt]
+  A5 & Acceso y sesión       & 1 (Baja)  & 3 (Alto)  & 3 & \badge{ctrl-detectivo}{Medio} \\
+  \bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{Interpretación y priorización}
+
+La valoración revela tres hallazgos que condicionan el diseño del modelo de madurez y la distribución de controles:
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones D1 (Protección de entrada), D2 (Control de contexto RAG) y D3 (Gestión de salida) concentren el mayor volumen de controles en la taxonomía: 17, 18 y 10 respectivamente, frente a 9 de D4 y 15 de D5.
+
+  \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (18), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
+
+  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja en el contexto de un sistema RAG desplegado en red controlada, pero el impacto de su compromiso sigue siendo alto. Esto justifica que el control de acceso (C22) se clasifique como declarativo: su implementación es imprescindible en producción, pero su verificación experimental queda fuera del alcance de un laboratorio controlado en TRL~4.
+\end{enumerate}
+
+\begin{infobox}
+  La valoración presentada corresponde a un sistema RAG genérico. Cada organización debe recalcular la probabilidad y el impacto según su contexto de despliegue específico, utilizando las escalas definidas. El perfil organizacional (P1, P2 o P3) orienta la interpretación del nivel de riesgo aceptable, pero no reemplaza esta valoración.
+\end{infobox}
+
+
+\subsection{Trazabilidad hacia las subdimensiones}
+
+La siguiente tabla sintetiza cómo la valoración de riesgo justifica la estructura del modelo de madurez:
+
+\begin{fichabox}{Riesgo $\rightarrow$ subdimensión $\rightarrow$ densidad de controles}
+  \begin{tabularx}{\textwidth}{@{} c l c c c @{}}
+    \toprule
+    \textbf{Activo} & \textbf{Riesgo} & \textbf{Subdimensión} & \textbf{Controles} & \textbf{Prioridad} \\
+    \midrule
+    A4 (Canales E/S)     & Alto (9) & D1, D3 & 17 + 10 & Máxima \\
+    A1 (LLM)             & Alto (9) & D1, D3 & 17 + 10 & Máxima \\
+    A3 (Corpus)           & Alto (9) & D2     & 18      & Máxima \\
+    A2 (Base vectorial)   & Alto (6) & D2     & 18      & Alta \\
+    A5 (Acceso y sesión)  & Medio (3) & D4, D5 & 9 + 15 & Media \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{6pt}
+
+Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria, sino proporcional al riesgo valorado de cada activo. Las subdimensiones con mayor densidad de controles (D1, D2, D3) corresponden a los activos con mayor nivel de riesgo, mientras que D4 y D5, asociadas a activos de riesgo medio, priorizan la observación y la gobernanza sobre la intervención directa.
+
+\section{Estructura del modelo}
+
+A partir de los activos identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal. Esta propiedad tiene una consecuencia estadística directa: el coeficiente apropiado para medir la correlación entre el nivel asignado y la resistencia experimental observada es Spearman, dado que no se asumen distancias iguales entre categorías.
+
+El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez estandarizado para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
+
+\section{Niveles de madurez}
+
+\begin{levelbox}[title=N0: Inexistente]{level-n0}
+  Sin consciencia de seguridad. No existen controles, políticas ni identificación de riesgos asociados al sistema RAG. Estado previo al despliegue del sistema; no genera artefactos de evaluación.
+\end{levelbox}
+
+\vspace{8pt}
+
+\begin{levelbox}[title=N1: Inicial]{level-n1}
+  Los riesgos son reconocidos pero no se han implementado controles para abordarlos. El sistema opera sin mecanismos de protección activos, asumiendo implícitamente los riesgos existentes. Corresponde a un sistema RAG desplegado sin capa defensiva.
+\end{levelbox}
+
+\vspace{8pt}
+
+\begin{levelbox}[title=N2: Reactivo]{level-n2}
+  Controles básicos implementados de forma parcial o no sistemática. Respuesta ante incidentes conocidos, no preventiva. Se evidencia mediante la activación de una capa defensiva con configuración por defecto; la tasa de filtrado de ataques es positiva pero variable entre categorías.
+\end{levelbox}
+
+\vspace{8pt}
+
+\begin{levelbox}[title=N3: Definido]{level-n3}
+  Controles formalmente definidos, documentados y aplicados de forma consistente. Umbrales de detección establecidos antes de la operación. Los logs de la capa defensiva son trazables por escáner y categoría de amenaza.
+\end{levelbox}
+
+\vspace{8pt}
+
+\begin{levelbox}[title=N4: Gestionado]{level-n4}
+  Seguridad gestionada cuantitativamente. Métricas de desempeño definidas y controles ajustados según resultados medidos. El nivel de correlación entre la puntuación del checklist y la resistencia experimental es estadísticamente significativo.
+\end{levelbox}
+
+\vspace{8pt}
+
+\begin{levelbox}[title=N5: Optimizado]{level-n5}
+  Mejora continua. Controles actualizados proactivamente ante nuevas amenazas documentadas. Marco revisado periódicamente e integrado al ciclo de gestión de riesgos organizacional. Requiere validación longitudinal y en múltiples dominios.
+\end{levelbox}
+
+
+\section{Subdimensiones}
+\label{sec:subdimensiones}
+
+\begin{fichabox}{Subdimensiones del modelo LLM-Sec}
+  \begin{tabularx}{\textwidth}{@{}c l l X@{}}
+    \toprule
+    \textbf{ID} & \textbf{Nombre} & \textbf{OWASP} & \textbf{Captura} \\
+    \midrule
+    D1 & Protección de entrada    & LLM01        & Validación y sanitización de prompts \\
+    D2 & Control de contexto RAG  & LLM02, LLM08 & Acceso y exposición de la base vectorial \\
+    D3 & Gestión de salida        & LLM01, LLM07 & Filtrado y control de respuestas \\
+    D4 & Monitoreo y trazabilidad & Todos         & Logging, alertas y auditoría \\
+    D5 & Gobernanza organizacional & ---           & Roles, políticas y cultura de seguridad \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\subsection{D1: Protección de entrada}
+
+La subdimensión D1 agrupa los controles orientados a la validación y sanitización de prompts de entrada, constituyendo la primera línea de defensa del flujo RAG. Opera sobre los canales de entrada y el LLM, interceptando la amenaza antes de que alcance la capa de inferencia. Su verificación combina evidencia de configuración (archivos YAML, prompt del sistema) con validación experimental (resultados de auditoría ofensiva).
+
+% TODO: Insertar ficha de proceso D1 (propósito, activos, vector OWASP, entradas/salidas).
+
+\subsection{D2: Control de contexto RAG}
+
+La subdimensión D2 abarca los controles que regulan el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. Opera sobre la etapa de recuperación del flujo RAG, donde los fragmentos de contexto son seleccionados y entregados al modelo como parte del prompt aumentado.
+
+% TODO: Insertar ficha de proceso D2.
+
+\subsection{D3: Gestión de salida}
+
+La subdimensión D3 comprende los controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario. Opera sobre el canal de salida del flujo RAG, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
+
+% TODO: Insertar ficha de proceso D3.
+
+\subsection{D4: Monitoreo y trazabilidad}
+
+La subdimensión D4 opera de forma transversal sobre el sistema RAG completo. Su naturaleza es observacional: no interviene sobre el flujo sino que lo registra. Sus entradas son eventos generados por las tres subdimensiones anteriores y sus salidas son exclusivamente artefactos de auditoría.
+
+D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva. Un sistema en esa condición se clasifica como no conforme en esta subdimensión.
+
+% TODO: Insertar ficha de proceso D4.
+
+\subsection{D5: Gobernanza organizacional}
+
+La subdimensión D5 opera de forma transversal sobre la organización completa, no sobre una etapa técnica específica del flujo RAG. Captura las obligaciones institucionales de gestión de la seguridad: definición de roles y responsabilidades, políticas de uso, cumplimiento normativo y mejora continua del marco. Su verificación es exclusivamente declarativa, dado que requiere métodos cualitativos como auditorías organizacionales o revisión documental, incompatibles con un entorno de laboratorio controlado.
+
+D5 provee insumos normativos e institucionales a las demás subdimensiones, actuando como el proceso de gobernanza que sustenta la operación segura del sistema RAG en su conjunto. Sus entradas son marcos normativos y retroalimentación de D4, y sus salidas son políticas e instrumentos de gobernanza que condicionan la operación del resto del sistema.
+
+% TODO: Insertar ficha de proceso D5.
+
+
+\section{Regla de piso mínimo}
+\label{sec:piso-minimo}
+
+El nivel global $L$ del sistema se determina como:
+\[
+  L = \min(d_1, d_2, d_3, d_4, d_5)
+\]
+donde $d_i$ es el nivel verificado de la subdimensión $i$. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4 pero D4 alcanza nivel 2, el nivel global verificado es 2.
+
+Dado que D5 opera exclusivamente con fuente de evidencia declarativa, su nivel no es verificable mediante experimento de laboratorio. El marco distingue por tanto entre \textbf{nivel verificado} (determinado mediante evidencia experimental o de configuración, aplicable a D1--D4) y \textbf{nivel declarado} (determinado mediante lista de chequeo sin evidencia técnica directa, aplicable a D5).
+
+En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión se justifica porque la ausencia de literatura previa comparable impide anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable.

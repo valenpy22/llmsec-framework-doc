@@ -1,0 +1,57 @@
+\chapter{Introducción}
+\label{ch:introduccion}
+
+\section{Propósito del documento}
+
+Este documento especifica el marco LLM-Sec, un instrumento de evaluación de la postura de ciberseguridad para plataformas que integran modelos de lenguaje de gran escala (LLM) en arquitecturas de generación aumentada por recuperación (RAG). El marco combina un modelo de madurez de seis niveles con una taxonomía de 62 controles operacionales, proporcionando al evaluador criterios cuantificables y reproducibles para determinar el estado de seguridad de un sistema RAG.
+
+El presente documento es un artefacto independiente de la tesis que lo valida experimentalmente. Su estructura permite su aplicación autónoma por parte de cualquier organización, sin requerir acceso al experimento de laboratorio descrito en la tesis.
+
+\section{Alcance}
+
+El marco LLM-Sec está diseñado para evaluar sistemas RAG que cumplan las siguientes condiciones:
+
+\begin{itemize}[leftmargin=2em]
+  \item Utilizan un modelo de lenguaje como componente de inferencia.
+  \item Incorporan una base de datos vectorial como fuente de contexto.
+  \item Operan en un entorno donde la entrada del usuario se procesa en lenguaje natural.
+\end{itemize}
+
+El marco cubre cuatro categorías de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG: LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM07 (System Prompt Leakage) y LLM08 (Vector and Embedding Weaknesses).
+
+\section{Audiencia}
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Evaluadores de seguridad:} profesionales que realizan auditorías de sistemas RAG.
+  \item \textbf{Equipos de desarrollo:} responsables de implementar controles en el ciclo de vida del sistema.
+  \item \textbf{Oficiales de cumplimiento:} encargados de verificar la adherencia a normativa vigente.
+  \item \textbf{Dirección:} tomadores de decisiones que requieren una visión ejecutiva del nivel de riesgo.
+\end{itemize}
+
+\section{Referencias normativas}
+
+El marco LLM-Sec se ancla a las siguientes referencias:
+
+\begin{infobox}[title=Referencias principales]
+  \begin{tabularx}{\textwidth}{@{}l X@{}}
+    \textbf{OWASP}              & LLM Top 10:2025 \\
+    \textbf{ISO/IEC 33001}      & Evaluación de capacidad de procesos \\
+    \textbf{ISO/IEC 27002:2022} & Controles de seguridad de la información \\
+    \textbf{NIST AI RMF}        & Marco de gestión de riesgos de IA \\
+    \textbf{MITRE ATLAS}        & Tácticas adversariales para sistemas de IA \\
+    \textbf{Ley 21.663}         & Marco de Ciberseguridad (Chile) \\
+    \textbf{Ley 21.719}         & Protección de Datos Personales (Chile) \\
+    \textbf{Boletín 16821-19}   & Proyecto de Ley de Inteligencia Artificial (Chile) \\
+  \end{tabularx}
+\end{infobox}
+
+\section{Convenciones del documento}
+
+A lo largo de este documento se utilizan las siguientes convenciones visuales:
+
+\begin{itemize}[leftmargin=2em]
+  \item Los controles se identifican con \texttt{C01}\,--\,\texttt{C62}.
+  \item Los niveles de madurez se representan con etiquetas: \badgeNivel{0} \badgeNivel{1} \badgeNivel{2} \badgeNivel{3} \badgeNivel{4} \badgeNivel{5}.
+  \item Los tipos funcionales se distinguen por color: \badgePreventivo{} \badgeDetectivo{} \badgeCorrectivo{} \badgeGobernanza{}.
+  \item Las fuentes de evidencia se indican como: \badgeConfig{} \badgeExperimental{} \badgeDeclarativo{}.
+\end{itemize}

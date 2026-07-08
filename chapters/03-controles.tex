@@ -1,0 +1,188 @@
+\chapter{Taxonomía de controles}
+\label{ch:controles}
+
+\section{Estructura de los controles}
+
+Cada control se caracteriza por cinco atributos:
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{Nivel de madurez} (N1 a N5): determina en qué nivel del modelo se requiere su implementación.
+  \item \textbf{Tipo funcional}: preventivo, detectivo, correctivo o gobernanza, según el momento en que actúa respecto al evento de seguridad (ISO/IEC 27002:2022).
+  \item \textbf{Fuente de evidencia}: configuración (archivos YAML, prompt del sistema), experimental (resultados de auditoría ofensiva) o declarativo (verificación por lista de chequeo).
+  \item \textbf{Descripción}: acción específica que el control requiere.
+  \item \textbf{Fuente normativa}: referencia al estándar o legislación que lo origina.
+\end{enumerate}
+
+Un control puede satisfacer más de un tipo funcional simultáneamente, consistente con el modelo de atributos de ISO/IEC 27002:2022. Por ejemplo, un escáner de salida que identifica y suprime contenido sensible actúa como control detectivo y correctivo en una misma operación.
+
+Todos los controles de un mismo nivel tienen peso equivalente dentro de su subdimensión.
+
+El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión.
+
+
+% ══════════════════════════════════════════════
+% D1: Protección de entrada (17 controles)
+% ══════════════════════════════════════════════
+\section{D1: Protección de entrada}
+\label{sec:controles-d1}
+
+La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez: 8 en N1, 3 en N2, 2 en N3, 2 en N4 y 2 en N5. El predominio de controles preventivos refleja la naturaleza de esta subdimensión: interceptar la amenaza antes de que alcance la capa de inferencia.
+
+% TODO: Trasladar los 17 controles de D1 desde la Tabla 3.28 de la tesis.
+% Formato por control:
+%
+% \control{C01}{1}{Preventivo}{Configuración}%
+%   {Implementar un escáner de prompt injection que analice cada entrada
+%    del usuario antes de enviarla al modelo.}%
+%   {LLM01:2025}
+%
+% \control{C02}{1}{Preventivo}{Configuración}%
+%   {Definir un prompt del sistema que instruya explícitamente al modelo
+%    a no ejecutar instrucciones contenidas en la entrada del usuario.}%
+%   {LLM01:2025}
+%
+% ... (completar C03--C17 desde la tesis)
+
+
+\control{C01}{1}{Preventivo}{Configuración}
+  {Limitar longitud máxima del prompt de entrada.}
+  {LLM01:2025}
+
+\control{C02}{1}{Preventivo}{Experimental}
+  {Sanitizar el prompt de entrada eliminando caracteres y patrones de control.}
+  {LLM01:2025}
+
+\control{C06}{1}{Preventivo}{Configuración}
+  {Segregar e identificar contenido externo en el prompt mediante delimitadores explícitos.}
+  {LLM01:2025, LLM02:2025}
+
+\control{C13}{1}{Preventivo}{Configuración}
+  {Limitar el volumen total de contexto inyectado al LLM por sesión.}
+  {LLM01:2025}
+
+\control{C15}{1}{Preventivo}{Configuración}
+  {Restringir el rol, capacidades y limitaciones del modelo en el prompt del sistema.}
+  {LLM01:2025}
+
+\control{C16}{1}{Preventivo}{Configuración}
+  {Interponer un proxy de seguridad externo e independiente del LLM.}
+  {LLM01:2025}
+
+\control{C21}{1}{Preventivo}{Configuración}
+  {Restringir credenciales y tokens de API al entorno de código.}
+  {LLM01:2025}
+
+\control{C30}{1}{Gobernanza}{Declarativo}
+  {Verificar procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
+  {Ley 21.663}
+
+\control{C03}{2}{Detectivo}{Experimental}
+  {Detectar patrones sintácticos de inyección en el prompt de entrada.}
+  {LLM01:2025}
+
+\control{C04}{2}{Preventivo}{Experimental}
+  {Validar la relevancia semántica del prompt respecto al dominio autorizado.}
+  {LLM01:2025}
+
+\control{C05}{2}{Preventivo}{Experimental}
+  {Ocultar el contenido del prompt del sistema al usuario, impidiendo su extracción.}
+  {LLM01:2025}
+
+\control{C31}{3}{Detectivo}{Experimental}
+  {Registrar y auditar todos los prompts rechazados con el motivo del rechazo.}
+  {LLM01:2025}
+
+\control{C32}{3}{Preventivo}{Configuración}
+  {Validar que el prompt del sistema no ha sido modificado entre sesiones.}
+  {LLM01:2025}
+
+
+
+
+% ══════════════════════════════════════════════
+% D2: Control de contexto RAG (18 controles)
+% ══════════════════════════════════════════════
+\section{D2: Control de contexto RAG}
+\label{sec:controles-d2}
+
+La subdimensión D2 agrupa 18 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
+
+% TODO: Trasladar los 18 controles de D2 desde la Tabla 3.30 de la tesis.
+
+\begin{infobox}[title=Pendiente]
+  Trasladar los 18 controles de D2 desde la Tabla 3.30 de la tesis.
+\end{infobox}
+
+
+% ══════════════════════════════════════════════
+% D3: Gestión de salida (10 controles)
+% ══════════════════════════════════════════════
+\section{D3: Gestión de salida}
+\label{sec:controles-d3}
+
+La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
+
+% TODO: Trasladar los 10 controles de D3 desde la Tabla 3.31 de la tesis.
+
+\begin{infobox}[title=Pendiente]
+  Trasladar los 10 controles de D3 desde la Tabla 3.31 de la tesis.
+\end{infobox}
+
+
+% ══════════════════════════════════════════════
+% D4: Monitoreo y trazabilidad (9 controles)
+% ══════════════════════════════════════════════
+\section{D4: Monitoreo y trazabilidad}
+\label{sec:controles-d4}
+
+La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos a partir de N2. D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva.
+
+% TODO: Trasladar los 9 controles de D4 desde la Tabla 3.32 de la tesis.
+
+\begin{infobox}[title=Pendiente]
+  Trasladar los 9 controles de D4 desde la Tabla 3.32 de la tesis.
+\end{infobox}
+
+
+% ══════════════════════════════════════════════
+% D5: Gobernanza organizacional (15 controles)
+% ══════════════════════════════════════════════
+\section{D5: Gobernanza organizacional}
+\label{sec:controles-d5}
+
+La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fuente de evidencia Declarativa. Estos controles capturan las obligaciones institucionales derivadas de la Ley 21.663, la Ley 21.719, el NIST AI RMF y el Proyecto de Ley de IA.
+
+% TODO: Trasladar los 15 controles de D5 desde la Tabla 3.34 de la tesis.
+
+\begin{infobox}[title=Pendiente]
+  Trasladar los 15 controles de D5 desde la Tabla 3.34 de la tesis.
+\end{infobox}
+
+
+% ══════════════════════════════════════════════
+% Resumen de distribución
+% ══════════════════════════════════════════════
+\section{Distribución de controles}
+\label{sec:distribucion}
+
+La siguiente tabla resume la distribución de los 62 controles por subdimensión y nivel de madurez.
+
+\begin{fichabox}{Distribución de controles: subdimensión $\times$ nivel}
+  \begin{tabularx}{\textwidth}{@{}l C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm}@{}}
+    \toprule
+    \textbf{Subdim.} & \textbf{N1} & \textbf{N2} & \textbf{N3} & \textbf{N4} & \textbf{N5} & \textbf{Total} \\
+    \midrule
+    D1 &  8 & 3 & 2 & 2 & 2 & 17 \\
+    D2 &  6 & 5 & 3 & 2 & 2 & 18 \\
+    D3 &  3 & 3 & 2 & 1 & 1 & 10 \\
+    D4 &  0 & 3 & 3 & 1 & 2 &  9 \\
+    D5 &  4 & 2 & 4 & 2 & 3 & 15 \\
+    \midrule
+    \textbf{Total} & 21 & 16 & 14 & 8 & 10 & \textbf{62} \\ % TODO: Verificar totales
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\begin{infobox}[title=Nota]
+  Verificar que los totales de esta tabla coincidan con las tablas de la tesis. Algunos controles pueden aparecer en más de una subdimensión dado que su función de protección es transversal.
+\end{infobox}

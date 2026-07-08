@@ -1,0 +1,95 @@
+\chapter{Perfiles organizacionales}
+\label{ch:perfiles}
+
+Los perfiles organizacionales orientan la interpretación del nivel de madurez asignado según el tipo de organización. No modifican los criterios de asignación ni la definición de los niveles; únicamente establecen el nivel mínimo recomendado y el nivel objetivo según las obligaciones regulatorias aplicables.
+
+\begin{fichabox}{Resumen de perfiles}
+  \begin{tabularx}{\textwidth}{@{}c l C{2cm} C{2cm} X@{}}
+    \toprule
+    \textbf{Perfil} & \textbf{Tipo} & \textbf{Nivel mínimo} & \textbf{Nivel objetivo} & \textbf{Descripción} \\
+    \midrule
+    P1 & PYME              & N1 & N3 & Organizaciones pequeñas y medianas \\
+    P2 & Mediana/Grande     & N2 & N4 & Organizaciones con infraestructura formal \\
+    P3 & Crítica regulada   & N3 & N5 & Infraestructura crítica, sector regulado \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+
+\section{P1: PYME}
+\label{sec:perfil-p1}
+
+El perfil P1 está diseñado para pequeñas y medianas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N1 y el nivel objetivo es N3.
+
+\subsection{Trayectoria recomendada}
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{N1 (Inicial):} Implementar los controles preventivos básicos de D1 y D2. Desplegar un prompt del sistema con instrucciones de seguridad. Activar la capa defensiva con configuración por defecto.
+  \item \textbf{N2 (Reactivo):} Configurar umbrales de detección y habilitar logging básico (D4). Establecer política de uso aceptable (D5).
+  \item \textbf{N3 (Definido):} Documentar formalmente los controles implementados. Calibrar umbrales basándose en resultados de auditoría. Establecer trazabilidad completa por escáner.
+\end{enumerate}
+
+\subsection{Controles prioritarios}
+
+% TODO: Listar los controles de N1--N3 más relevantes para PYME,
+% priorizando los de menor costo de implementación y mayor impacto.
+
+\begin{infobox}[title=Pendiente]
+  Identificar y listar los controles prioritarios para P1 considerando costo de implementación e impacto en TFA.
+\end{infobox}
+
+
+\section{P2: Mediana/Grande}
+\label{sec:perfil-p2}
+
+El perfil P2 aplica a organizaciones medianas y grandes con infraestructura formal de seguridad de la información. El nivel mínimo recomendado es N2 y el nivel objetivo es N4.
+
+\subsection{Trayectoria recomendada}
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{N2 (Reactivo):} Todos los controles de N1 implementados. Configuración activa de la capa defensiva con umbrales ajustados. Monitoreo básico operativo.
+  \item \textbf{N3 (Definido):} Controles documentados y aplicados consistentemente. Auditoría ofensiva periódica. Matriz RACI asignada.
+  \item \textbf{N4 (Gestionado):} Métricas de desempeño definidas (TFA, LAS). Controles ajustados según resultados cuantitativos. Monitoreo de patrones de consulta anómalos.
+\end{enumerate}
+
+\subsection{Controles prioritarios}
+
+% TODO: Listar controles prioritarios para P2.
+
+\begin{infobox}[title=Pendiente]
+  Identificar y listar los controles prioritarios para P2.
+\end{infobox}
+
+
+\section{P3: Crítica regulada}
+\label{sec:perfil-p3}
+
+El perfil P3 aplica a organizaciones que operan infraestructura crítica o pertenecen a sectores regulados, donde las obligaciones de la Ley 21.663 y la Ley 21.719 imponen requisitos formales de ciberseguridad y protección de datos. El nivel mínimo recomendado es N3 y el nivel objetivo es N5.
+
+\subsection{Trayectoria recomendada}
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{N3 (Definido):} Todos los controles de N1--N2 implementados y documentados. Trazabilidad completa. Evaluación de riesgos formal.
+  \item \textbf{N4 (Gestionado):} Gestión cuantitativa de la seguridad. Proceso formal de gestión de riesgos de IA con clasificación por criticidad. Reportes periódicos a dirección.
+  \item \textbf{N5 (Optimizado):} Mejora continua integrada. Marco revisado ante cambios normativos o nuevas amenazas. Lecciones aprendidas incorporadas al ciclo de gobernanza.
+\end{enumerate}
+
+\subsection{Obligaciones regulatorias aplicables}
+
+\begin{infobox}
+  Las organizaciones bajo el perfil P3 deben considerar especialmente:
+
+  \begin{itemize}[leftmargin=2em]
+    \item \textbf{Ley 21.663:} obligaciones de notificación de incidentes, designación de responsable de seguridad, inventario de activos de información.
+    \item \textbf{Ley 21.719:} obligaciones del responsable de tratamiento, inventario de datos personales procesados por el sistema RAG.
+    \item \textbf{Proyecto de Ley de IA:} clasificación del sistema según nivel de criticidad, métricas de desempeño de gobernanza.
+  \end{itemize}
+\end{infobox}
+
+\subsection{Controles prioritarios}
+
+% TODO: Listar controles prioritarios para P3.
+
+\begin{infobox}[title=Pendiente]
+  Identificar y listar los controles prioritarios para P3 con énfasis en cumplimiento normativo.
+\end{infobox}

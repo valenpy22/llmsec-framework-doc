@@ -1,0 +1,75 @@
+\chapter{Guía de evaluación}
+\label{ch:guia}
+
+\section{Flujo de evaluación}
+\label{sec:flujo-evaluacion}
+
+El proceso de evaluación del marco LLM-Sec sigue seis pasos secuenciales:
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{Selección del perfil organizacional:} identificar el perfil (P1, P2 o P3) que corresponde a la organización según su tipo y obligaciones regulatorias.
+  \item \textbf{Evaluación de controles:} verificar cada control de las subdimensiones D1 a D5 utilizando la fuente de evidencia correspondiente (configuración, experimental o declarativa).
+  \item \textbf{Asignación de nivel por subdimensión:} el nivel de cada subdimensión es el mayor nivel cuyos controles están completamente implementados, respetando la progresión acumulativa.
+  \item \textbf{Cálculo del nivel global:} aplicar la regla de piso mínimo: $L = \min(d_1, d_2, d_3, d_4, d_5)$.
+  \item \textbf{Análisis de brechas:} identificar la distancia entre el nivel verificado y el nivel objetivo del perfil seleccionado.
+  \item \textbf{Plan de remediación:} priorizar la implementación de controles faltantes según el nivel objetivo, enfocándose primero en la subdimensión que actúa como piso.
+\end{enumerate}
+
+% TODO: Insertar diagrama del flujo de evaluación (Figura 3.13 de la tesis, adaptada).
+
+
+\section{Nivel verificado y nivel declarado}
+\label{sec:verificado-declarado}
+
+El marco distingue dos tipos de nivel asignado según la fuente de evidencia utilizada:
+
+\begin{infobox}
+  \textbf{Nivel verificado:} determinado mediante evidencia experimental (resultados de auditoría ofensiva, logs de la capa defensiva) o de configuración (archivos YAML, prompt del sistema). Aplica a las subdimensiones D1, D2, D3 y D4.
+
+  \textbf{Nivel declarado:} determinado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5.
+\end{infobox}
+
+Al reportar el resultado de una evaluación, el evaluador debe indicar explícitamente qué subdimensiones fueron verificadas y cuáles fueron declaradas. El nivel global debe acompañarse de esta distinción para evitar interpretaciones que asuman verificación completa.
+
+
+\section{Criterios de verificación por fuente de evidencia}
+\label{sec:criterios-verificacion}
+
+\subsection{Configuración}
+
+El control se verifica inspeccionando la declaración explícita en los archivos de configuración del sistema. Ejemplos: presencia de umbrales en el archivo YAML de la capa defensiva, instrucciones de seguridad en el prompt del sistema, particionamiento de la base vectorial.
+
+\subsection{Experimental}
+
+El control se verifica mediante la ejecución de pruebas de auditoría ofensiva contra el sistema bajo evaluación. El resultado se expresa como una métrica cuantificable (tasa de filtrado, latencia, cobertura). La herramienta de auditoría debe ejecutar probes alineados a las categorías OWASP cubiertas por el control.
+
+\subsection{Declarativo}
+
+El control se verifica mediante revisión documental o entrevista. El evaluador solicita evidencia de la existencia de la política, procedimiento o asignación de roles descrita por el control.
+
+
+\section{Matriz RACI}
+\label{sec:raci}
+
+El marco define roles genéricos que cada organización debe mapear a personas o cargos concretos. La matriz RACI establece las responsabilidades para las actividades principales del ciclo de evaluación.
+
+% TODO: Insertar la matriz RACI desde la tesis.
+
+\begin{infobox}[title=Pendiente]
+  Trasladar la matriz RACI desde la tesis, adaptándola al formato del documento del marco.
+\end{infobox}
+
+
+\section{Ciclo de mejora}
+\label{sec:ciclo-mejora}
+
+Ante brechas identificadas entre el nivel verificado y el nivel objetivo, el evaluador debe:
+
+\begin{enumerate}[leftmargin=2em]
+  \item Identificar la subdimensión que actúa como piso mínimo.
+  \item Priorizar los controles faltantes de esa subdimensión en el nivel inmediatamente superior.
+  \item Implementar los controles priorizados.
+  \item Re-ejecutar la evaluación para verificar el tránsito de nivel.
+\end{enumerate}
+
+Este ciclo es iterativo y se repite hasta alcanzar el nivel objetivo del perfil organizacional o hasta que los riesgos residuales sean formalmente aceptados y documentados por la dirección.

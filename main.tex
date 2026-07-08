@@ -1,0 +1,30 @@
+\documentclass{llmsec}
+
+\begin{document}
+
+% Portada y control de versiones
+\input{chapters/portada}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\input{chapters/01-introduccion}
+\input{chapters/02-modelo-madurez}
+\input{chapters/03-controles}
+\input{chapters/04-perfiles}
+\input{chapters/05-guia-uso}
+
+% Apéndices
+\appendix
+
+\chapter{Resumen de controles por nivel}
+\label{app:resumen}
+% TODO: Tabla resumen cruzando nivel × subdimensión.
+
+\chapter{Mapeo normativo}
+\label{app:mapeo}
+% TODO: Tabla de trazabilidad control → fuente normativa.
+
+\end{document}
