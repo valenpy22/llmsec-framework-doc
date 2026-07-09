@@ -31,13 +31,66 @@ El perfil P1 está diseñado para pequeñas y medianas empresas que despliegan s
 
 \subsection{Controles prioritarios}
 
-% TODO: Listar los controles de N1--N3 más relevantes para PYME,
-% priorizando los de menor costo de implementación y mayor impacto.
+El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configuración, dado que su implementación no requiere desarrollo adicional sino parametrización de componentes existentes. La Tabla~\ref{tab:p1-prioridad} los ordena por subdimensión y costo estimado de implementación.
 
-\begin{infobox}[title=Pendiente]
-  Identificar y listar los controles prioritarios para P1 considerando costo de implementación e impacto en TFA.
+\begin{table}[H]
+  \centering
+  \caption{Controles prioritarios para el perfil P1 (PYME).}
+  \label{tab:p1-prioridad}
+  \rowcolors{2}{llmsec-gray}{white}
+  \begin{tabularx}{\textwidth}{@{} c c c l X @{}}
+    \toprule
+    \textbf{Ctrl} & \textbf{Nivel} & \textbf{Dim.} &
+    \textbf{Costo} & \textbf{Acción requerida} \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textit{Implementación inmediata
+      (configuración, sin desarrollo)}} \\
+    \midrule
+    C15 & N1 & D1, D2 & Bajo &
+      Redactar prompt del sistema con restricciones de rol. \\
+    C01 & N1 & D1     & Bajo &
+      Configurar límite de longitud del prompt. \\
+    C06 & N1 & D1, D2 & Bajo &
+      Agregar delimitadores al contexto inyectado. \\
+    C10 & N1 & D2     & Bajo &
+      Limitar fragmentos recuperados por consulta. \\
+    C13 & N1 & D1, D2 & Bajo &
+      Limitar volumen total de contexto por sesión. \\
+    C07 & N1 & D2     & Bajo &
+      Restringir fuentes a documentos autorizados. \\
+    C21 & N1 & D1, D2 & Bajo &
+      Variables de entorno para credenciales. \\
+    C16 & N1 & D1, D2, D3 & Medio &
+      Desplegar proxy de seguridad (ej. LLM Guard). \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textit{Fase siguiente
+      (requiere proxy activo, niveles N2--N3)}} \\
+    \midrule
+    C02 & N1 & D1     & Medio &
+      Activar sanitización de entrada en el proxy. \\
+    C08 & N2 & D2     & Medio &
+      Particionar vector store por sensibilidad. \\
+    C18 & N2 & D3     & Medio &
+      Activar sanitización de salida en el proxy. \\
+    C19 & N2 & D3     & Medio &
+      Activar detección de contenido confidencial. \\
+    C26 & N2 & D4     & Bajo &
+      Documentar política de umbrales. \\
+    C23 & N3 & D4     & Medio &
+      Habilitar logging de decisiones de bloqueo. \\
+    C31 & N3 & D1     & Medio &
+      Registrar prompts rechazados con motivo. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{infobox}
+  El costo estimado es relativo al contexto PYME. \textbf{Bajo} indica
+  parametrización sin componentes adicionales. \textbf{Medio} indica
+  despliegue o configuración de un componente nuevo (proxy, particiones).
+  Los controles de D5 (gobernanza) aplican transversalmente a todos
+  los perfiles y se listan en la sección~\ref{sec:controles-d5}.
 \end{infobox}
-
 
 \section{P2: Mediana/Grande}
 \label{sec:perfil-p2}
@@ -54,12 +107,116 @@ El perfil P2 aplica a organizaciones medianas y grandes con infraestructura form
 
 \subsection{Controles prioritarios}
 
-% TODO: Listar controles prioritarios para P2.
+El perfil P2 parte de N2 como nivel mínimo y apunta a N4. Los controles prioritarios se concentran en la activación de mecanismos detectivos y el inicio de la gestión cuantitativa. Se asume que los controles de N1 ya están implementados.
 
-\begin{infobox}[title=Pendiente]
-  Identificar y listar los controles prioritarios para P2.
-\end{infobox}
-
+\begin{table}[H]
+  \centering
+  \caption{Controles prioritarios para el perfil P2 (Mediana/Grande).}
+  \label{tab:p2-prioridad}
+  \rowcolors{2}{llmsec-gray}{white}
+  \begin{tabularx}{\textwidth}{@{} c c c l X @{}}
+    \toprule
+    \textbf{Ctrl} & \textbf{Nivel} & \textbf{Dim.} &
+    \textbf{Costo} & \textbf{Acción requerida} \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textit{Consolidación del nivel N2
+      (detectivos y particionamiento)}} \\
+    \midrule
+    C08 & N2 & D2     & Medio &
+      Particionar vector store por nivel de sensibilidad. \\
+    C09 & N2 & D2     & Medio &
+      Validar integridad de fragmentos antes de inyección al contexto. \\
+    C11 & N2 & D2     & Medio &
+      Validar semánticamente la query antes del retrieval. \\
+    C14 & N2 & D2, D3 & Medio &
+      Suprimir metadatos de documentos en las respuestas. \\
+    C17 & N2 & D2, D3 & Medio &
+      Restringir respuestas a información fundamentada en el contexto. \\
+    C18 & N2 & D3     & Medio &
+      Activar sanitización de salida en el proxy. \\
+    C19 & N2 & D3     & Medio &
+      Activar detección de contenido confidencial en la salida. \\
+    C22 & N2 & D2     & Alto &
+      Implementar control de acceso por sesión al vector store. \\
+    C26 & N2 & D4     & Bajo &
+      Documentar política de umbrales de detección y bloqueo. \\
+    C27 & N2 & D4     & Bajo &
+      Establecer procedimiento de notificación ante autoridades. \\
+    C28 & N2 & D4     & Bajo &
+      Definir política de retención y eliminación de datos de sesión. \\
+    C50 & N2 & D5     & Bajo &
+      Instanciar la matriz RACI con cargos concretos. \\
+    C51 & N2 & D5     & Medio &
+      Establecer procedimiento formal de gestión de accesos. \\
+    C52 & N2 & D5     & Medio &
+      Documentar inventario de datos personales procesados. \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textit{Tránsito a N3
+      (trazabilidad y auditoría formal)}} \\
+    \midrule
+    C03 & N2 & D1     & Medio &
+      Activar detección de patrones sintácticos de inyección. \\
+    C04 & N2 & D1     & Medio &
+      Validar relevancia semántica del prompt respecto al dominio. \\
+    C05 & N2 & D1     & Medio &
+      Ocultar contenido del prompt del sistema al usuario. \\
+    C23 & N3 & D4     & Medio &
+      Habilitar logging de decisiones de bloqueo con vector e identificador. \\
+    C25 & N3 & D4     & Medio &
+      Registrar y analizar latencia del flujo de inferencia. \\
+    C31 & N3 & D1     & Medio &
+      Registrar prompts rechazados con motivo del rechazo. \\
+    C32 & N3 & D1     & Bajo &
+      Validar integridad del prompt del sistema entre sesiones. \\
+    C12 & N3 & D2     & Alto &
+      Detectar consultas de reconocimiento sistemático del corpus. \\
+    C20 & N3 & D3     & Medio &
+      Validar que la salida no reproduzca literalmente fragmentos sensibles. \\
+    C62 & N3 & D2     & Medio &
+      Mantener registro versionado del corpus indexado. \\
+    C29 & N3 & D4     & Medio &
+      Documentar y ejecutar plan de pruebas ofensivas por despliegue. \\
+    C53 & N3 & D5     & Medio &
+      Establecer programa de capacitación en seguridad LLM. \\
+    C54 & N3 & D5     & Bajo &
+      Definir ciclo de revisión periódica del marco. \\
+    C55 & N3 & D5     & Bajo &
+      Documentar y comunicar riesgos residuales a la dirección. \\
+    C60 & N3 & D5     & Medio &
+      Realizar evaluación formal de riesgos del sistema RAG. \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textit{Nivel objetivo N4
+      (gestión cuantitativa)}} \\
+    \midrule
+    C33 & N4 & D1     & Alto &
+      Ajustar umbrales de detección según tasas de falsos positivos. \\
+    C34 & N4 & D1     & Medio &
+      Medir y reportar tasa de prompts rechazados por categoría. \\
+    C24 & N4 & D4     & Alto &
+      Monitorear patrones de consulta anómalos. \\
+    C37 & N4 & D2     & Medio &
+      Medir tasa de recuperación de fragmentos sensibles ante consultas de prueba. \\
+    C38 & N4 & D2     & Alto &
+      Ajustar parámetros de retrieval según métricas de exposición. \\
+    C41 & N4 & D3     & Alto &
+      Ajustar umbrales de sanitización según falsos positivos en salida. \\
+    C42 & N4 & D3     & Medio &
+      Medir tasa de supresión de fragmentos confidenciales por tipo de ataque. \\
+    C56 & N4 & D5     & Medio &
+      Establecer métricas de desempeño de la gobernanza de seguridad. \\
+    C57 & N4 & D5     & Medio &
+      Clasificar el sistema RAG según nivel de criticidad. \\
+    \bottomrule
+  \end{tabularx}
+  \end{table}
+  
+  \begin{infobox}
+    El costo estimado es relativo al contexto de una organización mediana o grande con equipo de seguridad
+    dedicado. \textbf{Bajo} indica documentación o parametrización. \textbf{Medio} indica configuración
+    de componentes existentes o desarrollo de procedimientos. \textbf{Alto} indica desarrollo, integración
+    de componentes nuevos o capacidad analítica especializada.
+  \end{infobox}
+  
 
 \section{P3: Crítica regulada}
 \label{sec:perfil-p3}
@@ -88,8 +245,106 @@ El perfil P3 aplica a organizaciones que operan infraestructura crítica o perte
 
 \subsection{Controles prioritarios}
 
-% TODO: Listar controles prioritarios para P3.
+El perfil P3 parte de N3 como nivel mínimo y apunta a N5. Los controles prioritarios
+enfatizan la gestión cuantitativa, la mejora continua y el cumplimiento normativo de la
+Ley 21.663, la Ley 21.719 y el Proyecto de Ley de IA. Se asume que los controles de
+N1 a N2 ya están implementados y que la organización cuenta con los recursos para
+sostener un ciclo de mejora continua.
 
-\begin{infobox}[title=Pendiente]
-  Identificar y listar los controles prioritarios para P3 con énfasis en cumplimiento normativo.
+\begin{table}[H]
+\centering
+\caption{Controles prioritarios para el perfil P3 (Crítica regulada).}
+\label{tab:p3-prioridad}
+\rowcolors{2}{llmsec-gray}{white}
+\begin{tabularx}{\textwidth}{@{} c c c l X @{}}
+  \toprule
+  \textbf{Ctrl} & \textbf{Nivel} & \textbf{Dim.} &
+  \textbf{Costo} & \textbf{Acción requerida} \\
+  \midrule
+  \multicolumn{5}{@{}l}{\textit{Consolidación del nivel N3
+    (trazabilidad completa y gobernanza formal)}} \\
+  \midrule
+  C23 & N3 & D4     & Medio &
+    Logging completo de decisiones de bloqueo con vector e identificador. \\
+  C25 & N3 & D4     & Medio &
+    Registro y análisis de latencia para detección de anomalías. \\
+  C31 & N3 & D1     & Medio &
+    Registro de prompts rechazados con motivo del rechazo. \\
+  C32 & N3 & D1     & Bajo &
+    Validación de integridad del prompt del sistema entre sesiones. \\
+  C12 & N3 & D2     & Alto &
+    Detección de consultas de reconocimiento sistemático del corpus. \\
+  C20 & N3 & D3     & Medio &
+    Validación de no reproducción literal de fragmentos sensibles. \\
+  C62 & N3 & D2     & Medio &
+    Registro versionado del corpus indexado por sesión. \\
+  C29 & N3 & D4     & Medio &
+    Plan de pruebas ofensivas documentado y ejecutado por despliegue. \\
+  C53 & N3 & D5     & Medio &
+    Programa de capacitación en seguridad LLM para roles RACI. \\
+  C54 & N3 & D5     & Bajo &
+    Ciclo de revisión periódica del marco con frecuencia mínima anual. \\
+  C55 & N3 & D5     & Bajo &
+    Comunicación formal de riesgos residuales a la dirección. \\
+  C60 & N3 & D5     & Medio &
+    Evaluación formal de riesgos con metodología documentada. \\
+  \midrule
+  \multicolumn{5}{@{}l}{\textit{Tránsito a N4
+    (gestión cuantitativa y cumplimiento normativo)}} \\
+  \midrule
+  C33 & N4 & D1     & Alto &
+    Ajuste dinámico de umbrales según tasas de falsos positivos. \\
+  C34 & N4 & D1     & Medio &
+    Reporte periódico de tasa de rechazo por categoría de ataque. \\
+  C24 & N4 & D4     & Alto &
+    Monitoreo de patrones de consulta anómalos. \\
+  C37 & N4 & D2     & Medio &
+    Medición periódica de tasa de recuperación de fragmentos sensibles. \\
+  C38 & N4 & D2     & Alto &
+    Ajuste de parámetros de retrieval según métricas de exposición. \\
+  C41 & N4 & D3     & Alto &
+    Ajuste dinámico de umbrales de sanitización de salida. \\
+  C42 & N4 & D3     & Medio &
+    Reporte de tasa de supresión de fragmentos confidenciales. \\
+  C56 & N4 & D5     & Medio &
+    Métricas de desempeño de gobernanza reportadas a la dirección. \\
+  C57 & N4 & D5     & Medio &
+    Clasificación formal del sistema según nivel de criticidad. \\
+  \midrule
+  \multicolumn{5}{@{}l}{\textit{Nivel objetivo N5
+    (mejora continua y actualización proactiva)}} \\
+  \midrule
+  C35 & N5 & D1     & Alto &
+    Actualizar patrones de detección ante nuevas técnicas de inyección. \\
+  C36 & N5 & D1     & Alto &
+    Revisar prompt del sistema ante cambios en el modelo base. \\
+  C39 & N5 & D2     & Alto &
+    Actualizar particionamiento ante cambios de clasificación del corpus. \\
+  C40 & N5 & D2     & Alto &
+    Revisión proactiva de fragmentos ante nuevas amenazas de exfiltración. \\
+  C43 & N5 & D3     & Alto &
+    Actualizar patrones de detección de contenido sensible en salida. \\
+  C44 & N5 & D3     & Alto &
+    Incorporar retroalimentación de incidentes a patrones de sanitización. \\
+  C45 & N5 & D4     & Alto &
+    Actualizar patrones de detección de anomalías ante nuevas amenazas. \\
+  C46 & N5 & D4     & Alto &
+    Incorporar retroalimentación de incidentes al sistema de alertas. \\
+  C58 & N5 & D5     & Medio &
+    Actualización proactiva del marco ante cambios normativos. \\
+  C59 & N5 & D5     & Medio &
+    Incorporar lecciones aprendidas al ciclo de mejora continua. \\
+  \bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{infobox}
+  El costo estimado es relativo al contexto de infraestructura crítica con obligaciones
+  regulatorias formales. \textbf{Bajo} indica documentación. \textbf{Medio} indica
+  procedimientos o configuración. \textbf{Alto} indica capacidad analítica especializada,
+  desarrollo de componentes o procesos de mejora continua que requieren personal dedicado.
+  Las organizaciones bajo este perfil deben considerar especialmente los controles anclados
+  a la Ley 21.663 (notificación de incidentes, inventario de activos), la Ley 21.719
+  (inventario de datos personales, gestión de accesos) y el Proyecto de Ley de IA
+  (clasificación por criticidad, métricas de gobernanza).
 \end{infobox}

@@ -28,22 +28,6 @@ El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones
 
 La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez: 8 en N1, 3 en N2, 2 en N3, 2 en N4 y 2 en N5. El predominio de controles preventivos refleja la naturaleza de esta subdimensión: interceptar la amenaza antes de que alcance la capa de inferencia.
 
-% TODO: Trasladar los 17 controles de D1 desde la Tabla 3.28 de la tesis.
-% Formato por control:
-%
-% \control{C01}{1}{Preventivo}{Configuración}%
-%   {Implementar un escáner de prompt injection que analice cada entrada
-%    del usuario antes de enviarla al modelo.}%
-%   {LLM01:2025}
-%
-% \control{C02}{1}{Preventivo}{Configuración}%
-%   {Definir un prompt del sistema que instruya explícitamente al modelo
-%    a no ejecutar instrucciones contenidas en la entrada del usuario.}%
-%   {LLM01:2025}
-%
-% ... (completar C03--C17 desde la tesis)
-
-
 \control{C01}{1}{Preventivo}{Configuración}
   {Limitar longitud máxima del prompt de entrada.}
   {LLM01:2025}

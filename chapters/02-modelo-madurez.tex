@@ -206,45 +206,231 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
 \section{Subdimensiones}
 \label{sec:subdimensiones}
 
+El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. La Figura~\ref{fig:diagrama-general} ilustra las relaciones de entrada y salida entre las cinco subdimensiones.
+
 \begin{fichabox}{Subdimensiones del modelo LLM-Sec}
   \begin{tabularx}{\textwidth}{@{}c l l X@{}}
     \toprule
     \textbf{ID} & \textbf{Nombre} & \textbf{OWASP} & \textbf{Captura} \\
     \midrule
-    D1 & Protección de entrada    & LLM01        & Validación y sanitización de prompts \\
+    D1 & Protección de entrada    & LLM01, LLM02     & Validación y sanitización de prompts \\
     D2 & Control de contexto RAG  & LLM02, LLM08 & Acceso y exposición de la base vectorial \\
-    D3 & Gestión de salida        & LLM01, LLM07 & Filtrado y control de respuestas \\
+    D3 & Gestión de salida        & LLM02, LLM07 & Filtrado y control de respuestas \\
     D4 & Monitoreo y trazabilidad & Todos         & Logging, alertas y auditoría \\
     D5 & Gobernanza organizacional & ---           & Roles, políticas y cultura de seguridad \\
     \bottomrule
   \end{tabularx}
 \end{fichabox}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/es_general.png.png}
+  \caption{Flujo de entradas y salidas de todos los procesos.}
+  \label{fig:diagrama-general}
+\end{figure}
+
 \subsection{D1: Protección de entrada}
 
-La subdimensión D1 agrupa los controles orientados a la validación y sanitización de prompts de entrada, constituyendo la primera línea de defensa del flujo RAG. Opera sobre los canales de entrada y el LLM, interceptando la amenaza antes de que alcance la capa de inferencia. Su verificación combina evidencia de configuración (archivos YAML, prompt del sistema) con validación experimental (resultados de auditoría ofensiva).
+La subdimensión D1 representa el primer punto de contacto entre el usuario y el sistema RAG, constituyendo la primera línea de defensa para garantizar una secuencia de acciones segura. Los activos sobre los que opera son los canales de entrada y el propio LLM, cuyo comportamiento puede ser manipulado si el prompt no es validado previamente.
 
-% TODO: Insertar ficha de proceso D1 (propósito, activos, vector OWASP, entradas/salidas).
+\begin{fichabox}{Ficha del proceso D1: Protección de entrada}
+  \begin{tabularx}{\textwidth}{@{} l X @{}}
+    \textbf{Propósito} &
+      Interceptar amenazas semánticas antes de que alcancen la capa
+      de inferencia, mediante validación y sanitización del prompt
+      de entrada. \\[4pt]
+    \textbf{Activos que protege} &
+      Canales de entrada y LLM. \\[4pt]
+    \textbf{Vector OWASP asociado} &
+      LLM01:2025 \\
+  \end{tabularx}
+\end{fichabox}
+
+\begin{fichabox}{Entradas y salidas del proceso D1}
+  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+    \toprule
+    \textbf{Desde} & \textbf{Entrada} &
+    \textbf{Salida} & \textbf{Hacia} \\
+    \midrule
+    Usuario &
+      Prompt en lenguaje natural &
+      Prompt sanitizado y validado &
+      D2 \\
+    Sistema &
+      System prompt configurado &
+      Registro de prompts rechazados &
+      D4 \\
+    Configuración &
+      Políticas de restricción (YAML) &
+      Alerta de intento de inyección detectado &
+      D4 \\
+    D5 &
+      Política de uso aceptable &
+      --- &
+      --- \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{8pt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/diagrama_D1.png}
+    \caption{Flujo de entradas y salidas del proceso D1: Protección de entrada.}
+    \label{fig:diagrama-d1}
+\end{figure}
 
 \subsection{D2: Control de contexto RAG}
 
 La subdimensión D2 abarca los controles que regulan el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. Opera sobre la etapa de recuperación del flujo RAG, donde los fragmentos de contexto son seleccionados y entregados al modelo como parte del prompt aumentado.
 
-% TODO: Insertar ficha de proceso D2.
+\begin{fichabox}{Ficha del proceso D2: Control de contexto RAG}
+  \begin{tabularx}{\textwidth}{@{} l X @{}}
+    \textbf{Propósito} &
+      Controlar el acceso y la exposición del corpus indexado, limitando qué fragmentos pueden ser recuperados e incorporados al contexto de inferencia del LLM. \\[4pt]
+    \textbf{Activos que protege} &
+      Base de datos vectorial y corpus de conocimiento. \\[4pt]
+    \textbf{Vector OWASP asociado} &
+      LLM02:2025, LLM08:2025 \\
+  \end{tabularx}
+\end{fichabox}
+
+\begin{fichabox}{Entradas y salidas del proceso D2}
+  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+    \toprule
+    \textbf{Desde} & \textbf{Entrada} &
+    \textbf{Salida} & \textbf{Hacia} \\
+    \midrule
+    D1 &
+      Prompt sanitizado y validado &
+      Contexto recuperado y prompt aumentado &
+      D3 \\
+    Sistema &
+      Configuración del \textit{vector store} &
+      Eventos de recuperación sospechosa &
+      D4 \\
+    Corpus &
+      Documentos indexados &
+      --- &
+      --- \\
+    D5 &
+      Política de clasificación de sensibilidad del corpus &
+      --- &
+      --- \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{8pt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/diagrama_D2.png}
+    \caption{Flujo de entradas y salidas del proceso D2: Control de contexto RAG.}
+    \label{fig:diagrama-d2}
+\end{figure}
 
 \subsection{D3: Gestión de salida}
 
 La subdimensión D3 comprende los controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario. Opera sobre el canal de salida del flujo RAG, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
 
-% TODO: Insertar ficha de proceso D3.
+\begin{fichabox}{Ficha del proceso D3: Gestión de salida}
+  \begin{tabularx}{\textwidth}{@{} l X @{}}
+    \textbf{Propósito} &
+      Filtrar y controlar las respuestas generadas por el LLM, detectando y suprimiendo contenido sensible antes de que sea transmitido al usuario. \\[4pt]
+    \textbf{Activos que protege} &
+      Canales de salida y corpus de conocimiento. \\[4pt]
+    \textbf{Vector OWASP asociado} &
+      LLM01:2025, LLM07:2025 \\
+  \end{tabularx}
+\end{fichabox}
 
+\begin{fichabox}{Entradas y salidas del proceso D3}
+  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+    \toprule
+    \textbf{Desde} & \textbf{Entrada} &
+    \textbf{Salida} & \textbf{Hacia} \\
+    \midrule
+    D2 &
+      Prompt aumentado con contexto recuperado &
+      Respuesta sanitizada y validada &
+      Usuario \\
+    LLM &
+      Respuesta generada &
+      Registro de contenido suprimido &
+      D4 \\
+    Configuración &
+      Patrones de detección de contenido sensible (YAML) &
+      Alerta de fuga de información detectada &
+      D4 \\
+    D5 &
+      Política de clasificación de sensibilidad &
+      --- &
+      --- \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{8pt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/diagrama_D3.png}
+    \caption{Flujo de entradas y salidas del proceso D3: Gestión de salida.}
+    \label{fig:diagrama-d3}
+\end{figure}
 \subsection{D4: Monitoreo y trazabilidad}
 
 La subdimensión D4 opera de forma transversal sobre el sistema RAG completo. Su naturaleza es observacional: no interviene sobre el flujo sino que lo registra. Sus entradas son eventos generados por las tres subdimensiones anteriores y sus salidas son exclusivamente artefactos de auditoría.
 
 D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva. Un sistema en esa condición se clasifica como no conforme en esta subdimensión.
 
-% TODO: Insertar ficha de proceso D4.
+\begin{fichabox}{Ficha del proceso D4: Monitoreo y trazabilidad}
+  \begin{tabularx}{\textwidth}{@{} l X @{}}
+    \textbf{Propósito} &
+      Registrar, alertar y auditar los eventos de seguridad generados en el flujo RAG, garantizando trazabilidad completa sobre el comportamiento defensivo del sistema. \\[4pt]
+    \textbf{Activos que protege} &
+      Sistema RAG completo. \\[4pt]
+    \textbf{Vector OWASP asociado} &
+      LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025 \\
+  \end{tabularx}
+\end{fichabox}
+
+\begin{fichabox}{Entradas y salidas del proceso D4}
+  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+    \toprule
+    \textbf{Desde} & \textbf{Entrada} &
+    \textbf{Salida} & \textbf{Hacia} \\
+    \midrule
+    D1 &
+      Registro de orompts rechazados y alertas de inyección &
+      Logs de auditoría consolidados &
+      D5 \\
+    D2 &
+      Eventos de recuperación sospechosa &
+      Alertas de comportamiento anómalo &
+      D5 \\
+    D3 &
+      Registro de contenido suprimido y alertas de fuga &
+      Informe de incidentes de seguridad &
+      D5 \\
+    Sistema &
+      Métricas de latencia del flujo de inferencia &
+      --- &
+      --- \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{8pt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/diagrama_D4.png}
+    \caption{Flujo de entradas y salidas del proceso D4: Monitoreo y trazabilidad.}
+    \label{fig:diagrama-d4}
+\end{figure}
 
 \subsection{D5: Gobernanza organizacional}
 
@@ -252,7 +438,55 @@ La subdimensión D5 opera de forma transversal sobre la organización completa, 
 
 D5 provee insumos normativos e institucionales a las demás subdimensiones, actuando como el proceso de gobernanza que sustenta la operación segura del sistema RAG en su conjunto. Sus entradas son marcos normativos y retroalimentación de D4, y sus salidas son políticas e instrumentos de gobernanza que condicionan la operación del resto del sistema.
 
-% TODO: Insertar ficha de proceso D5.
+\begin{fichabox}{Ficha del proceso D5: Gobernanza organizacional}
+  \begin{tabularx}{\textwidth}{@{} l X @{}}
+    \textbf{Propósito} &
+      Establecer y mantener el marco institucional de gobernanza que sustenta la operación segura del sistema RAG, definiendo roles, políticas y mecanismos de mejora continia. \\[4pt]
+    \textbf{Activos que protege} &
+      Sistema RAG completo (a nivel organizacional) \\[4pt]
+    \textbf{Vector OWASP asociado} &
+      LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025 \\
+  \end{tabularx}
+\end{fichabox}
+
+\begin{fichabox}{Entradas y salidas del proceso D5}
+  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+    \toprule
+    \textbf{Desde} & \textbf{Entrada} &
+    \textbf{Salida} & \textbf{Hacia} \\
+    \midrule
+    Normativa &
+      Ley 21.663, Ley 21.719, Proyecto Ley IA &
+      Política de uso aceptable &
+      D1 \\
+    NIST AI RMF &
+      Marco de gestión de riesgos de IA &
+      Política de clasificación de sensibilidad &
+      D2 \\
+    D4 &
+      Logs de auditoría e informes de incidentes &
+      Matriz RACI instanciada &
+      D1, D2, D3, D4 \\
+    D4 &
+      Logs de auditoría e informes de incidentes &
+      Informe de riesgos residuales &
+      Dirección \\
+    D4 & 
+      Logs de auditoría e informes de incidentes &
+      Plan de capacitación en seguridad LLM & 
+      Roles definidos \\
+    \bottomrule
+  \end{tabularx}
+\end{fichabox}
+
+\vspace{8pt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/diagrama_D5.png}
+    \caption{Flujo de entradas y salidas del proceso D5: Gobernanza organizacional.}
+    \label{fig:diagrama-d5}
+\end{figure}
 
 
 \section{Regla de piso mínimo}

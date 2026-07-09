@@ -53,12 +53,53 @@ El control se verifica mediante revisión documental o entrevista. El evaluador 
 
 El marco define roles genéricos que cada organización debe mapear a personas o cargos concretos. La matriz RACI establece las responsabilidades para las actividades principales del ciclo de evaluación.
 
-% TODO: Insertar la matriz RACI desde la tesis.
+La gestión efectiva de la seguridad de un sistema RAG requiere que cada actividad tenga un responsable claramente definido. Siguiendo el modelo de COBIT 4.1, el marco LLM-Sec provee una matriz RACI como artefacto central de gobernanza, que define los roles genéricos involucrados en la operación del sistema junto con su nivel de participación en cada actividad.
 
-\begin{infobox}[title=Pendiente]
-  Trasladar la matriz RACI desde la tesis, adaptándola al formato del documento del marco.
-\end{infobox}
+Los roles definidos son genéricos por diseño: no corresponden a personas específicas sino a funciones organizacionales. Cada organización debe instanciar la matriz asignando cada rol a los cargos o personas concretas de su estructura, conforme al control C50. Esta instanciación es condición necesaria para que los controles de D5 sean auditables.
 
+La Tabla~\ref{tab:raci} presenta las actividades principales del marco y la asignación de roles según los criterios R (Responsable), A (\textit{Accountable}), C (Consultado) e I (Informado).
+
+\begin{table}[H]
+    \centering
+    \caption{Matriz RACI del marco LLM-Sec.}
+    \label{tab:raci}
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{
+        >{\raggedright\arraybackslash}p{5cm}
+        >{\centering\arraybackslash}p{1.2cm}
+        >{\centering\arraybackslash}p{1.2cm}
+        >{\centering\arraybackslash}p{1.2cm}
+        >{\centering\arraybackslash}p{1.2cm}
+        >{\centering\arraybackslash}p{1.2cm}
+    }
+    \toprule
+    \textbf{Actividad} &
+    \rotatebox{45}{\textbf{Resp. Seguridad}} &
+    \rotatebox{45}{\textbf{Operador Técnico}} &
+    \rotatebox{45}{\textbf{Prop. Corpus}} &
+    \rotatebox{45}{\textbf{Dirección}} &
+    \rotatebox{45}{\textbf{Cumplimiento}} \\
+    \midrule
+    Designar responsable de seguridad del sistema RAG & A & I & I & R & C \\
+    Declarar el sistema RAG como activo de información & R & C & C & A & I \\
+    Mantener inventario de activos actualizado & R & C & C & I & A \\
+    Gestionar accesos al sistema & R & A & C & I & C \\
+    Aplicar lista de chequeo LLM-Sec & R & A & C & I & C \\
+    Revisar y actualizar el marco periódicamente & R & C & C & A & C \\
+    Notificar incidentes de seguridad & R & C & I & A & C \\
+    Ejecutar plan de pruebas ofensivas & A & R & I & I & C \\
+    Capacitar a los roles en seguridad LLM & R & C & C & A & C \\
+    Reportar métricas de gobernanza a la dirección & R & C & I & A & C \\
+    \bottomrule
+    \end{tabular}
+    \begin{minipage}{\linewidth}
+        \vspace{4pt}
+        \footnotesize \textbf{R} = Responsable (ejecuta) \enspace\textbullet\enspace
+        \textbf{A} = \textit{Accountable} (rinde cuentas) \enspace\textbullet\enspace
+        \textbf{C} = Consultado \enspace\textbullet\enspace
+        \textbf{I} = Informado
+    \end{minipage}
+\end{table}
 
 \section{Ciclo de mejora}
 \label{sec:ciclo-mejora}
