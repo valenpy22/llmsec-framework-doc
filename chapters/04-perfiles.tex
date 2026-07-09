@@ -8,9 +8,9 @@ Los perfiles organizacionales orientan la interpretación del nivel de madurez a
     \toprule
     \textbf{Perfil} & \textbf{Tipo} & \textbf{Nivel mínimo} & \textbf{Nivel objetivo} & \textbf{Descripción} \\
     \midrule
-    P1 & PYME              & N1 & N3 & Organizaciones pequeñas y medianas \\
-    P2 & Mediana/Grande     & N2 & N4 & Organizaciones con infraestructura formal \\
-    P3 & Crítica regulada   & N3 & N5 & Infraestructura crítica, sector regulado \\
+    P1 & PYME              & N2 & N3 & Organizaciones pequeñas y medianas \\
+    P2 & Mediana/Grande     & N3 & N4 & Organizaciones con infraestructura formal \\
+    P3 & Crítica regulada   & N4 & N5 & Infraestructura crítica, sector regulado \\
     \bottomrule
   \end{tabularx}
 \end{fichabox}
@@ -19,7 +19,7 @@ Los perfiles organizacionales orientan la interpretación del nivel de madurez a
 \section{P1: PYME}
 \label{sec:perfil-p1}
 
-El perfil P1 está diseñado para pequeñas y medianas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N1 y el nivel objetivo es N3.
+El perfil P1 está diseñado para pequeñas y medianas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
 
 \subsection{Trayectoria recomendada}
 
@@ -95,19 +95,18 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 \section{P2: Mediana/Grande}
 \label{sec:perfil-p2}
 
-El perfil P2 aplica a organizaciones medianas y grandes con infraestructura formal de seguridad de la información. El nivel mínimo recomendado es N2 y el nivel objetivo es N4.
+El perfil P2 aplica a organizaciones medianas y grandes con infraestructura formal de seguridad de la información. El nivel mínimo recomendado es N3 y el nivel objetivo es N4.
 
 \subsection{Trayectoria recomendada}
 
 \begin{enumerate}[leftmargin=2em]
-  \item \textbf{N2 (Reactivo):} Todos los controles de N1 implementados. Configuración activa de la capa defensiva con umbrales ajustados. Monitoreo básico operativo.
   \item \textbf{N3 (Definido):} Controles documentados y aplicados consistentemente. Auditoría ofensiva periódica. Matriz RACI asignada.
   \item \textbf{N4 (Gestionado):} Métricas de desempeño definidas (TFA, LAS). Controles ajustados según resultados cuantitativos. Monitoreo de patrones de consulta anómalos.
 \end{enumerate}
 
 \subsection{Controles prioritarios}
 
-El perfil P2 parte de N2 como nivel mínimo y apunta a N4. Los controles prioritarios se concentran en la activación de mecanismos detectivos y el inicio de la gestión cuantitativa. Se asume que los controles de N1 ya están implementados.
+El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles prioritarios se concentran en la activación de mecanismos detectivos y el inicio de la gestión cuantitativa. Se asume que los controles de N1 ya están implementados.
 
 \begin{table}[H]
   \centering
@@ -150,16 +149,16 @@ El perfil P2 parte de N2 como nivel mínimo y apunta a N4. Los controles priorit
       Establecer procedimiento formal de gestión de accesos. \\
     C52 & N2 & D5     & Medio &
       Documentar inventario de datos personales procesados. \\
-    \midrule
-    \multicolumn{5}{@{}l}{\textit{Tránsito a N3
-      (trazabilidad y auditoría formal)}} \\
-    \midrule
     C03 & N2 & D1     & Medio &
       Activar detección de patrones sintácticos de inyección. \\
     C04 & N2 & D1     & Medio &
       Validar relevancia semántica del prompt respecto al dominio. \\
     C05 & N2 & D1     & Medio &
       Ocultar contenido del prompt del sistema al usuario. \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textit{Tránsito a N3
+        (trazabilidad y auditoría formal)}} \\
+    \midrule
     C23 & N3 & D4     & Medio &
       Habilitar logging de decisiones de bloqueo con vector e identificador. \\
     C25 & N3 & D4     & Medio &
@@ -221,12 +220,11 @@ El perfil P2 parte de N2 como nivel mínimo y apunta a N4. Los controles priorit
 \section{P3: Crítica regulada}
 \label{sec:perfil-p3}
 
-El perfil P3 aplica a organizaciones que operan infraestructura crítica o pertenecen a sectores regulados, donde las obligaciones de la Ley 21.663 y la Ley 21.719 imponen requisitos formales de ciberseguridad y protección de datos. El nivel mínimo recomendado es N3 y el nivel objetivo es N5.
+El perfil P3 aplica a organizaciones que operan infraestructura crítica o pertenecen a sectores regulados, donde las obligaciones de la Ley 21.663 y la Ley 21.719 imponen requisitos formales de ciberseguridad y protección de datos. El nivel mínimo recomendado es N4 y el nivel objetivo es N5.
 
 \subsection{Trayectoria recomendada}
 
 \begin{enumerate}[leftmargin=2em]
-  \item \textbf{N3 (Definido):} Todos los controles de N1--N2 implementados y documentados. Trazabilidad completa. Evaluación de riesgos formal.
   \item \textbf{N4 (Gestionado):} Gestión cuantitativa de la seguridad. Proceso formal de gestión de riesgos de IA con clasificación por criticidad. Reportes periódicos a dirección.
   \item \textbf{N5 (Optimizado):} Mejora continua integrada. Marco revisado ante cambios normativos o nuevas amenazas. Lecciones aprendidas incorporadas al ciclo de gobernanza.
 \end{enumerate}
@@ -260,34 +258,6 @@ sostener un ciclo de mejora continua.
   \toprule
   \textbf{Ctrl} & \textbf{Nivel} & \textbf{Dim.} &
   \textbf{Costo} & \textbf{Acción requerida} \\
-  \midrule
-  \multicolumn{5}{@{}l}{\textit{Consolidación del nivel N3
-    (trazabilidad completa y gobernanza formal)}} \\
-  \midrule
-  C23 & N3 & D4     & Medio &
-    Logging completo de decisiones de bloqueo con vector e identificador. \\
-  C25 & N3 & D4     & Medio &
-    Registro y análisis de latencia para detección de anomalías. \\
-  C31 & N3 & D1     & Medio &
-    Registro de prompts rechazados con motivo del rechazo. \\
-  C32 & N3 & D1     & Bajo &
-    Validación de integridad del prompt del sistema entre sesiones. \\
-  C12 & N3 & D2     & Alto &
-    Detección de consultas de reconocimiento sistemático del corpus. \\
-  C20 & N3 & D3     & Medio &
-    Validación de no reproducción literal de fragmentos sensibles. \\
-  C62 & N3 & D2     & Medio &
-    Registro versionado del corpus indexado por sesión. \\
-  C29 & N3 & D4     & Medio &
-    Plan de pruebas ofensivas documentado y ejecutado por despliegue. \\
-  C53 & N3 & D5     & Medio &
-    Programa de capacitación en seguridad LLM para roles RACI. \\
-  C54 & N3 & D5     & Bajo &
-    Ciclo de revisión periódica del marco con frecuencia mínima anual. \\
-  C55 & N3 & D5     & Bajo &
-    Comunicación formal de riesgos residuales a la dirección. \\
-  C60 & N3 & D5     & Medio &
-    Evaluación formal de riesgos con metodología documentada. \\
   \midrule
   \multicolumn{5}{@{}l}{\textit{Tránsito a N4
     (gestión cuantitativa y cumplimiento normativo)}} \\

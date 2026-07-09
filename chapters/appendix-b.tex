@@ -1,0 +1,105 @@
+\chapter{Mapeo normativo}
+\label{app:mapeo}
+
+Este apéndice presenta la trazabilidad entre cada control del marco LLM-Sec y sus fuentes normativas de origen. La columna OWASP indica la entrada específica del OWASP LLM Top 10:2025; las columnas restantes indican la norma o legislación aplicable.
+
+Los controles transversales aparecen una sola vez, con todas sus fuentes consolidadas.
+
+\begin{infobox}
+  \textbf{Leyenda:} \checkmark\ indica aplicabilidad directa de la fuente normativa al control.
+\end{infobox}
+
+\small
+\begin{longtable}{@{}l L{4.8cm} l c c c c@{}}
+  \toprule
+  \textbf{ID} & \textbf{Descripción} & \textbf{OWASP} & \rotatebox{70}{\textbf{ISO 27002}} & \rotatebox{70}{\textbf{Ley 21.663}} & \rotatebox{70}{\textbf{Ley 21.719}} & \rotatebox{70}{\textbf{NIST AI RMF}} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Descripción} & \textbf{OWASP} & \rotatebox{70}{\textbf{ISO 27002}} & \rotatebox{70}{\textbf{Ley 21.663}} & \rotatebox{70}{\textbf{Ley 21.719}} & \rotatebox{70}{\textbf{NIST AI RMF}} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{7}{r}{\small\itshape Continúa en la página siguiente\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  % ── D1: Protección de entrada ──
+  \rowcolor{llmsec-light}
+  \multicolumn{7}{l}{\textbf{D1: Protección de entrada}} \\
+  C01 & Limitar longitud máxima del prompt      & LLM01 & \checkmark &   &   &   \\
+  C02 & Sanitizar prompt de entrada              & LLM01 & \checkmark &   &   &   \\
+  C03 & Detectar patrones de inyección           & LLM01 & \checkmark &   &   &   \\
+  C04 & Validar relevancia semántica del prompt   & LLM01 & \checkmark &   &   &   \\
+  C05 & Ocultar prompt del sistema               & LLM01, 07 & \checkmark &   &   &   \\
+  C06 & Segregar contenido externo con delimitadores & LLM01, 02 & \checkmark &   &   &   \\
+  C13 & Limitar volumen de contexto por sesión   & LLM01, 02 & \checkmark &   &   &   \\
+  C15 & Restringir rol del modelo en prompt del sistema & LLM01, 02 & \checkmark &   &   &   \\
+  C16 & Interponer proxy de seguridad externo    & LLM01, 02 & \checkmark &   &   &   \\
+  C21 & Restringir credenciales al entorno de código & LLM01, 02 & \checkmark &   &   &   \\
+  C30 & Verificar procedencia del modelo         & LLM08 & \checkmark & \checkmark &   &   \\
+  C31 & Auditar prompts rechazados               & LLM01 & \checkmark & \checkmark &   &   \\
+  C32 & Validar integridad del prompt del sistema & LLM01, 07 & \checkmark &   &   &   \\
+  C33 & Ajustar umbrales de detección dinámicamente & LLM01 & \checkmark &   &   &   \\
+  C34 & Reportar tasa de rechazo por categoría   & LLM01 & \checkmark & \checkmark &   &   \\
+  C35 & Actualizar patrones ante nuevas técnicas & LLM01 & \checkmark &   &   &   \\
+  C36 & Revisar prompt ante cambios del modelo   & LLM01 & \checkmark &   &   &   \\
+  % ── D2: Control de contexto RAG ──
+  \rowcolor{llmsec-light}
+  \multicolumn{7}{l}{\textbf{D2: Control de contexto RAG}} \\
+  C07 & Restringir fuentes a documentos autorizados & LLM02 & \checkmark &   &   &   \\
+  C08 & Particionar \textit{vector store} por sensibilidad & LLM02, 08 & \checkmark &   &   &   \\
+  C09 & Validar integridad de fragmentos recuperados & LLM02, 08 & \checkmark &   &   &   \\
+  C10 & Controlar cantidad de fragmentos por consulta & LLM02 & \checkmark &   &   &   \\
+  C11 & Validar semánticamente la \textit{query} al \textit{vector store} & LLM02, 08 & \checkmark &   &   &   \\
+  C12 & Detectar reconocimiento sistemático del corpus & LLM02, 08 & \checkmark &   &   &   \\
+  C14 & Suprimir metadatos en respuestas         & LLM02 & \checkmark &   & \checkmark &   \\
+  C17 & Restringir respuestas al contexto recuperado & LLM02 & \checkmark &   &   &   \\
+  C22 & Auditar acceso por sesión a documentos   & LLM02 & \checkmark &   & \checkmark &   \\
+  C37 & Medir tasa de recuperación de fragmentos sensibles & LLM02 & \checkmark &   &   &   \\
+  C38 & Ajustar parámetros de \textit{retrieval}  & LLM02 & \checkmark &   &   &   \\
+  C39 & Actualizar particionamiento ante reclasificación & LLM02, 08 & \checkmark &   &   &   \\
+  C40 & Revisar fragmentos ante nuevas amenazas  & LLM02, 08 & \checkmark &   &   &   \\
+  C62 & Mantener registro versionado del corpus  & LLM02, 08 & \checkmark & \checkmark &   &   \\
+  % ── D3: Gestión de salida ──
+  \rowcolor{llmsec-light}
+  \multicolumn{7}{l}{\textbf{D3: Gestión de salida}} \\
+  C18 & Sanitizar salida con patrones sintácticos & LLM02, 07 & \checkmark &   &   &   \\
+  C19 & Suprimir fragmentos confidenciales en salida & LLM02, 07 & \checkmark &   & \checkmark &   \\
+  C20 & Validar que la salida no reproduzca corpus sensible & LLM02, 07 & \checkmark &   & \checkmark &   \\
+  C41 & Ajustar umbrales de sanitización de salida & LLM02, 07 & \checkmark &   &   &   \\
+  C42 & Reportar tasa de supresión por tipo de ataque & LLM02, 07 & \checkmark & \checkmark &   &   \\
+  C43 & Actualizar patrones de detección en salida & LLM02, 07 & \checkmark &   &   &   \\
+  C44 & Incorporar retroalimentación de incidentes a patrones & LLM02, 07 & \checkmark &   &   &   \\
+  % ── D4: Monitoreo y trazabilidad ──
+  \rowcolor{llmsec-light}
+  \multicolumn{7}{l}{\textbf{D4: Monitoreo y trazabilidad}} \\
+  C23 & Registrar decisiones de bloqueo con mecanismo y vector & LLM01, 02, 07, 08 & \checkmark & \checkmark &   &   \\
+  C24 & Monitorear patrones de consulta anómalos  & LLM01, 02, 07, 08 & \checkmark &   &   &   \\
+  C25 & Registrar y analizar latencia del flujo   & LLM01, 02, 07, 08 & \checkmark &   &   &   \\
+  C26 & Definir política de umbrales previo a operación & --- &   & \checkmark &   &   \\
+  C27 & Procedimiento de notificación ante autoridades & --- &   & \checkmark &   &   \\
+  C28 & Política de retención y eliminación de datos & --- &   &   & \checkmark &   \\
+  C29 & Plan de pruebas ofensivas previo a despliegue & --- &   & \checkmark &   &   \\
+  C45 & Actualizar patrones de detección de anomalías & LLM01, 02, 07, 08 & \checkmark &   &   &   \\
+  C46 & Retroalimentación de incidentes al sistema de alertas & LLM01, 02, 07, 08 & \checkmark &   &   &   \\
+  % ── D5: Gobernanza organizacional ──
+  \rowcolor{llmsec-light}
+  \multicolumn{7}{l}{\textbf{D5: Gobernanza organizacional}} \\
+  C47 & Designar responsable de seguridad del sistema RAG & --- &   & \checkmark &   &   \\
+  C48 & Declarar sistema RAG como activo de información & --- &   & \checkmark &   &   \\
+  C49 & Política de uso aceptable del sistema RAG & --- &   &   & \checkmark &   \\
+  C50 & Adoptar matriz RACI del marco LLM-Sec    & --- &   & \checkmark &   &   \\
+  C51 & Procedimiento de gestión de accesos       & --- &   &   & \checkmark &   \\
+  C52 & Inventario de datos personales procesados & --- &   &   & \checkmark &   \\
+  C53 & Programa de capacitación en seguridad LLM & --- &   &   &   & \checkmark \\
+  C54 & Ciclo de revisión periódica del marco     & --- &   &   &   & \checkmark \\
+  C55 & Documentar y comunicar riesgos residuales & --- &   &   &   & \checkmark \\
+  C56 & Métricas de desempeño de gobernanza       & --- &   &   &   & \checkmark \\
+  C57 & Proceso de gestión de riesgos de IA       & --- &   &   &   & \checkmark \\
+  C58 & Revisión proactiva ante cambios normativos & --- &   &   &   & \checkmark \\
+  C59 & Lecciones aprendidas al ciclo de mejora   & --- &   &   &   & \checkmark \\
+  C60 & Evaluación formal de riesgos anual        & --- &   &   &   & \checkmark \\
+  C61 & Inventario actualizado de activos RAG     & --- &   & \checkmark &   &   \\
+\end{longtable}
+\normalsize

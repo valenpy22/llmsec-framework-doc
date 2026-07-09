@@ -1,0 +1,205 @@
+\chapter{Resumen de controles por nivel}
+\label{app:resumen}
+
+Este apéndice presenta el catálogo completo de controles del marco LLM-Sec organizados por subdimensión. Cada entrada incluye el identificador del control, su nivel de madurez, tipo funcional, fuente de evidencia y una descripción abreviada.
+
+Los controles transversales (aquellos que aparecen en más de una subdimensión) se listan en cada subdimensión donde aplican, reflejando su función protectora múltiple.
+
+% ──────────────────────────────────────────────
+\section*{D1: Protección de entrada}
+% ──────────────────────────────────────────────
+
+\begin{longtable}{@{}l c l l L{6.5cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{5}{r}{\small\itshape Continúa en la página siguiente\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  C01 & N1 & Preventivo    & Configuración & Limitar longitud máxima del prompt de entrada \\
+  C02 & N1 & Preventivo    & Experimental  & Sanitizar el prompt eliminando caracteres y patrones de control \\
+  C06 & N1 & Preventivo    & Configuración & Segregar contenido externo en el prompt mediante delimitadores \\
+  C13 & N1 & Preventivo    & Configuración & Limitar el volumen total de contexto inyectado por sesión \\
+  C15 & N1 & Preventivo    & Configuración & Restringir rol, capacidades y limitaciones del modelo en el prompt del sistema \\
+  C16 & N1 & Preventivo    & Configuración & Interponer un proxy de seguridad externo e independiente del LLM \\
+  C21 & N1 & Preventivo    & Configuración & Restringir credenciales y tokens de API al entorno de código \\
+  C30 & N1 & Gobernanza    & Declarativo   & Verificar procedencia e integridad del modelo mediante \textit{checksums} \\
+  \rowcolor{llmsec-gray}
+  C03 & N2 & Detectivo     & Experimental  & Detectar patrones sintácticos de inyección en el prompt \\
+  \rowcolor{llmsec-gray}
+  C04 & N2 & Preventivo    & Experimental  & Validar la relevancia semántica del prompt respecto al dominio autorizado \\
+  \rowcolor{llmsec-gray}
+  C05 & N2 & Preventivo    & Experimental  & Ocultar el contenido del prompt del sistema al usuario \\
+  C31 & N3 & Detectivo     & Experimental  & Registrar y auditar todos los prompts rechazados con motivo del rechazo \\
+  C32 & N3 & Preventivo    & Configuración & Validar que el prompt del sistema no ha sido modificado entre sesiones \\
+  \rowcolor{llmsec-gray}
+  C33 & N4 & Preventivo    & Declarativo   & Ajustar dinámicamente umbrales de detección según tasas de falsos positivos \\
+  \rowcolor{llmsec-gray}
+  C34 & N4 & Detectivo     & Declarativo   & Medir y reportar periódicamente la tasa de prompts rechazados por categoría \\
+  C35 & N5 & Preventivo    & Declarativo   & Actualizar patrones de detección ante nuevas técnicas de inyección \\
+  C36 & N5 & Preventivo    & Declarativo   & Revisar y ajustar el prompt del sistema ante cambios en el modelo base \\
+\end{longtable}
+
+% ──────────────────────────────────────────────
+\section*{D2: Control de contexto RAG}
+% ──────────────────────────────────────────────
+
+\begin{longtable}{@{}l c l l L{6.5cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{5}{r}{\small\itshape Continúa en la página siguiente\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  C06 & N1 & Preventivo         & Configuración & Segregar contenido externo en el prompt mediante delimitadores \\
+  C07 & N1 & Preventivo         & Configuración & Restringir fuentes de información a documentos autorizados y verificados \\
+  C10 & N1 & Preventivo         & Configuración & Controlar la cantidad de fragmentos recuperados por consulta \\
+  C13 & N1 & Preventivo         & Configuración & Limitar el volumen total de contexto inyectado por sesión \\
+  C15 & N1 & Preventivo         & Configuración & Restringir rol, capacidades y limitaciones del modelo en el prompt del sistema \\
+  C16 & N1 & Preventivo         & Configuración & Interponer un proxy de seguridad externo e independiente del LLM \\
+  C21 & N1 & Preventivo         & Configuración & Restringir credenciales y tokens de API al entorno de código \\
+  C30 & N1 & Gobernanza         & Declarativo   & Verificar procedencia e integridad del modelo mediante \textit{checksums} \\
+  \rowcolor{llmsec-gray}
+  C08 & N2 & Preventivo         & Configuración & Particionar el \textit{vector store} por nivel de sensibilidad \\
+  \rowcolor{llmsec-gray}
+  C09 & N2 & Prev./Det.         & Experimental  & Validar integridad del corpus y fragmentos antes de inyectarlos al contexto \\
+  \rowcolor{llmsec-gray}
+  C11 & N2 & Preventivo         & Experimental  & Validar semánticamente la \textit{query} al \textit{vector store} antes del \textit{retrieval} \\
+  \rowcolor{llmsec-gray}
+  C14 & N2 & Correctivo         & Experimental  & Suprimir o redactar metadatos de documentos en las respuestas \\
+  \rowcolor{llmsec-gray}
+  C17 & N2 & Prev./Det.         & Experimental  & Restringir respuestas a información fundamentada en el contexto recuperado \\
+  \rowcolor{llmsec-gray}
+  C22 & N2 & Prev./Det.         & Declarativo   & Controlar y auditar el acceso por sesión a documentos del \textit{vector store} \\
+  C12 & N3 & Detectivo          & Experimental  & Detectar consultas al \textit{vector store} para reconocimiento sistemático \\
+  C62 & N3 & Detectivo          & Configuración & Mantener registro versionado del corpus indexado \\
+  \rowcolor{llmsec-gray}
+  C37 & N4 & Detectivo          & Declarativo   & Medir la tasa de recuperación de fragmentos sensibles ante consultas de prueba \\
+  \rowcolor{llmsec-gray}
+  C38 & N4 & Preventivo         & Declarativo   & Ajustar parámetros de \textit{retrieval} según métricas de exposición \\
+  C39 & N5 & Preventivo         & Declarativo   & Actualizar particionamiento ante cambios en clasificación de sensibilidad \\
+  C40 & N5 & Preventivo         & Declarativo   & Revisar fragmentos indexados ante nuevas amenazas de exfiltración \\
+\end{longtable}
+
+% ──────────────────────────────────────────────
+\section*{D3: Gestión de salida}
+% ──────────────────────────────────────────────
+
+\begin{longtable}{@{}l c l l L{6.5cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{5}{r}{\small\itshape Continúa en la página siguiente\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  C16 & N1 & Preventivo         & Configuración & Interponer un proxy de seguridad externo e independiente del LLM \\
+  \rowcolor{llmsec-gray}
+  C14 & N2 & Correctivo         & Experimental  & Suprimir o redactar metadatos de documentos en las respuestas \\
+  \rowcolor{llmsec-gray}
+  C17 & N2 & Prev./Det.         & Experimental  & Restringir respuestas a información fundamentada en el contexto recuperado \\
+  \rowcolor{llmsec-gray}
+  C18 & N2 & Correctivo         & Experimental  & Sanitizar la salida eliminando contenido con patrones sintácticos sensibles \\
+  \rowcolor{llmsec-gray}
+  C19 & N2 & Det./Corr.         & Experimental  & Detectar y suprimir fragmentos marcados como confidenciales \\
+  C20 & N3 & Detectivo          & Experimental  & Validar que la salida no reproduzca literalmente fragmentos del corpus sensible \\
+  \rowcolor{llmsec-gray}
+  C41 & N4 & Detectivo          & Declarativo   & Ajustar umbrales de sanitización según métricas de falsos positivos \\
+  \rowcolor{llmsec-gray}
+  C42 & N4 & Detectivo          & Declarativo   & Medir la tasa de supresión de fragmentos confidenciales por tipo de ataque \\
+  C43 & N5 & Detectivo          & Declarativo   & Actualizar patrones de detección de contenido sensible ante nuevas técnicas \\
+  C44 & N5 & Detectivo          & Declarativo   & Incorporar retroalimentación de incidentes al conjunto de patrones \\
+\end{longtable}
+
+% ──────────────────────────────────────────────
+\section*{D4: Monitoreo y trazabilidad}
+% ──────────────────────────────────────────────
+
+\begin{longtable}{@{}l c l l L{6.5cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{5}{r}{\small\itshape Continúa en la página siguiente\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  \rowcolor{llmsec-gray}
+  C26 & N2 & Gobernanza         & Declarativo   & Definir política de umbrales de detección y bloqueo previo a la operación \\
+  \rowcolor{llmsec-gray}
+  C27 & N2 & Gobernanza         & Declarativo   & Establecer procedimiento de notificación de seguridad ante autoridades \\
+  \rowcolor{llmsec-gray}
+  C28 & N2 & Gobernanza         & Declarativo   & Definir política de retención y eliminación de datos de sesión \\
+  C23 & N3 & Detectivo          & Experimental  & Registrar cada decisión de bloqueo con identificación del mecanismo y vector \\
+  C25 & N3 & Detectivo          & Experimental  & Registrar y analizar la latencia del flujo de inferencia \\
+  C29 & N3 & Gobernanza         & Declarativo   & Documentar y ejecutar plan de pruebas ofensivas previo a cada despliegue \\
+  \rowcolor{llmsec-gray}
+  C24 & N4 & Detectivo          & Experimental  & Monitorear patrones de consulta anómalos \\
+  C45 & N5 & Detectivo          & Declarativo   & Actualizar patrones de detección de anomalías ante nuevas amenazas \\
+  C46 & N5 & Correctivo         & Declarativo   & Incorporar retroalimentación de incidentes al sistema de alertas \\
+\end{longtable}
+
+% ──────────────────────────────────────────────
+\section*{D5: Gobernanza organizacional}
+% ──────────────────────────────────────────────
+
+\begin{longtable}{@{}l c l l L{6.5cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Nivel} & \textbf{Tipo} & \textbf{Evidencia} & \textbf{Descripción} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{5}{r}{\small\itshape Continúa en la página siguiente\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  C47 & N1 & Gobernanza         & Declarativo   & Designar responsable de seguridad del sistema RAG \\
+  C48 & N1 & Gobernanza         & Declarativo   & Declarar el sistema RAG como activo de información \\
+  C49 & N1 & Gobernanza         & Declarativo   & Establecer política de uso aceptable del sistema RAG \\
+  C61 & N1 & Gobernanza         & Declarativo   & Mantener inventario actualizado de activos del sistema RAG \\
+  \rowcolor{llmsec-gray}
+  C50 & N2 & Gobernanza         & Declarativo   & Adoptar y adaptar la matriz RACI del marco LLM-Sec \\
+  \rowcolor{llmsec-gray}
+  C51 & N2 & Gobernanza         & Declarativo   & Establecer procedimiento de gestión de accesos \\
+  \rowcolor{llmsec-gray}
+  C52 & N2 & Gobernanza         & Declarativo   & Documentar inventario de datos personales procesados \\
+  C53 & N3 & Gobernanza         & Declarativo   & Establecer programa de capacitación en seguridad de sistemas LLM \\
+  C54 & N3 & Gobernanza         & Declarativo   & Definir ciclo de revisión periódica del marco con frecuencia mínima anual \\
+  C55 & N3 & Gobernanza         & Declarativo   & Documentar y comunicar riesgos residuales a la dirección \\
+  C60 & N3 & Gobernanza         & Declarativo   & Realizar evaluación formal de riesgos con frecuencia mínima anual \\
+  \rowcolor{llmsec-gray}
+  C56 & N4 & Gobernanza         & Declarativo   & Establecer métricas de desempeño de la gobernanza y reportarlas \\
+  \rowcolor{llmsec-gray}
+  C57 & N4 & Gobernanza         & Declarativo   & Implementar proceso de gestión de riesgos de IA \\
+  C58 & N5 & Gobernanza         & Declarativo   & Revisar proactivamente el marco ante cambios normativos o del modelo \\
+  C59 & N5 & Gobernanza         & Declarativo   & Incorporar lecciones aprendidas de incidentes al ciclo de mejora \\
+\end{longtable}

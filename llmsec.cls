@@ -5,7 +5,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{llmsec}[2026/07/08 LLM-Sec Framework Document Class]
 
-\LoadClass[11pt, a4paper, twoside, openany]{book}
+\LoadClass[11pt, a4paper, openany]{book}
 
 % ──────────────────────────────────────────────
 % Paquetes base
@@ -31,6 +31,7 @@
 \RequirePackage{float}
 \RequirePackage{parskip}
 \RequirePackage{lastpage}
+\RequirePackage{amssymb}
 
 % ──────────────────────────────────────────────
 % Paleta de colores (anclada a #1e5eff)
@@ -82,7 +83,7 @@
 \titleformat{\chapter}[display]
   {\normalfont\huge\bfseries\color{llmsec-dark}}
   {\chaptertitlename\ \thechapter}
-  {12pt}
+  {6pt}
   {\Huge}
 
 \titleformat{name=\chapter,numberless}[display]
