@@ -105,8 +105,6 @@ usabilidad.
 
 \subsection{Correspondencia con ISO/IEC 25010:2023}
 
-\subsection{Correspondencia con ISO/IEC 25010:2023}
-
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.4}
@@ -236,31 +234,28 @@ descriptiva, no requiere prueba estadística de contraste.
     \end{tabular}
 \end{table}
 
-\section{Nivel de Correlación de Puntuación (NCP)}
+\section{Nivel de Consistencia de Protección (NCP)}
 \label{sec:ncp}
 
-El Nivel de Correlación de Puntuación mide la correlación entre el
-nivel de madurez verificado asignado a cada subdimensión y la TFA
-observada en esa misma subdimensión. El coeficiente empleado es
-Spearman, dado que la escala de madurez LLM-Sec es ordinal y no
-permite asumir distancias uniformes entre niveles, lo que invalida
-el uso de Pearson.
+El Nivel de Consistencia de Protección verifica si el incremento en el
+nivel de madurez verificado se asocia a una mejora defensiva no negativa
+en todas las suites de ataque evaluadas. Su fórmula es:
 
-\subsection{Carácter exploratorio}
+\[
+  \text{NCP} = \frac{S_{\Delta \geq 0}}{S_{\text{total}}}
+\]
 
-NCP es de carácter exploratorio por diseño. Al no existir marcos
-comparables previos en la literatura, no es posible anclar un umbral
-de correlación a evidencia empírica previa. Su interpretación se
-realiza en términos de dirección y magnitud relativa: un coeficiente
-positivo confirma que niveles de madurez más altos se asocian a mayor
-resistencia adversarial, lo que constituye una condición mínima de
-coherencia del modelo.
+donde $S_{\Delta \geq 0}$ corresponde al número de suites en que
+$\Delta\text{TFA} \geq 0$ (definido en la sección~\ref{sec:tfa}), y
+$S_{\text{total}}$ al total de suites evaluadas.
 
-La potencia estadística del NCP depende del número de subdimensiones
-activas evaluadas. El evaluador debe declarar explícitamente la
-cardinalidad sobre la que opera el coeficiente y reconocer que
-valores calculados sobre menos de cinco pares de observaciones no
-permiten inferencia estadística formal.
+NCP es de carácter descriptivo: no contrasta una hipótesis estadística
+sino que verifica si la mejora defensiva asociada al nivel asignado es
+consistente entre vectores de ataque. Un NCP = 1{,}0 indica que el
+incremento de nivel se asocia a mejora no negativa en todas las suites
+evaluadas; valores inferiores señalan suites en que el nivel asignado
+no se tradujo en mejora observable, lo que requiere análisis de causas
+antes de reportar el nivel.
 
 \subsection{Criterios de validez}
 
@@ -272,7 +267,8 @@ de madurez si se cumplen conjuntamente las siguientes condiciones:
   escenario protegido es estadísticamente significativa ($p < 0{,}05$).
   \item El PCC sobre los controles verificables hasta el nivel
   alcanzado es $\geq 90\%$.
-  \item El coeficiente NCP es positivo en dirección.
+  \item NCP = 1{,}0, es decir, el incremento de nivel se asocia a
+  mejora no negativa en la totalidad de las suites evaluadas.
 \end{enumerate}
 
 El incumplimiento de cualquiera de estas condiciones no invalida el
@@ -291,15 +287,12 @@ analice sus causas antes de reportar el nivel asignado.
     \toprule
     \textbf{Característica} & \textbf{Subcategorías} \\
     \midrule
-    Functional Suitability (\S3.1) &
+      Functional Suitability (\S3.1) &
       Functional correctness (\S3.1.2),
       Functional appropriateness (\S3.1.3) \\
     \bottomrule
     \end{tabular}
 \end{table}
-
-\section{Correspondencia con ISO/IEC 25010:2023}
-\label{sec:iso25010}
 
 Las métricas del marco se anclan a las características de calidad de
 producto definidas en ISO/IEC 25010:2023 de la siguiente forma:
