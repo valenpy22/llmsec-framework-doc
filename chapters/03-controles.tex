@@ -17,8 +17,9 @@ Un control puede satisfacer más de un tipo funcional simultáneamente, consiste
 
 Todos los controles de un mismo nivel tienen peso equivalente dentro de su subdimensión.
 
-El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión.
+Un control transversal, aplicable a más de una subdimensión, puede citar fuentes normativas distintas en cada una de ellas. Esto responde a que su función protectora se articula contra vectores de amenaza diferentes según la etapa del flujo RAG en que actúa: el proxy de seguridad (C16) intercepta inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07). El identificador y la descripción del control permanecen invariantes; solo el conjunto de fuentes normativas se acota a los vectores pertinentes a cada subdimensión.
 
+El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión.
 
 % ══════════════════════════════════════════════
 % D1: Protección de entrada (17 controles)
@@ -98,12 +99,12 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 
 % ══════════════════════════════════════════════
-% D2: Control de contexto RAG (18 controles)
+% D2: Control de contexto RAG (20 controles)
 % ══════════════════════════════════════════════
 \section{D2: Control de contexto RAG}
 \label{sec:controles-d2}
 
-La subdimensión D2 agrupa 18 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
+La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
 
 \control{C06}{1}{Preventivo}{Configuración}
   {Segregar e identificar contenido externo en el prompt mediante delimitadores explícitos.}
@@ -227,7 +228,7 @@ La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas 
   {LLM02:2025, LLM07:2025}
 
 \control{C43}{5}{Detectivo}{Declarativo}
-  {Revisar y actualizar los patrones de detección de contenido sensible en la salida ante nuevas técnicas de exfitlración.}
+  {Revisar y actualizar los patrones de detección de contenido sensible en la salida ante nuevas técnicas de exfiltración.}
   {LLM02:2025, LLM07:2025}
 
 \control{C44}{5}{Detectivo}{Declarativo}
@@ -296,7 +297,7 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {Ley 21.663}
 
 \control{C49}{1}{Gobernanza}{Declarativo}
-  {Establecer política de uso aceptable del sistema RAG ccesible a todos los usuarios.}
+  {Establecer política de uso aceptable del sistema RAG accesible a todos los usuarios.}
   {Ley 21.719}
 
 \control{C61}{1}{Gobernanza}{Declarativo}
@@ -328,7 +329,7 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {NIST AI RMF}
 
 \control{C60}{3}{Gobernanza}{Declarativo}
-  {Realizar y documentar una evaluación formal de riesgos del sistema RAG con frecuenca mínima anual o ante cambios significativos en el modelo o el corpus.}
+  {Realizar y documentar una evaluación formal de riesgos del sistema RAG con frecuencia mínima anual o ante cambios significativos en el modelo o el corpus.}
   {NIST AI RMF}
 
 \control{C56}{4}{Gobernanza}{Declarativo}
@@ -354,20 +355,23 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
 \section{Distribución de controles}
 \label{sec:distribucion}
 
-La siguiente tabla resume la distribución de los 62 controles por subdimensión y nivel de madurez.
+El marco define 62 controles con identificador único (C01 a C62). Dado que un control puede proteger activos correspondientes a más de una subdimensión, un mismo identificador aparece en cada una de las subdimensiones donde su función protectora es aplicable. El control C16 (proxy de seguridad externo), por ejemplo, opera simultáneamente sobre la entrada, el contexto recuperado y la salida, por lo que se lista en D1, D2 y D3.
+
+La Tabla~\ref{tab:distribucion} contabiliza aplicaciones de control por subdimensión y nivel de madurez, no controles únicos. La suma total es por tanto superior a 62: los 62 controles únicos generan 71 aplicaciones, diferencia que corresponde a los ocho controles transversales del marco (C06, C13, C14, C15, C16, C17, C21 y C30).
 
 \begin{fichabox}{Distribución de controles: subdimensión $\times$ nivel}
-  \begin{tabularx}{\textwidth}{@{}l C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm}@{}}
+  \label{tab:distribucion}
+  \begin{tabularx}{\textwidth}{@{}l C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm} C{1.5cm} C{2.2cm}@{}}
     \toprule
-    \textbf{Subdim.} & \textbf{N1} & \textbf{N2} & \textbf{N3} & \textbf{N4} & \textbf{N5} & \textbf{Total} \\
+    \textbf{Subdim.} & \textbf{N1} & \textbf{N2} & \textbf{N3} & \textbf{N4} & \textbf{N5} & \textbf{Aplicaciones} \\
     \midrule
-    D1 &  8 & 3 & 2 & 2 & 2 & 17 \\
-    D2 &  6 & 5 & 3 & 2 & 2 & 18 \\
-    D3 &  3 & 3 & 2 & 1 & 1 & 10 \\
-    D4 &  0 & 3 & 3 & 1 & 2 &  9 \\
-    D5 &  4 & 2 & 4 & 2 & 3 & 15 \\
+    D1 & 8 & 3 & 2 & 2 & 2 & 17 \\
+    D2 & 8 & 6 & 2 & 2 & 2 & 20 \\
+    D3 & 1 & 4 & 1 & 2 & 2 & 10 \\
+    D4 & 0 & 3 & 3 & 1 & 2 &  9 \\
+    D5 & 4 & 3 & 4 & 2 & 2 & 15 \\
     \midrule
-    \textbf{Total} & 21 & 16 & 14 & 8 & 10 & \textbf{62} \\ % TODO: Verificar totales
+    \textbf{Total} & \textbf{21} & \textbf{19} & \textbf{12} & \textbf{9} & \textbf{10} & \textbf{71} \\
     \bottomrule
   \end{tabularx}
 \end{fichabox}

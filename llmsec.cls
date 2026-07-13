@@ -129,7 +129,7 @@
 % Caja genérica de control
 \newtcolorbox{controlbox}[2][]{%
   enhanced,
-  breakable,
+  breakable=false,
   colback     = llmsec-gray,
   colframe    = llmsec-primary,
   coltitle    = white,
