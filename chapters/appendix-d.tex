@@ -1,0 +1,68 @@
+\chapter{Glosario}
+\label{app:glosario}
+
+Este apéndice define los términos técnicos empleados a lo largo del documento. Las definiciones son operacionales y se acotan al alcance del marco LLM-Sec; no pretenden sustituir las definiciones normativas de las fuentes referenciadas en la sección 1.4.
+
+\begin{description}[leftmargin=0pt, style=nextline]
+
+  \item[Auditoría ofensiva] Ejecución controlada de ataques simulados contra un sistema con el objeto de medir su resistencia. En el marco LLM-Sec constituye la fuente de evidencia experimental.
+
+  \item[Base de datos vectorial] Sistema de almacenamiento que indexa fragmentos de texto mediante su representación vectorial y permite recuperarlos por similitud semántica. También denominada \emph{vector store}.
+
+  \item[Capa defensiva] Conjunto de componentes interpuestos entre el usuario y el modelo de inferencia que aplican controles de validación sobre la entrada y la salida del sistema.
+
+  \item[Contexto recuperado] Conjunto de fragmentos seleccionados desde la base vectorial en respuesta a una consulta, que se incorporan al prompt antes de la inferencia.
+
+  \item[Control] Medida técnica u organizacional que reduce la probabilidad o el impacto de un riesgo. En el marco LLM-Sec cada control se caracteriza por nivel de madurez, tipo funcional, fuente de evidencia, descripción y fuente normativa.
+
+  \item[Corpus de conocimiento] Conjunto de documentos indexados que constituyen la fuente de contexto del sistema RAG.
+
+  \item[Embedding] Representación vectorial de un fragmento de texto en un espacio de dimensión fija, utilizada para calcular similitud semántica entre la consulta y los fragmentos indexados.
+
+  \item[Escenario] Configuración de seguridad bajo la cual se evalúa el sistema. El marco distingue entre un escenario sin protección activa y un escenario con la capa defensiva habilitada.
+
+  \item[Exfiltración] Extracción no autorizada de información sensible desde el corpus indexado o desde el prompt del sistema, mediante consultas diseñadas para inducir su reproducción en la salida del modelo.
+
+  \item[Fragmento] Unidad mínima de texto indexada en la base vectorial, resultante de la segmentación de un documento del corpus. También denominado \emph{chunk}.
+
+  \item[Fuente de evidencia] Criterio mediante el cual se verifica el cumplimiento de un control. El marco define tres: configuración, experimental y declarativo.
+
+  \item[Ground truth] Criterio de referencia que determina si un intento adversarial fue exitoso o resistido. El marco define fuentes de ground truth diferenciadas por vector OWASP (sección 6.1.1).
+
+  \item[Inyección de prompt] Técnica adversarial que introduce instrucciones maliciosas en la entrada del sistema con el objeto de alterar el comportamiento del modelo. Corresponde al vector LLM01:2025.
+
+  \item[LLM] Modelo de lenguaje de gran escala (\emph{Large Language Model}). Componente de inferencia que genera respuestas en lenguaje natural a partir del prompt recibido.
+
+  \item[Nivel declarado] Nivel de madurez asignado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5.
+
+  \item[Nivel verificado] Nivel de madurez asignado mediante evidencia experimental o de configuración. Aplica a las subdimensiones D1 a D4.
+
+  \item[Perfil organizacional] Categoría que orienta la interpretación del nivel de madurez según el tipo de organización y sus obligaciones regulatorias. El marco define tres: P1 (PYME), P2 (Mediana/Grande) y P3 (Crítica regulada).
+
+  \item[Probe] Unidad de prueba adversarial ejecutada por la herramienta de auditoría ofensiva, correspondiente a una técnica de ataque específica dentro de una categoría OWASP.
+
+  \item[Prompt aumentado] Prompt final entregado al modelo, resultante de combinar la consulta del usuario con el contexto recuperado desde la base vectorial.
+
+  \item[Prompt del sistema] Instrucciones de configuración que definen el rol, las capacidades y las restricciones del modelo, invisibles al usuario en condiciones normales de operación.
+
+  \item[Proxy de seguridad] Componente externo e independiente del LLM que intercepta la entrada y la salida del flujo de inferencia para aplicar controles de validación y sanitización.
+
+  \item[RAG] Generación aumentada por recuperación (\emph{Retrieval-Augmented Generation}). Arquitectura en que el modelo genera respuestas a partir de fragmentos recuperados desde una base de conocimiento externa, incorporados al prompt en tiempo de inferencia.
+
+  \item[Regla de piso mínimo] Criterio de agregación del nivel global del sistema, definido como el mínimo entre los niveles alcanzados por cada subdimensión (sección 2.6).
+
+  \item[Retrieval] Etapa del flujo RAG en que se seleccionan los fragmentos del corpus semánticamente más próximos a la consulta del usuario.
+
+  \item[Sanitización] Modificación de la entrada o la salida del sistema mediante la eliminación o sustitución de contenido que coincide con patrones definidos como riesgosos.
+
+  \item[Subdimensión] Eje de evaluación del modelo de madurez. El marco define cinco: D1 (Protección de entrada), D2 (Control de contexto RAG), D3 (Gestión de salida), D4 (Monitoreo y trazabilidad) y D5 (Gobernanza organizacional).
+
+  \item[Suite] Conjunto de probes agrupados por vector OWASP, sobre el cual se calcula la Tasa de Filtrado de Ataques de forma desglosada.
+
+  \item[Tipo funcional] Clasificación del control según el momento en que actúa respecto al evento de seguridad: preventivo, detectivo, correctivo o gobernanza (ISO/IEC 27002:2022).
+
+  \item[TRL] Nivel de madurez tecnológica (\emph{Technology Readiness Level}). Escala que caracteriza el grado de desarrollo de una tecnología desde la investigación básica hasta el despliegue operacional.
+
+  \item[Vector de amenaza] Categoría de ataque definida en el OWASP LLM Top 10:2025. El marco cubre cuatro: LLM01, LLM02, LLM07 y LLM08.
+
+\end{description}

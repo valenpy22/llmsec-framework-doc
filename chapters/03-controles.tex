@@ -33,59 +33,59 @@ El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones
 La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez: 8 en N1, 3 en N2, 2 en N3, 2 en N4 y 2 en N5. El predominio de controles preventivos refleja la naturaleza de esta subdimensión: interceptar la amenaza antes de que alcance la capa de inferencia.
 
 \control{C01}{1}{Preventivo}{Configuración}
-  {Limitar longitud máxima del prompt de entrada.}
+  {Limitar la longitud máxima del prompt de entrada, medida en la misma unidad que el modelo emplea para su ventana de contexto.}
   {LLM01:2025}
 
-\control{C02}{1}{Preventivo}{Experimental}
-  {Sanitizar el prompt de entrada eliminando caracteres y patrones de control.}
+\control{C02}{1}{Correctivo}{Experimental}
+  {Eliminar de la entrada los tokens especiales del modelo, los bytes nulos y los caracteres de control Unicode, antes de que el texto alcance cualquier componente de análisis.}
   {LLM01:2025}
 
 \control{C06}{1}{Preventivo}{Configuración}
-  {Segregar e identificar contenido externo en el prompt mediante delimitadores explícitos.}
+  {Segregar e identificar el contenido recuperado del corpus mediante delimitadores explícitos que lo separen de la consulta del usuario en el prompt aumentado.}
   {LLM01:2025, LLM02:2025}
 
 \control{C13}{1}{Preventivo}{Configuración}
-  {Limitar el volumen total de contexto inyectado al LLM por sesión.}
+  {Limitar el volumen total de contexto inyectado al LLM restringiendo la cantidad de fragmentos recuperados por consulta.}
   {LLM01:2025, LLM02:2025}
 
 \control{C15}{1}{Preventivo}{Configuración}
-  {Restringir el rol, capacidades y limitaciones del modelo en el prompt del sistema.}
+  {Restringir el rol, las capacidades y las limitaciones del modelo mediante instrucciones de sistema declaradas externamente al código.}
   {LLM01:2025, LLM02:2025}
 
 \control{C16}{1}{Preventivo}{Configuración}
-  {Interponer un proxy de seguridad externo e independiente del LLM.}
+  {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025}
 
 \control{C21}{1}{Preventivo}{Configuración}
-  {Restringir credenciales y tokens de API al entorno de código.}
+  {Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente.}
   {LLM01:2025, LLM02:2025}
 
 \control{C30}{1}{Gobernanza}{Declarativo}
-  {Verificar procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
+  {Verificar la procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
   {Ley 21.663, LLM08:2025}
 
-\control{C03}{2}{Detectivo}{Experimental}
-  {Detectar patrones sintácticos de inyección en el prompt de entrada.}
+\control{C03}{2}{Preventivo}{Experimental}
+  {Bloquear las entradas clasificadas como intento de inyección de instrucciones por un escáner que asigne una puntuación de riesgo contrastada contra un umbral configurado.}
   {LLM01:2025}
 
 \control{C04}{2}{Preventivo}{Experimental}
-  {Validar la relevancia semántica del prompt respecto al dominio autorizado.}
+  {Bloquear las consultas cuya distancia semántica mínima al corpus supere el umbral configurado, rechazando aquellas ajenas al dominio autorizado.}
   {LLM01:2025}
 
-\control{C05}{2}{Preventivo}{Experimental}
-  {Ocultar el contenido del prompt del sistema al usuario, impidiendo su extracción.}
+\control{C05}{2}{Detectivo}{Experimental}
+  {Extraer de la respuesta del modelo únicamente el texto generado, sin incorporar el prompt del sistema ni sus restricciones al contenido retornado al usuario.}
   {LLM01:2025, LLM07:2025}
 
 \control{C31}{3}{Detectivo}{Experimental}
-  {Registrar y auditar todos los prompts rechazados con el motivo del rechazo.}
+  {Registrar un motivo de bloqueo estructurado para cada solicitud rechazada, identificando el componente que originó el rechazo.}
   {LLM01:2025}
 
 \control{C32}{3}{Preventivo}{Configuración}
-  {Validar que el prompt del sistema no ha sido modificado entre sesiones.}
+  {Verificar mediante función de resumen criptográfico que el prompt del sistema y sus restricciones no han sido modificados desde el arranque.}
   {LLM01:2025, LLM07:2025}
 
 \control{C33}{4}{Preventivo}{Declarativo}
-  {Ajustar dinámicamente los umbrales de detección de inyección según tasas de falsos positivos observadas.}
+  {Ajustar dinámicamente los umbrales de detección de inyección según las tasas de falsos positivos observadas.}
   {LLM01:2025}
 
 \control{C34}{4}{Detectivo}{Declarativo}
@@ -100,7 +100,6 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
   {Revisar y ajustar el prompt del sistema ante cambios en el modelo base.}
   {LLM01:2025}
 
-
 % ══════════════════════════════════════════════
 % D2: Control de contexto RAG (20 controles)
 % ══════════════════════════════════════════════
@@ -110,68 +109,67 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
 
 \control{C06}{1}{Preventivo}{Configuración}
-  {Segregar e identificar contenido externo en el prompt mediante delimitadores explícitos.}
+  {Segregar e identificar el contenido recuperado del corpus mediante delimitadores explícitos que lo separen de la consulta del usuario en el prompt aumentado.}
   {LLM01:2025, LLM02:2025}
 
 \control{C07}{1}{Preventivo}{Configuración}
-  {Restringir las fuentes de información del modelo a documentos autorizados y verificados.}
+  {Restringir el modelo al uso exclusivo del contexto recuperado, prohibiendo mediante instrucción de sistema la generación de información no fundamentada en él.}
   {LLM02:2025}
 
 \control{C10}{1}{Preventivo}{Configuración}
-  {Controlar la cantidad de fragmentos recuperados por consulta para limitar exposición del corpus.}
+  {Controlar la cantidad de fragmentos recuperados por consulta para limitar la exposición del corpus.}
   {LLM02:2025}
 
 \control{C13}{1}{Preventivo}{Configuración}
-  {Limitar el volumen total de contexto inyectado al LLM por sesión.}
+  {Limitar el volumen total de contexto inyectado al LLM restringiendo la cantidad de fragmentos recuperados por consulta.}
   {LLM02:2025}
 
 \control{C15}{1}{Preventivo}{Configuración}
-  {Restringir el rol, capacidades y limitaciones del modelo en el prompt del sistema.}
+  {Restringir el rol, las capacidades y las limitaciones del modelo mediante instrucciones de sistema declaradas externamente al código.}
   {LLM01:2025, LLM02:2025}
 
 \control{C16}{1}{Preventivo}{Configuración}
-  {Interponer un proxy de seguridad externo e independiente del LLM.}
+  {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025}
 
 \control{C21}{1}{Preventivo}{Configuración}
-  {Restringir credenciales y tokens de API al entorno de código.}
+  {Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente.}
   {LLM01:2025, LLM02:2025}
 
 \control{C30}{1}{Gobernanza}{Declarativo}
-  {Verificar procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
+  {Verificar la procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
   {Ley 21.663, LLM08:2025}
 
 \control{C08}{2}{Preventivo}{Configuración}
-  {Particionar el \textit{vector store} por nivel de sensibilidad para prevenir acceso cruzado.}
+  {Clasificar cada fragmento del corpus según su nivel de sensibilidad al momento de la indexación, y restringir la recuperación a los niveles autorizados.}
   {LLM02:2025, LLM08:2025}
 
 \control{C09}{2}{Preventivo/Detectivo}{Experimental}
-  {Validar integridad del corpus y fragmentos recuperados antes de inyectarlos al contexto del LLM.}
+  {Verificar la integridad de los fragmentos recuperados contra una línea base establecida, antes de inyectarlos al contexto de inferencia.}
   {LLM02:2025, LLM08:2025}
 
 \control{C11}{2}{Preventivo}{Experimental}
-  {Validar semánticamente la \textit{query} generada hacia el \textit{vector store} antes de ejecutar el \textit{retrieval}.}
+  {Bloquear las consultas cuya distancia semántica mínima a los fragmentos del corpus supere el umbral de coherencia configurado, rechazando aquellas incoherentes o codificadas.}
   {LLM02:2025, LLM08:2025}
 
-\control{C14}{2}{Correctivo}{Experimental}
-  {Suprimir o redactar metadatos de documentos indexados en las respuestas del modelo.}
+\control{C14}{2}{Preventivo}{Experimental}
+  {Excluir los metadatos de los documentos en la etapa de recuperación, de modo que solo el texto de los fragmentos alcance el contexto de inferencia.}
   {LLM02:2025}
 
 \control{C17}{2}{Preventivo/Detectivo}{Experimental}
-  {Restringir respuestas a información fundamentada en el contexto recuperado.}
-  {LLM02:2025}
+  {Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado.}
+  {LLM02:2025, LLM07:2025}
 
 \control{C22}{2}{Preventivo/Detectivo}{Declarativo}
   {Controlar y auditar el acceso por sesión a los documentos del \textit{vector store}.}
   {LLM02:2025}
 
-
 \control{C12}{3}{Detectivo}{Experimental}
-  {Detectar consultas al \textit{vector store} diseñadas para reconocimiento sistemático del corpus.}
+  {Detectar y bloquear las consultas indicativas de reconocimiento o enumeración sistemática del corpus.}
   {LLM02:2025, LLM08:2025}
 
 \control{C62}{3}{Detectivo}{Configuración}
-  {Mantener un registro versionado del corpus indexado que permita identificar qué documentos estaban activos en cada sesión y rastrear cambios entre versiones.}
+  {Mantener un registro versionado y persistente de cada evento de indexación del corpus, que permita identificar qué documentos estaban activos en cada sesión y rastrear los cambios entre versiones.}
   {LLM02:2025, LLM08:2025}
 
 \control{C37}{4}{Detectivo}{Declarativo}
@@ -179,7 +177,7 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {LLM02:2025}
 
 \control{C38}{4}{Preventivo}{Declarativo}
-  {Ajustar los parámetros de \textit{retrieval} según métricas de exposición observadas.}
+  {Ajustar los parámetros de \textit{retrieval} según las métricas de exposición observadas.}
   {LLM02:2025}
 
 \control{C39}{5}{Preventivo}{Declarativo}
@@ -196,34 +194,30 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
 \section{D3: Gestión de salida}
 \label{sec:controles-d3}
 
-La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
+La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
 
 \control{C16}{1}{Preventivo}{Configuración}
-  {Interponer un proxy de seguridad externo e independiente del LLM.}
+  {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025, LLM07:2025}
 
-\control{C14}{2}{Correctivo}{Experimental}
-  {Suprimir o redactar metadatos de documentos indexados en las respuestas del modelo.}
-  {LLM02:2025, LLM07:2025}
-
 \control{C17}{2}{Preventivo/Detectivo}{Experimental}
-  {Restringir respuestas a información fundamentada en el contexto recuperado.}
+  {Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado.}
   {LLM02:2025, LLM07:2025}
 
 \control{C18}{2}{Correctivo}{Experimental}
-  {Sanitizar la salida del modelo eliminando contenido con patrones sintácticos sensibles.}
-  {LLM02:2025, LLM07:2025}
+  {Eliminar de la salida del modelo los caracteres de control y los tokens especiales, antes de someterla a los escáneres de contenido y de retornarla al usuario.}
+  {LLM01:2025, LLM07:2025}
 
 \control{C19}{2}{Detectivo/Correctivo}{Experimental}
-  {Detectar y suprimir fragmentos marcados como confidenciales en la salida del modelo.}
+  {Bloquear las respuestas que coincidan con patrones deterministas de contenido sensible: marcadores de confidencialidad e identificadores personales estructurados.}
   {LLM02:2025, LLM07:2025}
 
 \control{C20}{3}{Detectivo}{Experimental}
-  {Validar que la salida no reproduzca literalmente fragmentos del corpus sensible indexado.}
+  {Detectar y puntuar mediante análisis semántico las respuestas que contengan información sensible no capturada por los patrones deterministas.}
   {LLM02:2025, LLM07:2025}
 
 \control{C41}{4}{Detectivo}{Declarativo}
-  {Ajustar dinámicamente los umbrales de sanitización según métricas de falsos positivos en la salida.}
+  {Ajustar dinámicamente los umbrales de sanitización según las métricas de falsos positivos observadas en la salida.}
   {LLM02:2025, LLM07:2025}
 
 \control{C42}{4}{Detectivo}{Declarativo}
@@ -247,32 +241,32 @@ La subdimensión D3 comprende 10 controles que filtran y regulan las respuestas 
 La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos a partir de N2. D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva.
 
 \control{C26}{2}{Gobernanza}{Declarativo}
-  {Definir y documentar la política de umbrales de detección y bloqueo previo a la operación.}
+  {Definir y documentar la política de umbrales de detección y bloqueo con anterioridad a la operación.}
   {Ley 21.663}
 
 \control{C27}{2}{Gobernanza}{Declarativo}
-  {Establecer procedimiento formal de notificación de seguridad ante autoridades.}
+  {Establecer un procedimiento formal de notificación de incidentes de seguridad ante las autoridades competentes.}
   {Ley 21.663}
-  
+
 \control{C28}{2}{Gobernanza}{Declarativo}
-  {Definir política de retención y eliminación de datos de sesión conforme a normativa aplicable.}
+  {Definir la política de retención y eliminación de datos de sesión conforme a la normativa aplicable.}
   {Ley 21.719}
 
 \control{C23}{3}{Detectivo}{Experimental}
-  {Registrar cada decisión de bloqueo en la entrada y salida con identificación del mecanismo y vector.}
+  {Registrar cada decisión de bloqueo en la entrada y en la salida, identificando el componente que la originó.}
   {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
 
 \control{C25}{3}{Detectivo}{Experimental}
-  {Registrar y analizar la latencia del flujo de inferencia para detectar comportamiento anómalo.}
+  {Registrar la latencia y los metadatos de cada solicitud en un formato que permita el análisis posterior del comportamiento del flujo de inferencia.}
   {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
 
 \control{C29}{3}{Gobernanza}{Declarativo}
-  {Documentar y ejecutar plan de pruebas de seguridad ofensiva previo a cada despliegue.}
+  {Documentar y ejecutar un plan de pruebas de seguridad ofensiva con anterioridad a cada despliegue.}
   {Ley 21.663}
 
 \control{C24}{4}{Detectivo}{Experimental}
-  {Monitorear patrones de consulta anómalos que sugieran reconocimiento sistemático del corpus.}
-  {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+  {Monitorear los patrones de consulta anómalos que sugieran reconocimiento sistemático del corpus a lo largo de múltiples sesiones.}
+  {LLM02:2025, LLM08:2025}
 
 \control{C45}{5}{Detectivo}{Declarativo}
   {Revisar y actualizar los patrones de detección de anomalías ante nuevas amenazas documentadas.}
@@ -281,6 +275,7 @@ La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos
 \control{C46}{5}{Correctivo}{Declarativo}
   {Incorporar retroalimentación de incidentes al sistema de alertas de forma sistemática y periódica.}
   {LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
 
 
 % ══════════════════════════════════════════════
@@ -300,7 +295,7 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {Ley 21.663}
 
 \control{C49}{1}{Gobernanza}{Declarativo}
-  {Establecer política de uso aceptable del sistema RAG accesible a todos los usuarios.}
+  {Establecer una política de uso aceptable del sistema RAG accesible a todos los usuarios.}
   {Ley 21.719}
 
 \control{C61}{1}{Gobernanza}{Declarativo}
@@ -312,13 +307,13 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {Ley 21.663}
 
 \control{C51}{2}{Gobernanza}{Declarativo}
-  {Establecer procedimiento formal de gestión de accesos que regule altas, bajas y modificaciones de permisos sobre el sistema.}
+  {Establecer un procedimiento formal de gestión de accesos que regule altas, bajas y modificaciones de permisos sobre el sistema.}
   {Ley 21.719}
 
 \control{C52}{2}{Gobernanza}{Declarativo}
   {Documentar el inventario de datos personales procesados por el sistema RAG conforme a las obligaciones del responsable de tratamiento.}
   {Ley 21.719}
-  
+
 \control{C53}{3}{Gobernanza}{Declarativo}
   {Establecer un programa formal de capacitación en seguridad de sistemas LLM dirigido a los roles definidos en la matriz RACI.}
   {NIST AI RMF}
@@ -351,16 +346,15 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {Incorporar lecciones aprendidas de incidentes de seguridad al ciclo de mejora continua del marco de gobernanza.}
   {Proyecto Ley IA}
 
-
 % ══════════════════════════════════════════════
 % Resumen de distribución
 % ══════════════════════════════════════════════
 \section{Distribución de controles}
 \label{sec:distribucion}
 
-El marco define 62 controles con identificador único (C01 a C62). Dado que un control puede proteger activos correspondientes a más de una subdimensión, un mismo identificador aparece en cada una de las subdimensiones donde su función protectora es aplicable. El control C16 (proxy de seguridad externo), por ejemplo, opera simultáneamente sobre la entrada, el contexto recuperado y la salida, por lo que se lista en D1, D2 y D3.
+El marco define 62 controles con identificador único (C01 a C62). Dado que un control puede proteger activos correspondientes a más de una subdimensión, un mismo identificador aparece en cada una de las subdimensiones donde su función protectora es aplicable. El control C16 (proxy de seguridad), por ejemplo, opera simultáneamente sobre la entrada, el contexto recuperado y la salida, por lo que se lista en D1, D2 y D3.
 
-La Tabla~\ref{tab:distribucion} contabiliza aplicaciones de control por subdimensión y nivel de madurez, no controles únicos. La suma total es por tanto superior a 62: los 62 controles únicos generan 71 aplicaciones, diferencia que corresponde a los ocho controles transversales del marco (C06, C13, C14, C15, C16, C17, C21 y C30).
+La Tabla~\ref{tab:distribucion} contabiliza aplicaciones de control por subdimensión y nivel de madurez, no controles únicos. La suma total es por tanto superior a 62: los 62 controles únicos generan 70 aplicaciones, diferencia que corresponde a los siete controles transversales del marco (C06, C13, C15, C16, C17, C21 y C30).
 
 \begin{fichabox}{Distribución de controles: subdimensión $\times$ nivel}
   \label{tab:distribucion}
@@ -370,11 +364,11 @@ La Tabla~\ref{tab:distribucion} contabiliza aplicaciones de control por subdimen
     \midrule
     D1 & 8 & 3 & 2 & 2 & 2 & 17 \\
     D2 & 8 & 6 & 2 & 2 & 2 & 20 \\
-    D3 & 1 & 4 & 1 & 2 & 2 & 10 \\
+    D3 & 1 & 3 & 1 & 2 & 2 &  9 \\
     D4 & 0 & 3 & 3 & 1 & 2 &  9 \\
     D5 & 4 & 3 & 4 & 2 & 2 & 15 \\
     \midrule
-    \textbf{Total} & \textbf{21} & \textbf{19} & \textbf{12} & \textbf{9} & \textbf{10} & \textbf{71} \\
+    \textbf{Total} & \textbf{21} & \textbf{18} & \textbf{12} & \textbf{9} & \textbf{10} & \textbf{70} \\
     \bottomrule
   \end{tabularx}
 \end{fichabox}

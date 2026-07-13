@@ -25,6 +25,8 @@
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{titlesec}
 \RequirePackage{fancyhdr}
+\setlength{\headheight}{23pt}
+\addtolength{\topmargin}{-11pt}
 \RequirePackage{etoolbox}
 \RequirePackage{hyperref}
 \RequirePackage{caption}
@@ -194,6 +196,47 @@
   boxrule      = 1pt,
   arc          = 3pt,
   #1
+}
+
+% ═══════════════════════════════════════════════
+% Fichas técnicas extendidas de control (Apéndice C)
+% ═══════════════════════════════════════════════
+
+% Encabezado de ficha: \fichacontrol{ID}{Título}{Nivel}{Tipo}{Evidencia}{Fuente}
+\newcommand{\fichacontrol}[6]{%
+  \subsection{#1: #2}%
+  \label{ficha:#1}%
+  \nopagebreak
+  \vspace{-0.4em}
+  \begin{tcolorbox}[
+    enhanced, sharp corners=downhill,
+    colback = llmsec-gray,
+    colframe = llmsec-primary,
+    boxrule = 0pt,
+    leftrule = 3pt,
+    left = 8pt, right = 8pt, top = 5pt, bottom = 5pt,
+    before skip = 6pt, after skip = 12pt
+  ]
+    \small
+    \begin{tabularx}{\linewidth}{@{} >{\bfseries}l X @{\hspace{1em}} >{\bfseries}l X @{}}
+      Nivel     & #3 & Evidencia & #5 \\
+      Tipo      & #4 & Fuente    & #6 \\
+    \end{tabularx}
+  \end{tcolorbox}
+}
+
+% Secciones internas de la ficha
+\newcommand{\fichaseccion}[1]{%
+  \par\vspace{0.5em}%
+  \noindent{\bfseries\color{llmsec-dark}#1}\par\nopagebreak
+  \vspace{0.2em}%
+}
+
+% Atajo para la lista de controles relacionados
+\newcommand{\ficharelacionados}[1]{%
+  \fichaseccion{Controles relacionados}
+  \noindent #1\par\vspace{0.8em}
+  {\color{llmsec-gray}\rule{\linewidth}{0.8pt}}\par\vspace{0.8em}
 }
 
 % ──────────────────────────────────────────────

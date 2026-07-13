@@ -1,68 +1,801 @@
-\chapter{Glosario}
-\label{app:glosario}
+\chapter{Fichas técnicas de control}
+\label{app:fichas}
 
-Este apéndice define los términos técnicos empleados a lo largo del documento. Las definiciones son operacionales y se acotan al alcance del marco LLM-Sec; no pretenden sustituir las definiciones normativas de las fuentes referenciadas en la sección 1.4.
+El capítulo~\ref{ch:controles} define los 62 controles del marco mediante su descripción, nivel de madurez, tipo funcional, fuente de evidencia y fuente normativa. Esa especificación identifica qué exige cada control, pero no por qué lo exige ni cómo debe interpretarse su cumplimiento.
 
-\begin{description}[leftmargin=0pt, style=nextline]
+Este apéndice desarrolla la totalidad de los controles del marco. Cada ficha especifica el propósito del control, la justificación técnica o normativa que lo sustenta, la guía de implementación que orienta su adopción y los controles con que se relaciona. La extensión de cada ficha es proporcional a la complejidad del control: aquellos cuya implementación se deduce directamente de su descripción reciben un tratamiento breve, mientras que los que involucran decisiones de diseño, dependencias funcionales o interpretación normativa se desarrollan con mayor detalle.
 
-  \item[Auditoría ofensiva] Ejecución controlada de ataques simulados contra un sistema con el objeto de medir su resistencia. En el marco LLM-Sec constituye la fuente de evidencia experimental.
+La guía de implementación es prescriptiva en cuanto al resultado esperado y agnóstica en cuanto a la tecnología empleada: el marco no impone herramientas ni productos específicos, sino que define el comportamiento que la implementación debe satisfacer.
 
-  \item[Base de datos vectorial] Sistema de almacenamiento que indexa fragmentos de texto mediante su representación vectorial y permite recuperarlos por similitud semántica. También denominada \emph{vector store}.
+Los siete controles transversales, aplicables a más de una subdimensión, se desarrollan en una sección propia que precede a las restantes. Las secciones siguientes agrupan los controles exclusivos de cada subdimensión, ordenados por nivel de madurez.
 
-  \item[Capa defensiva] Conjunto de componentes interpuestos entre el usuario y el modelo de inferencia que aplican controles de validación sobre la entrada y la salida del sistema.
+\section{Controles transversales}
+\label{sec:fichas-transversales}
 
-  \item[Contexto recuperado] Conjunto de fragmentos seleccionados desde la base vectorial en respuesta a una consulta, que se incorporan al prompt antes de la inferencia.
+Los siete controles de esta sección protegen activos correspondientes a más de una subdimensión. Su función protectora opera sobre distintas etapas del flujo RAG, razón por la cual la fuente normativa que se les atribuye varía según la subdimensión en que se apliquen. La ficha desarrolla el control en su integridad, con independencia de la subdimensión desde la que se lo consulte.
 
-  \item[Control] Medida técnica u organizacional que reduce la probabilidad o el impacto de un riesgo. En el marco LLM-Sec cada control se caracteriza por nivel de madurez, tipo funcional, fuente de evidencia, descripción y fuente normativa.
+% ── C06 ──
+\fichacontrol{C06}{Delimitación explícita del contenido recuperado}
+  {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
-  \item[Corpus de conocimiento] Conjunto de documentos indexados que constituyen la fuente de contexto del sistema RAG.
+\fichaseccion{Propósito}
+Estructurar el prompt aumentado de modo que el contenido recuperado del corpus y la consulta del usuario ocupen secciones explícitamente delimitadas y distinguibles entre sí.
 
-  \item[Embedding] Representación vectorial de un fragmento de texto en un espacio de dimensión fija, utilizada para calcular similitud semántica entre la consulta y los fragmentos indexados.
+\fichaseccion{Justificación}
+El modelo recibe el prompt aumentado como una única secuencia de texto. Sin delimitación, no dispone de ningún criterio para distinguir qué porción de esa secuencia proviene de sus instrucciones, cuál del corpus y cuál del usuario. Un fragmento del corpus que contenga una instrucción, sea porque fue inyectado deliberadamente o porque el documento original la incluía, se presenta ante el modelo con el mismo estatuto que las instrucciones legítimas del sistema.
 
-  \item[Escenario] Configuración de seguridad bajo la cual se evalúa el sistema. El marco distingue entre un escenario sin protección activa y un escenario con la capa defensiva habilitada.
+La delimitación no impide que el modelo obedezca una instrucción inyectada, dado que opera sobre su interpretación del texto y no sobre un mecanismo de aislamiento. Lo que hace es proveerle el criterio estructural que permite distinguir instrucción de dato, condición previa para que las restricciones del prompt del sistema puedan invocarse contra el contenido recuperado.
 
-  \item[Exfiltración] Extracción no autorizada de información sensible desde el corpus indexado o desde el prompt del sistema, mediante consultas diseñadas para inducir su reproducción en la salida del modelo.
+\fichaseccion{Guía de implementación}
+El prompt debe construirse con marcadores que identifiquen cada sección: el contexto recuperado, la consulta del usuario y, si aplica, las instrucciones del sistema. Los marcadores deben ser consistentes entre invocaciones y estar declarados en la configuración de la plantilla, no dispersos en el código.
 
-  \item[Fragmento] Unidad mínima de texto indexada en la base vectorial, resultante de la segmentación de un documento del corpus. También denominado \emph{chunk}.
+Los marcadores elegidos no deben ser reproducibles desde la entrada del usuario. Si el usuario puede escribir el mismo delimitador que el sistema emplea, puede simular el cierre de la sección de datos y la apertura de una sección de instrucciones. El control C02, que elimina caracteres y tokens especiales de la entrada, es la contramedida contra esta evasión.
 
-  \item[Fuente de evidencia] Criterio mediante el cual se verifica el cumplimiento de un control. El marco define tres: configuración, experimental y declarativo.
+\ficharelacionados{C02 (sanitización de la entrada), que impide la falsificación de los delimitadores; C15 (definición del rol y las restricciones del modelo), cuyas instrucciones invocan la separación que este control establece.}
 
-  \item[Ground truth] Criterio de referencia que determina si un intento adversarial fue exitoso o resistido. El marco define fuentes de ground truth diferenciadas por vector OWASP (sección 6.1.1).
+% ── C13 ──
+\fichacontrol{C13}{Límite de volumen de contexto inyectado}
+  {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
-  \item[Inyección de prompt] Técnica adversarial que introduce instrucciones maliciosas en la entrada del sistema con el objeto de alterar el comportamiento del modelo. Corresponde al vector LLM01:2025.
+\fichaseccion{Propósito}
+Acotar el volumen total de contenido recuperado que se incorpora al prompt de inferencia, restringiendo la cantidad de fragmentos que la etapa de recuperación entrega al modelo.
 
-  \item[LLM] Modelo de lenguaje de gran escala (\emph{Large Language Model}). Componente de inferencia que genera respuestas en lenguaje natural a partir del prompt recibido.
+\fichaseccion{Justificación}
+El contexto recuperado es contenido no confiable: proviene del corpus, cuya integridad el sistema verifica pero no garantiza en origen, y su selección la determina la consulta del usuario. Cada fragmento adicional que ingresa al prompt amplía la superficie disponible para que una instrucción inyectada en el corpus alcance la inferencia, y amplía también el volumen de corpus que una sola consulta puede exponer en la respuesta.
 
-  \item[Nivel declarado] Nivel de madurez asignado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5.
+El control opera sobre ambos riesgos con la misma medida. Contener el número de fragmentos limita simultáneamente el vector de inyección indirecta y la tasa a la que un atacante puede extraer contenido del corpus mediante consultas sucesivas.
 
-  \item[Nivel verificado] Nivel de madurez asignado mediante evidencia experimental o de configuración. Aplica a las subdimensiones D1 a D4.
+\fichaseccion{Guía de implementación}
+El límite se declara en la configuración de la etapa de recuperación y se aplica antes de la construcción del prompt aumentado. Su valor debe derivarse de la cantidad de fragmentos que las consultas legítimas del dominio requieren para ser respondidas correctamente: un valor excesivamente bajo degrada la calidad de las respuestas sin aportar seguridad proporcional.
 
-  \item[Perfil organizacional] Categoría que orienta la interpretación del nivel de madurez según el tipo de organización y sus obligaciones regulatorias. El marco define tres: P1 (PYME), P2 (Mediana/Grande) y P3 (Crítica regulada).
+Este control es distinto de C01, que acota la entrada del usuario. C13 acota lo que el sistema mismo agrega al prompt, y por tanto opera sobre un canal que el usuario no controla directamente pero sí influye mediante la formulación de su consulta.
 
-  \item[Probe] Unidad de prueba adversarial ejecutada por la herramienta de auditoría ofensiva, correspondiente a una técnica de ataque específica dentro de una categoría OWASP.
+\ficharelacionados{C01 (límite de longitud de la entrada del usuario), que acota el otro componente del prompt; C10 (control de la cantidad de fragmentos recuperados), con el que comparte el mecanismo de implementación.}
 
-  \item[Prompt aumentado] Prompt final entregado al modelo, resultante de combinar la consulta del usuario con el contexto recuperado desde la base vectorial.
+% ── C15 ──
+\fichacontrol{C15}{Definición del rol y las restricciones del modelo}
+  {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
-  \item[Prompt del sistema] Instrucciones de configuración que definen el rol, las capacidades y las restricciones del modelo, invisibles al usuario en condiciones normales de operación.
+\fichaseccion{Propósito}
+Declarar en el prompt del sistema el rol que el modelo desempeña, el alcance de sus capacidades y las restricciones que gobiernan su comportamiento, mediante instrucciones parametrizadas externamente al código.
 
-  \item[Proxy de seguridad] Componente externo e independiente del LLM que intercepta la entrada y la salida del flujo de inferencia para aplicar controles de validación y sanitización.
+\fichaseccion{Justificación}
+El prompt del sistema es el único mecanismo por el cual el sistema comunica al modelo qué debe y qué no debe hacer. Un modelo desplegado sin restricciones explícitas opera bajo el alineamiento genérico con que fue entrenado, que no contempla las condiciones del despliegue: qué dominio está autorizado a cubrir, qué información no debe revelar, qué formato debe respetar.
 
-  \item[RAG] Generación aumentada por recuperación (\emph{Retrieval-Augmented Generation}). Arquitectura en que el modelo genera respuestas a partir de fragmentos recuperados desde una base de conocimiento externa, incorporados al prompt en tiempo de inferencia.
+La eficacia de este control es parcial por naturaleza. Las instrucciones del sistema y el contenido adversarial compiten por la misma capacidad de atención del modelo, y una instrucción inyectada suficientemente insistente puede prevalecer sobre ellas. El control no elimina el riesgo de secuestro de comportamiento: establece la línea base contra la cual los controles de salida pueden verificar si la respuesta se apartó de lo autorizado.
 
-  \item[Regla de piso mínimo] Criterio de agregación del nivel global del sistema, definido como el mínimo entre los niveles alcanzados por cada subdimensión (sección 2.6).
+\fichaseccion{Guía de implementación}
+Las instrucciones deben declararse en configuración y no incrustarse en el código, de modo que su contenido sea verificable por inspección y modificable sin redespliegue. Deben cubrir, como mínimo, el rol del modelo, el dominio autorizado, la prohibición de generar información no fundamentada en el contexto recuperado y la prohibición de revelar las propias instrucciones.
 
-  \item[Retrieval] Etapa del flujo RAG en que se seleccionan los fragmentos del corpus semánticamente más próximos a la consulta del usuario.
+Las restricciones deben formularse en positivo cuando sea posible. Una instrucción que enumera lo prohibido comunica al atacante el mapa de las defensas si llega a filtrarse, y es evadible mediante formulaciones no contempladas en la enumeración.
 
-  \item[Sanitización] Modificación de la entrada o la salida del sistema mediante la eliminación o sustitución de contenido que coincide con patrones definidos como riesgosos.
+\ficharelacionados{C05 (no inclusión del prompt del sistema en la respuesta) y C32 (verificación de integridad del prompt del sistema), que protegen el contenido que este control declara; C07 (restricción al uso exclusivo del contexto recuperado), que es una de las instrucciones que este control materializa.}
 
-  \item[Subdimensión] Eje de evaluación del modelo de madurez. El marco define cinco: D1 (Protección de entrada), D2 (Control de contexto RAG), D3 (Gestión de salida), D4 (Monitoreo y trazabilidad) y D5 (Gobernanza organizacional).
+% ── C16 ──
+\fichacontrol{C16}{Proxy de seguridad independiente del generador}
+  {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025, LLM07:2025}
 
-  \item[Suite] Conjunto de probes agrupados por vector OWASP, sobre el cual se calcula la Tasa de Filtrado de Ataques de forma desglosada.
+\fichaseccion{Propósito}
+Desplegar los controles de seguridad de entrada y salida en un componente independiente del generador, interpuesto en el flujo de inferencia, con capacidad de interrumpir la transacción antes de que alcance el modelo o antes de que la respuesta llegue al usuario.
 
-  \item[Tipo funcional] Clasificación del control según el momento en que actúa respecto al evento de seguridad: preventivo, detectivo, correctivo o gobernanza (ISO/IEC 27002:2022).
+\fichaseccion{Justificación}
+Un control implementado dentro del propio modelo, sea mediante instrucciones del sistema o mediante ajuste fino, depende de la obediencia del modelo para funcionar. Esa obediencia es precisamente lo que el atacante busca subvertir: un modelo comprometido por una inyección exitosa no aplicará las restricciones que él mismo debía hacer cumplir.
 
-  \item[TRL] Nivel de madurez tecnológica (\emph{Technology Readiness Level}). Escala que caracteriza el grado de desarrollo de una tecnología desde la investigación básica hasta el despliegue operacional.
+La separación arquitectónica rompe esa dependencia. Un componente externo evalúa la entrada y la salida con lógica propia, cuyo comportamiento no es alterable mediante el contenido del prompt. La instrucción adversarial que convence al modelo de revelar el corpus no convence al escáner que inspecciona la respuesta antes de retornarla.
 
-  \item[Vector de amenaza] Categoría de ataque definida en el OWASP LLM Top 10:2025. El marco cubre cuatro: LLM01, LLM02, LLM07 y LLM08.
+Esta es la razón por la que C16 es el único control de nivel N1 en D3: sin un componente externo interpuesto, la gestión de salida carece de todo mecanismo de intervención, dado que el único agente que produce la salida es el modelo mismo.
 
-\end{description}
+\fichaseccion{Guía de implementación}
+El componente debe interponerse en la ruta de red entre el cliente y el generador, de modo que ninguna solicitud pueda alcanzar el modelo sin atravesarlo. Una implementación en la que el generador invoque al componente de seguridad como biblioteca no satisface el control: si el generador es comprometido, la invocación puede omitirse.
+
+El componente debe fallar de forma cerrada. Ante un error interno o la indisponibilidad de un escáner, el comportamiento esperado es el rechazo de la solicitud, no su tránsito sin inspección.
+
+\ficharelacionados{Este control es condición previa para la totalidad de los controles experimentales de D1 y D3 (C02, C03, C18, C19, C20), que se implementan en el componente que C16 despliega.}
+
+% ── C17 ──
+\fichacontrol{C17}{Fundamentación de la respuesta en el contexto recuperado}
+  {N2}{Preventivo/Detectivo}{Experimental}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Verificar que la respuesta generada guarde correspondencia suficiente con el contexto recuperado, y bloquearla cuando el solapamiento entre ambos caiga por debajo del umbral configurado.
+
+\fichaseccion{Justificación}
+Un sistema RAG existe para responder a partir de su corpus. Una respuesta que no guarda relación con el contexto recuperado es, por construcción, una respuesta que el modelo produjo desde otra fuente: su conocimiento paramétrico, o bien una instrucción que le indicó qué responder.
+
+Esa condición captura simultáneamente dos vectores. La alucinación, en que el modelo afirma contenido que el corpus no respalda, y el secuestro de comportamiento, en que una inyección exitosa hace que la respuesta obedezca al atacante en lugar de a la consulta. Ambos se manifiestan de la misma forma observable: la respuesta no está fundamentada en lo que se recuperó.
+
+El control es detectivo y preventivo a la vez. Detecta la discrepancia mediante la comparación entre respuesta y contexto, y previene la entrega al usuario mediante el bloqueo.
+
+\fichaseccion{Guía de implementación}
+El umbral de fundamentación debe calibrarse contra un conjunto de consultas legítimas del dominio, midiendo el solapamiento que las respuestas correctas presentan de forma natural. Un umbral fijado sin esa calibración produce falsos positivos sobre respuestas válidas que parafrasean el contexto en lugar de reproducirlo.
+
+La métrica de solapamiento admite distintas implementaciones. El marco no prescribe una: exige que sea determinista, que su umbral esté declarado en configuración y que el resultado de la comparación se registre para cada solicitud, de modo que la tasa de falsos positivos sea medible.
+
+\ficharelacionados{C07 (instrucción de uso exclusivo del contexto recuperado), que declara al modelo la restricción que este control verifica; C20 (detección semántica de contenido sensible en la salida), con el que comparte la etapa de intervención.}
+
+% ── C21 ──
+\fichacontrol{C21}{Externalización de la configuración de tiempo de ejecución}
+  {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
+
+\fichaseccion{Propósito}
+Declarar fuera del código fuente la totalidad de la configuración de tiempo de ejecución del sistema: credenciales, umbrales de detección, rutas, identificadores de servicio y parámetros de despliegue.
+
+\fichaseccion{Justificación}
+Una credencial incrustada en el código se filtra con el código. El repositorio, los artefactos de compilación, los registros de error y las trazas de excepción son vías por las que un valor codificado en el fuente alcanza a quien no debía verlo.
+
+El argumento se extiende a los umbrales de detección, y ahí adquiere una segunda dimensión. Un umbral declarado en configuración es verificable por inspección, y por tanto satisface la fuente de evidencia que el marco exige para los controles de configuración. Un umbral incrustado en el código no lo es: constatarlo requiere leer el fuente, y modificarlo requiere redesplegar, lo que en la práctica desalienta la calibración que los controles de nivel N4 exigen.
+
+\fichaseccion{Guía de implementación}
+La configuración debe residir en artefactos declarativos externos al código, sea como archivos de parametrización o como variables del entorno de ejecución. El código no debe contener valores por defecto que suplan la ausencia de un parámetro: un sistema que arranca con umbrales implícitos porque la configuración no fue provista opera en un estado que nadie declaró.
+
+Las credenciales exigen un tratamiento distinto del resto de la configuración. No deben residir en los mismos artefactos que los umbrales, dado que estos últimos son objeto de revisión y versionado, mientras que aquellas no deben aparecer en ningún registro versionado.
+
+\ficharelacionados{C26 (documentación de la política de umbrales), que exige que los valores declarados por este control estén además justificados; C32 (verificación de integridad del prompt del sistema), que es un caso particular de verificación sobre configuración externalizada.}
+
+% ── C30 ──
+\fichacontrol{C30}{Verificación de procedencia e integridad del modelo}
+  {N1}{Gobernanza}{Declarativo}{Ley 21.663, LLM08:2025}
+
+\fichaseccion{Propósito}
+Verificar, con anterioridad al despliegue, que el modelo de inferencia procede de la fuente declarada y que su contenido no ha sido alterado, mediante el contraste de su función de resumen criptográfico contra el valor publicado por el proveedor.
+
+\fichaseccion{Justificación}
+El modelo es el activo sobre el cual opera la totalidad del flujo de inferencia. Un modelo alterado en origen o en tránsito compromete el sistema completo, y lo hace de una forma que ningún control posterior detecta: los escáneres de entrada y salida verifican el contenido de las transacciones, no el comportamiento del modelo que las procesa.
+
+La Ley 21.663 exige que las organizaciones gestionen los riesgos de sus activos de información. Un modelo cuya procedencia no ha sido verificada es un componente de origen no acreditado en la cadena de suministro del sistema, condición que la norma obliga a controlar.
+
+\fichaseccion{Guía de implementación}
+La verificación se realiza contrastando el resumen criptográfico del artefacto descargado contra el valor que el proveedor publica por un canal independiente al de la descarga. Un resumen publicado en el mismo canal desde el que se obtuvo el artefacto no acredita nada: quien pudo alterar uno pudo alterar el otro.
+
+El registro de la verificación debe conservarse como evidencia, indicando el identificador del modelo, la versión, el resumen obtenido y la fecha. Ese registro es el artefacto que la auditoría documental inspecciona, dado que la verificación en sí es un evento del pasado que no deja traza en el sistema en ejecución.
+
+\ficharelacionados{C61 (inventario de activos del sistema RAG), que registra el modelo cuya procedencia este control verifica; C09 (verificación de integridad de los fragmentos recuperados), que aplica el mismo principio al corpus.}
+
+\section{D1: Protección de entrada}
+
+Los controles de esta sección operan sobre el prompt del usuario antes de que alcance la etapa de recuperación o la capa de inferencia. Los controles transversales C06, C13, C15, C16, C21 y C30, que también pertenecen a D1, se desarrollan en la sección~\ref{sec:fichas-transversales}.
+
+% ── C01 ──
+\fichacontrol{C01}{Límite de longitud del prompt de entrada}
+  {N1}{Preventivo}{Configuración}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Rechazar toda entrada que exceda la longitud máxima definida en la configuración, antes de que ingrese al proceso de recuperación de contexto o alcance la capa de inferencia.
+
+\fichaseccion{Justificación}
+La longitud del prompt determina la superficie disponible para construir un ataque. Los modelos de lenguaje no atienden de manera uniforme a todas las posiciones de su ventana de contexto: la atención se concentra en el inicio y el final de la secuencia, y decae en las posiciones intermedias. Un atacante puede explotar esta propiedad situando la instrucción adversarial en una posición donde compita ventajosamente con el prompt del sistema, precedida de relleno suficiente para desplazarlo. Restringir la longitud de la entrada limita el margen disponible para esta construcción, y contiene además el consumo de recursos de inferencia, que crece con el tamaño de la secuencia procesada.
+
+\fichaseccion{Guía de implementación}
+El límite se aplica en el componente perimetral, previo a cualquier procesamiento del contenido, y su valor se declara en la configuración y no en el código, de modo que sea verificable por inspección. La unidad de medida debe ser coherente con la que el modelo emplea para su ventana de contexto: un límite expresado en caracteres no acota de forma determinista el número de tokens resultante, dado que la razón entre ambos varía según el idioma y la codificación del contenido. El marco no prescribe un valor específico; este se deriva de la longitud máxima que las consultas legítimas del dominio requieren.
+
+Ante una entrada que excede el límite, el comportamiento esperado es el rechazo explícito con registro del evento, no el truncamiento silencioso. Truncar produce una consulta que el usuario no formuló, e impide distinguir un intento adversarial de una consulta legítima excesivamente larga.
+
+\ficharelacionados{C13 (límite de volumen de contexto por sesión), que opera sobre el mismo eje de contención en la etapa de recuperación; C31 (registro de prompts rechazados), que consume los eventos generados por este control.}
+
+% ── C02 ──
+\fichacontrol{C02}{Sanitización de caracteres de control en la entrada}
+  {N1}{Correctivo}{Experimental}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Eliminar de la entrada del usuario los tokens especiales del modelo, los bytes nulos y los caracteres de control Unicode, antes de que el texto alcance cualquier componente de análisis o inferencia.
+
+\fichaseccion{Justificación}
+Los caracteres de control no imprimibles operan como vector de evasión por dos vías.
+
+La primera es el quiebre de la tokenización. Un atacante puede inyectar los delimitadores internos que el modelo emplea para separar segmentos del prompt, o bytes nulos que provoquen excepciones en el procesamiento. En ambos casos el efecto buscado es que el modelo interprete las instrucciones del sistema como terminadas antes de tiempo, dejando la instrucción adversarial en posición de gobernar la respuesta. El mismo mecanismo permite falsificar los delimitadores que C06 establece para separar contexto de consulta.
+
+La segunda es la evasión de los componentes de detección. Los escáneres que evalúan la entrada operan sobre el texto tal como lo reciben. Intercalar caracteres invisibles dentro de un payload adversarial altera la cadena que el escáner analiza sin alterar sustancialmente lo que el modelo termina interpretando, de modo que el contenido pasa el filtro y llega íntegro a la inferencia.
+
+\fichaseccion{Guía de implementación}
+La sanitización debe ejecutarse antes que cualquier escáner, no después: un escáner que analiza texto sin sanitizar es evadible por construcción. El conjunto de caracteres a eliminar debe incluir, como mínimo, los delimitadores estructurales del modelo desplegado, los caracteres de control ASCII no imprimibles y los caracteres invisibles de Unicode.
+
+El control es correctivo porque modifica la cadena en lugar de rechazarla. Esa elección es deliberada: una entrada legítima puede contener caracteres anómalos por accidente de codificación, y rechazarla penalizaría al usuario sin necesidad. No obstante, la presencia de caracteres removidos constituye por sí misma un indicador de intento adversarial, por lo que el evento de sanitización debe registrarse.
+
+\ficharelacionados{C06 (delimitación del contenido recuperado), cuyos marcadores este control protege de falsificación; C03 (bloqueo de intentos de inyección), que opera sobre la cadena ya sanitizada; C18, que aplica el mismo mecanismo a la salida del modelo.}
+
+% ── C03 ──
+\fichacontrol{C03}{Bloqueo de intentos de inyección de instrucciones}
+  {N2}{Preventivo}{Experimental}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Someter la entrada del usuario a un escáner que asigne una puntuación de riesgo de inyección, y bloquear la transacción cuando esa puntuación supere el umbral configurado.
+
+\fichaseccion{Justificación}
+Las reglas deterministas basadas en coincidencia de patrones son evadibles por reformulación. Un atacante que conoce el patrón lo elude mediante sinónimos, alteración del orden sintáctico, traducción a otro idioma o codificación del payload. La superficie de reformulación del lenguaje natural es, en la práctica, inagotable, y cada patrón bloqueado admite una variante que lo esquiva.
+
+Un escáner que evalúa la intención del texto, en lugar de su forma, no depende de la coincidencia exacta con un patrón conocido. Clasifica la entrada según su semejanza semántica con el comportamiento adversarial, lo que le permite reconocer construcciones que no fueron vistas durante su entrenamiento. Esta propiedad es la que sostiene su valor como control de nivel N2: es el primer mecanismo del marco que interpone una decisión sobre el contenido de la entrada, y no solo sobre su forma.
+
+\fichaseccion{Guía de implementación}
+El umbral de bloqueo debe declararse en la configuración antes de la operación, no ajustarse a posteriori en función de los resultados observados. Un umbral fijado después de conocer los resultados de la auditoría incorpora un sesgo que invalida la medición: el sistema aparece más efectivo de lo que es porque el criterio se acomodó a los datos.
+
+El umbral debe calibrarse contra dos conjuntos: uno de entradas adversariales conocidas y otro de consultas legítimas del dominio. La calibración solo contra el primero produce un umbral que bloquea todo, con una tasa de falsos positivos que hace el sistema inutilizable. El registro de la puntuación asignada a cada solicitud, y no solo de la decisión de bloqueo, es condición para que esa tasa sea medible.
+
+\ficharelacionados{C02 (sanitización de la entrada), que garantiza que este control opere sobre texto no ofuscado; C26 (documentación de la política de umbrales), que exige la declaración previa que este control requiere; C33 (ajuste dinámico de umbrales), que en niveles superiores calibra el valor que este control emplea.}
+
+% ── C04 ──
+\fichacontrol{C04}{Restricción de la consulta al dominio autorizado}
+  {N2}{Preventivo}{Experimental}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Bloquear las consultas cuya distancia semántica mínima al corpus supere el umbral configurado, rechazando aquellas que se apartan del dominio que el sistema está autorizado a cubrir.
+
+\fichaseccion{Justificación}
+Un sistema RAG responde a partir de un corpus acotado. Una consulta cuyo contenido no guarda proximidad semántica con ningún fragmento del corpus es, por definición, una consulta que el sistema no está en condiciones de responder correctamente: no existe contexto que recuperar.
+
+Ante esa situación, un modelo sin este control no se abstiene. Recupera los fragmentos más próximos, que en ausencia de proximidad real son fragmentos arbitrarios, y genera una respuesta a partir de su conocimiento paramétrico o de la interpolación entre contenidos no pertinentes. El resultado es una respuesta fuera de dominio que el sistema entrega con la misma apariencia de autoridad que una respuesta fundamentada.
+
+Desde la perspectiva de seguridad, la relevancia del control es distinta. Los ataques de inyección se formulan como instrucciones, no como preguntas sobre el dominio, y por tanto exhiben una distancia semántica al corpus considerablemente mayor que las consultas legítimas. El control captura esa condición sin necesidad de reconocer el ataque como tal.
+
+\fichaseccion{Guía de implementación}
+El umbral de distancia debe calibrarse midiendo la distancia que las consultas legítimas del dominio presentan de forma natural, y fijando el corte por encima de ese rango con un margen que absorba la variabilidad. Un umbral demasiado estrecho rechaza consultas válidas formuladas con vocabulario poco frecuente en el corpus.
+
+La distancia debe calcularse contra el corpus completo y no contra los fragmentos recuperados: estos últimos son, por construcción, los más próximos a la consulta, y medir contra ellos produciría siempre una distancia baja.
+
+\ficharelacionados{C11 (validación de coherencia de la consulta), que opera sobre el mismo eje pero con un umbral distinto y en la etapa de recuperación; C07 (restricción al uso exclusivo del contexto recuperado), que declara al modelo la restricción de dominio que este control hace cumplir.}
+
+% ── C05 ──
+\fichacontrol{C05}{No inclusión del prompt del sistema en la respuesta}
+  {N2}{Detectivo}{Experimental}{LLM01:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Extraer de la respuesta del modelo únicamente el texto generado, de modo que el prompt del sistema y sus restricciones no formen parte del contenido que se retorna al usuario.
+
+\fichaseccion{Justificación}
+El prompt del sistema contiene las restricciones de comportamiento, el alcance del dominio autorizado y, con frecuencia, información estructural sobre el corpus y los componentes del sistema. Su exposición entrega al atacante el mapa de las defensas que debe evadir: conocer las restricciones exactas permite construir la instrucción que las contradice de la forma más eficaz.
+
+La distinción importante es que este control opera sobre la arquitectura de la respuesta, no sobre la obediencia del modelo. Una instrucción que ordena al modelo no revelar sus directivas depende de que el modelo la respete, y una inyección exitosa puede subvertirla. En cambio, un sistema que construye la respuesta extrayendo únicamente el campo de texto generado no incluye el prompt del sistema con independencia de lo que el modelo haya decidido: el prompt no está en el campo del que se extrae.
+
+Esta propiedad no es completa. El modelo puede reproducir el contenido de sus instrucciones dentro del propio texto generado, en cuyo caso la fuga ocurre por el canal legítimo. Es la razón por la que este control no basta y exige el complemento de los controles de salida de D3.
+
+\fichaseccion{Guía de implementación}
+La construcción de la respuesta debe extraer exclusivamente el campo correspondiente al texto generado, sin concatenar ni exponer los demás componentes de la invocación al modelo. Los objetos completos de respuesta que el modelo devuelve, incluidos los metadatos de la invocación y el prompt que la originó, no deben alcanzar el canal de salida bajo ninguna condición, incluidas las trazas de error.
+
+La verificación experimental del control consiste en ejecutar pruebas de extracción del prompt del sistema y constatar que la respuesta no reproduce las instrucciones configuradas.
+
+\ficharelacionados{C15 (definición del rol y las restricciones del modelo), cuyo contenido este control protege; C20 (detección semántica de contenido sensible en la salida), que captura la fuga por el canal del texto generado; C32 (verificación de integridad del prompt del sistema).}
+
+% ── C31 ──
+\fichacontrol{C31}{Registro estructurado del motivo de bloqueo}
+  {N3}{Detectivo}{Experimental}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Registrar, para cada solicitud rechazada, un motivo de bloqueo estructurado que identifique el componente que originó el rechazo y la etapa del flujo en que se produjo.
+
+\fichaseccion{Justificación}
+Un sistema que bloquea sin registrar por qué bloqueó produce una defensa opaca. Ante un bloqueo, ni el operador ni el evaluador pueden determinar si el rechazo fue correcto, cuál de los controles lo originó, ni si la tasa de rechazos responde a un ataque en curso o a un umbral mal calibrado.
+
+La exigencia de estructura, y no solo de registro, es lo que eleva este control a nivel N3. Un mensaje de error en texto libre acredita que hubo un bloqueo; un motivo estructurado que identifica el componente permite agregar los eventos por categoría, medir la tasa de rechazo de cada control por separado y establecer la trazabilidad que las métricas de nivel N4 requieren. Sin este control, las métricas de desempeño no tienen sobre qué calcularse.
+
+\fichaseccion{Guía de implementación}
+El motivo debe identificar el componente que originó el rechazo y la etapa del flujo, con una nomenclatura consistente que permita distinguir un bloqueo de entrada de uno de salida. El registro debe producirse para toda solicitud rechazada, sin excepción, incluidas aquellas rechazadas por error interno del componente de seguridad.
+
+El motivo que se registra no debe comunicarse al usuario. Informarle qué control bloqueó su solicitud le entrega el mapa de las defensas y le permite iterar sobre su payload hasta encontrar la formulación que las evade.
+
+\ficharelacionados{C01, C02, C03 y C04 (controles de entrada), cuyos eventos de rechazo este control consume; C23 (registro de decisiones de bloqueo en D4), del que este control es la contraparte en la etapa de entrada; C34 (medición de la tasa de rechazo por categoría), que opera sobre los registros que este control produce.}
+
+% ── C32 ──
+\fichacontrol{C32}{Verificación de integridad del prompt del sistema}
+  {N3}{Preventivo}{Configuración}{LLM01:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Verificar, mediante función de resumen criptográfico, que el prompt del sistema y sus restricciones no han sido modificados desde el arranque del sistema.
+
+\fichaseccion{Justificación}
+El prompt del sistema es un artefacto de configuración, y como tal reside en un archivo o variable de entorno que un atacante con acceso al entorno de ejecución puede alterar. Esa alteración no deja traza en el flujo de inferencia: el sistema opera con normalidad, procesa las solicitudes sin error, y produce respuestas que ningún escáner de contenido identifica como anómalas, porque el comportamiento modificado es ahora el comportamiento configurado.
+
+Un atacante que suprime la restricción de dominio, o la prohibición de revelar el corpus, obtiene un sistema que colabora con él por diseño. La verificación de integridad es el único control del marco que detecta esta condición, y opera sobre un vector que los controles de entrada y salida no cubren: el compromiso de la configuración misma.
+
+\fichaseccion{Guía de implementación}
+El sistema debe calcular el resumen del prompt del sistema y sus restricciones al arranque, conservarlo en memoria, y contrastarlo contra el valor recalculado en cada invocación o de forma periódica. La comparación debe realizarse antes de construir el prompt aumentado.
+
+El valor de referencia no debe residir en el mismo artefacto que el prompt del sistema. Un atacante que puede modificar el prompt puede modificar también el resumen almacenado junto a él, con lo que la verificación se satisface trivialmente sobre el contenido alterado.
+
+Ante una discrepancia, el comportamiento esperado es la interrupción del servicio, no la continuación con registro de la anomalía. Un prompt del sistema alterado significa que el entorno de ejecución está comprometido, condición ante la cual la operación del sistema no debe continuar.
+
+\ficharelacionados{C15 (definición del rol y las restricciones del modelo), cuyo contenido este control protege; C21 (externalización de la configuración), que establece la condición sobre la que este control opera; C30 (verificación de integridad del modelo), que aplica el mismo principio al artefacto de inferencia.}
+
+% ── C33 ──
+\fichacontrol{C33}{Ajuste dinámico de los umbrales de detección}
+  {N4}{Preventivo}{Declarativo}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Ajustar periódicamente los umbrales de los escáneres de entrada en función de las tasas de falsos positivos y falsos negativos observadas en la operación.
+
+\fichaseccion{Justificación}
+Un umbral de detección es un compromiso entre dos errores. Un valor estricto bloquea más ataques y también más consultas legítimas; un valor permisivo preserva la usabilidad al costo de dejar pasar payloads adversariales. No existe un valor óptimo universal: el punto de equilibrio depende de la distribución de las consultas del dominio, del perfil de amenaza de la organización y de su tolerancia al riesgo.
+
+El nivel N4 del modelo de madurez se define por la gestión cuantitativa de la seguridad. Este control es su expresión en D1: el sistema deja de operar con umbrales fijados por defecto y pasa a ajustarlos según evidencia medida. La condición previa es que esa evidencia exista, lo que exige los controles de registro de nivel N3.
+
+\fichaseccion{Guía de implementación}
+El ajuste debe fundarse en las tasas de error medidas sobre un conjunto de consultas legítimas de control, ejecutadas bajo las mismas condiciones que las consultas reales. Ajustar el umbral únicamente en función de los bloqueos observados en producción es insuficiente: sin un conjunto de control, no es posible distinguir un bloqueo correcto de un falso positivo.
+
+Cada modificación de umbral debe documentarse indicando el valor anterior, el nuevo valor, la evidencia que lo justifica y la fecha. Ese registro es el artefacto que la auditoría inspecciona, dado que la verificación de este control es declarativa.
+
+\ficharelacionados{C03 (bloqueo de intentos de inyección), cuyo umbral este control ajusta; C34 (medición de la tasa de rechazo por categoría), que provee la evidencia sobre la que este control opera; C26 (documentación de la política de umbrales), que debe actualizarse ante cada ajuste.}
+
+% ── C34 ──
+\fichacontrol{C34}{Medición de la tasa de rechazo por categoría de ataque}
+  {N4}{Detectivo}{Declarativo}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Medir y reportar periódicamente la proporción de prompts rechazados, desglosada por categoría de ataque y por componente que originó el rechazo.
+
+\fichaseccion{Justificación}
+Una tasa de rechazo agregada no es interpretable. Un sistema que rechaza el cinco por ciento de las solicitudes puede estar operando correctamente, bloqueando un cinco por ciento de tráfico adversarial, o puede estar produciendo un cinco por ciento de falsos positivos sobre consultas legítimas. La cifra es la misma y las dos situaciones exigen respuestas opuestas.
+
+El desglose por categoría resuelve la ambigüedad y habilita, además, la detección de la asimetría defensiva: un sistema puede exhibir una tasa de filtrado alta en agregado y sin embargo ser sistemáticamente vulnerable a una categoría específica de ataque, condición que solo el reporte segmentado revela.
+
+\fichaseccion{Guía de implementación}
+La medición se calcula sobre los registros que C31 produce, agregando los eventos por el motivo estructurado de bloqueo. La periodicidad del reporte debe declararse y respetarse: una medición ocasional no permite detectar la degradación de la efectividad defensiva a lo largo del tiempo.
+
+El reporte debe incluir la tasa de falsos positivos, calculada sobre el conjunto de consultas legítimas de control. Un reporte que solo consigna los bloqueos no permite evaluar el costo de la defensa en términos de usabilidad.
+
+\ficharelacionados{C31 (registro estructurado del motivo de bloqueo), cuyos eventos este control agrega; C33 (ajuste dinámico de umbrales), que consume las tasas que este control produce; C56 (métricas de desempeño de la gobernanza), que reporta a la dirección los resultados de esta medición.}
+
+% ── C35 ──
+\fichacontrol{C35}{Actualización de los patrones de detección}
+  {N5}{Preventivo}{Declarativo}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Incorporar al componente de detección de entrada las nuevas técnicas de inyección documentadas, mediante un proceso periódico de revisión de la literatura y de los repositorios de amenazas.
+
+\fichaseccion{Justificación}
+Las técnicas de inyección evolucionan. Un escáner entrenado o configurado en un momento dado reconoce las construcciones adversariales conocidas hasta esa fecha, y su efectividad decae a medida que aparecen variantes que no estaban en su repertorio.
+
+El nivel N5 se define por la mejora continua. Este control es su expresión en la etapa de entrada: el sistema deja de tratar su capa defensiva como un artefacto estático y la somete a un ciclo de actualización que responde a la evolución de la amenaza, en lugar de responder a los incidentes ya ocurridos.
+
+\fichaseccion{Guía de implementación}
+El ciclo de revisión debe tener una periodicidad declarada y fuentes de vigilancia identificadas: catálogos públicos de técnicas adversariales, publicaciones del proveedor del componente de detección, y la literatura del área.
+
+Toda actualización de los patrones o del modelo de detección debe someterse a la auditoría ofensiva antes de su despliegue, dado que una actualización que mejora la cobertura de una categoría puede degradar la de otra. La verificación consiste en constatar que la tasa de filtrado no retrocede en ninguna categoría respecto de la configuración anterior.
+
+\ficharelacionados{C29 (plan de pruebas ofensivas previo al despliegue), que verifica la actualización que este control introduce; C43 y C45, que aplican el mismo principio a la salida y al monitoreo respectivamente; C58 (revisión proactiva del marco).}
+
+% ── C36 ──
+\fichacontrol{C36}{Revisión del prompt del sistema ante cambios del modelo}
+  {N5}{Preventivo}{Declarativo}{LLM01:2025}
+
+\fichaseccion{Propósito}
+Revisar y ajustar las instrucciones del prompt del sistema cada vez que el modelo base es reemplazado o actualizado.
+
+\fichaseccion{Justificación}
+La eficacia de una instrucción del sistema depende del modelo que la interpreta. Una formulación que un modelo respeta de forma consistente puede ser ignorada por otro, o interpretada de una manera que no fue la prevista. La sustitución del modelo base, aunque sea por una versión más reciente de la misma familia, altera la relación entre la instrucción y el comportamiento observado.
+
+Este control captura una condición que las organizaciones tienden a pasar por alto: el prompt del sistema se trata como configuración estable mientras el modelo se trata como componente actualizable, cuando en realidad el primero solo tiene sentido en relación con el segundo. Un modelo actualizado con un prompt no revisado opera con restricciones cuya eficacia nadie ha verificado.
+
+\fichaseccion{Guía de implementación}
+El cambio de modelo debe disparar la reejecución de la auditoría ofensiva sobre el prompt del sistema vigente, con particular atención a las pruebas de extracción de instrucciones y de secuestro de comportamiento. La comparación con los resultados de la configuración anterior determina si el prompt requiere ajuste.
+
+El registro del cambio debe consignar el modelo anterior, el nuevo, los resultados de la auditoría en ambas configuraciones y las modificaciones aplicadas al prompt. Ese registro es la evidencia que la auditoría documental inspecciona.
+
+\ficharelacionados{C15 (definición del rol y las restricciones del modelo), cuyo contenido este control somete a revisión; C30 (verificación de procedencia del modelo), que se ejecuta ante el mismo evento; C61 (inventario de activos), que debe actualizarse ante todo cambio del modelo.}
+
+\section{D2: Control de contexto RAG}
+\label{sec:fichas-d2}
+
+Los controles de esta sección regulan el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. Los controles transversales C06, C13, C15, C16, C17, C21 y C30, que también pertenecen a D2, se desarrollan en la sección~\ref{sec:fichas-transversales}.
+
+% ── C07 ──
+\fichacontrol{C07}{Restricción al uso exclusivo del contexto recuperado}
+  {N1}{Preventivo}{Configuración}{LLM02:2025}
+
+\fichaseccion{Propósito}
+Declarar en el prompt del sistema la prohibición de generar información que no esté fundamentada en el contexto recuperado del corpus.
+
+\fichaseccion{Justificación}
+Un modelo de lenguaje no distingue por sí mismo entre lo que sabe por su entrenamiento y lo que acaba de leer en el contexto. Ante una consulta que el contexto recuperado no responde por completo, la conducta por defecto es completar el vacío con conocimiento paramétrico, y hacerlo con la misma apariencia de fundamentación que el contenido efectivamente recuperado.
+
+Desde la perspectiva de seguridad, esa conducta abre dos brechas. La primera es la alucinación con apariencia de autoridad: el sistema afirma contenido que su corpus no respalda, y el usuario no tiene forma de distinguirlo del contenido fundamentado. La segunda es más sutil: un modelo dispuesto a responder desde su conocimiento paramétrico es un modelo dispuesto a responder consultas ajenas al dominio autorizado, lo que amplía la superficie sobre la que un atacante puede operar.
+
+Este control declara la restricción; C17 la verifica. La instrucción por sí sola no garantiza el cumplimiento, dado que depende de la obediencia del modelo, pero establece el criterio contra el cual el control de verificación puede contrastar la respuesta.
+
+\fichaseccion{Guía de implementación}
+La instrucción debe declararse en la configuración del prompt del sistema, junto al resto de las restricciones que C15 establece. Debe cubrir explícitamente el comportamiento esperado ante una consulta que el contexto no responde: la abstención declarada, y no la respuesta parcial ni la completación desde otra fuente.
+
+El control es de nivel N1 porque su implementación es puramente declarativa y no requiere componente adicional alguno. Su presencia se verifica por inspección de la configuración.
+
+\ficharelacionados{C15 (definición del rol y las restricciones del modelo), que es el artefacto donde esta instrucción reside; C17 (fundamentación de la respuesta), que verifica el cumplimiento de la restricción que este control declara; C04 (restricción de la consulta al dominio autorizado), que opera sobre el mismo principio en la etapa de entrada.}
+
+% ── C10 ──
+\fichacontrol{C10}{Control de la cantidad de fragmentos recuperados}
+  {N1}{Preventivo}{Configuración}{LLM02:2025}
+
+\fichaseccion{Propósito}
+Limitar el número de fragmentos que la etapa de recuperación devuelve por consulta, acotando el volumen de corpus que una sola solicitud puede exponer.
+
+\fichaseccion{Justificación}
+La exfiltración de un corpus mediante consultas sucesivas es un ataque de acumulación: cada consulta extrae una porción, y el atacante reconstruye el conjunto a lo largo de múltiples sesiones. La cantidad de fragmentos que cada consulta devuelve determina directamente cuántas consultas requiere el ataque para completarse.
+
+Un sistema que devuelve veinte fragmentos por consulta expone su corpus en un orden de magnitud menos de solicitudes que uno que devuelve tres. El control no impide la exfiltración, dado que un atacante persistente puede realizar el número de consultas que sean necesarias, pero eleva el costo del ataque y prolonga la ventana durante la cual los controles de detección de reconocimiento sistemático pueden identificarlo.
+
+\fichaseccion{Guía de implementación}
+El valor debe derivarse de la cantidad de fragmentos que las consultas legítimas del dominio requieren para ser respondidas correctamente. Un valor excesivamente bajo degrada la calidad de las respuestas: el modelo carece del contexto necesario y, si C07 está implementado, se abstiene de responder consultas que el corpus sí cubría.
+
+La calibración exige medir, sobre un conjunto de consultas legítimas, cuántos fragmentos contribuyen efectivamente a la respuesta correcta. Ese número, y no un valor arbitrario, es el que el control debe declarar.
+
+\ficharelacionados{C13 (límite de volumen de contexto inyectado), con el que comparte el mecanismo de implementación; C12 (detección de reconocimiento sistemático del corpus), que identifica los ataques de acumulación que este control ralentiza; C38 (ajuste de parámetros de retrieval).}
+
+% ── C08 ──
+\fichacontrol{C08}{Clasificación y filtrado del corpus por sensibilidad}
+  {N2}{Preventivo}{Configuración}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Clasificar cada fragmento del corpus según su nivel de sensibilidad al momento de la indexación, y restringir la recuperación a los niveles que la sesión está autorizada a consultar.
+
+\fichaseccion{Justificación}
+Un corpus indexado sin distinción de sensibilidad es un corpus en el que toda consulta puede alcanzar todo fragmento. La única barrera entre una consulta y un documento confidencial es la proximidad semántica, y esa barrera no es una decisión de seguridad: es un accidente de cómo el atacante formule su pregunta.
+
+La clasificación introduce una decisión de autorización allí donde antes solo había una decisión de relevancia. El filtro se aplica en la consulta a la base vectorial, antes de que los fragmentos se recuperen, de modo que el contenido no autorizado no ingresa al contexto de inferencia bajo ninguna circunstancia. Un modelo no puede revelar aquello que nunca recibió, y esa es la propiedad que distingue este control de los controles de salida: estos últimos intentan suprimir el contenido sensible después de que el modelo lo procesó, con la incertidumbre que ello conlleva.
+
+\fichaseccion{Guía de implementación}
+La clasificación debe realizarse durante la indexación y almacenarse como metadato del fragmento, no calcularse en tiempo de consulta. El criterio de clasificación debe estar documentado y ser reproducible: dos indexaciones del mismo corpus deben producir la misma clasificación.
+
+El filtro debe aplicarse en la propia consulta a la base vectorial, y no como descarte posterior de los resultados. Un sistema que recupera todos los fragmentos y luego descarta los no autorizados ha materializado el contenido sensible en memoria, y toda ruta de error o traza de excepción que exponga esa estructura constituye una fuga.
+
+La verificación de este control exige constatar que el metadato de sensibilidad está presente en la totalidad de los fragmentos indexados. Un corpus en el que el metadato falta en algunos fragmentos produce un filtro que no los alcanza, con lo que el control opera con una cobertura inferior a la declarada.
+
+\ficharelacionados{C22 (control de acceso por sesión al vector store), que determina qué niveles de sensibilidad cada sesión está autorizada a consultar; C39 (actualización del particionamiento ante reclasificación); C62 (registro versionado del corpus), que permite constatar qué clasificación estaba vigente en cada sesión.}
+
+% ── C09 ──
+\fichacontrol{C09}{Verificación de integridad de los fragmentos recuperados}
+  {N2}{Preventivo/Detectivo}{Experimental}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Contrastar los fragmentos recuperados contra una línea base de integridad establecida en la indexación, antes de incorporarlos al contexto de inferencia.
+
+\fichaseccion{Justificación}
+La base vectorial es un componente con estado, y su contenido es alterable por quien tenga acceso a ella. Un atacante que modifica un fragmento indexado no necesita comprometer el modelo ni el prompt del sistema: le basta con que el sistema recupere el fragmento alterado y lo entregue al modelo como contexto legítimo.
+
+Este es el vector de intoxicación del corpus, y su peligrosidad reside en que ningún control de entrada lo detecta. La consulta del usuario puede ser perfectamente legítima; el ataque no está en la pregunta sino en el material con que el sistema la responde. Un fragmento intoxicado con una instrucción adversarial llega al modelo por el canal que el sistema considera confiable, y con la autoridad que el sistema le atribuye.
+
+La verificación de integridad convierte esa alteración en un evento detectable. El fragmento que no corresponde a su resumen de referencia es un fragmento que fue modificado después de la indexación, condición que el sistema no puede atribuir a ninguna operación legítima.
+
+\fichaseccion{Guía de implementación}
+El resumen de cada fragmento debe calcularse durante la indexación y conservarse en un artefacto independiente de la base vectorial. Almacenar la línea base dentro de la misma base que se pretende verificar anula el control: quien pudo alterar el fragmento pudo alterar su resumen.
+
+La verificación debe ejecutarse sobre los fragmentos recuperados y antes de la construcción del prompt aumentado. Ante una discrepancia, el comportamiento esperado es el rechazo de la solicitud y el registro del evento, no la exclusión silenciosa del fragmento y la continuación con los restantes: una discrepancia significa que la base vectorial está comprometida, y la respuesta que el sistema produzca con los demás fragmentos también proviene de una fuente cuya integridad se acaba de refutar.
+
+\ficharelacionados{C62 (registro versionado del corpus), que provee la trazabilidad de qué versión del corpus estaba activa cuando se estableció la línea base; C30 (verificación de integridad del modelo), que aplica el mismo principio al artefacto de inferencia; C23 (registro de decisiones de bloqueo), que consume los eventos de discrepancia.}
+
+% ── C11 ──
+\fichacontrol{C11}{Validación de coherencia de la consulta}
+  {N2}{Preventivo}{Experimental}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Bloquear las consultas cuya distancia semántica mínima a los fragmentos del corpus supere el umbral de coherencia configurado, rechazando aquellas cuyo contenido no admite una interpretación semántica válida.
+
+\fichaseccion{Justificación}
+Una consulta codificada, ofuscada o compuesta de contenido sin estructura semántica coherente produce una representación vectorial que no guarda proximidad con ningún fragmento del corpus. Esa condición es observable con independencia de que el sistema reconozca la técnica de ofuscación empleada.
+
+La distinción con C04 es de umbral y de propósito. C04 rechaza consultas que son semánticamente válidas pero ajenas al dominio: preguntas legítimas sobre temas que el corpus no cubre. C11 rechaza consultas que no son semánticamente válidas en absoluto: cadenas codificadas en base64, secuencias de caracteres sin significado, o payloads construidos para evadir los escáneres de texto plano mediante representaciones alternativas.
+
+El control captura una clase de ataque que los escáneres de contenido no ven. Un payload adversarial codificado no exhibe los patrones que un escáner de inyección reconoce, precisamente porque su codificación los oculta; pero tampoco exhibe la coherencia semántica que una consulta legítima presenta, y es esa segunda propiedad la que este control mide.
+
+\fichaseccion{Guía de implementación}
+El umbral de coherencia debe ser más permisivo que el de dominio: una consulta legítima formulada con vocabulario poco frecuente en el corpus debe superar el filtro de coherencia aunque no supere el de dominio. Ambos controles operan sobre la misma métrica pero con cortes distintos, y su calibración debe realizarse de forma conjunta para evitar que uno haga redundante al otro.
+
+La distancia debe calcularse contra el corpus completo, y el valor obtenido debe registrarse para cada solicitud, de modo que la distribución de distancias de las consultas legítimas sea observable y el umbral pueda calibrarse contra ella.
+
+\ficharelacionados{C04 (restricción de la consulta al dominio autorizado), con el que comparte la métrica pero no el umbral; C02 (sanitización de la entrada), que elimina la ofuscación por caracteres de control mientras este control captura la ofuscación por codificación; C03 (bloqueo de intentos de inyección).}
+
+% ── C14 ──
+\fichacontrol{C14}{Exclusión de metadatos en la recuperación}
+  {N2}{Preventivo}{Experimental}{LLM02:2025}
+
+\fichaseccion{Propósito}
+Excluir los metadatos de los documentos en la etapa de recuperación, de modo que únicamente el texto de los fragmentos alcance el contexto de inferencia.
+
+\fichaseccion{Justificación}
+Los metadatos de un fragmento indexado describen su procedencia: el documento de origen, su ruta en el sistema de archivos, su fecha, su autor, su clasificación de sensibilidad. Ninguno de esos campos contribuye a que el modelo responda mejor la consulta, y todos ellos constituyen información sobre la estructura interna del corpus que el sistema no tiene razón para exponer.
+
+Un modelo que recibe los metadatos en su contexto puede reproducirlos en la respuesta, sea porque el usuario los solicita explícitamente, sea porque una instrucción inyectada se lo ordena, sea simplemente porque el modelo los considera pertinentes para fundamentar su afirmación. El resultado es la exposición de la topología del corpus: qué documentos existen, cómo se llaman, dónde residen y cuáles están marcados como sensibles.
+
+La decisión de excluir los metadatos en la recuperación, y no de suprimirlos en la salida, es lo que hace de este control un control preventivo de D2 y no un control correctivo de D3. El modelo no puede revelar aquello que nunca recibió, y esa propiedad no depende de que ningún escáner posterior acierte a identificar el contenido a suprimir.
+
+\fichaseccion{Guía de implementación}
+La consulta a la base vectorial debe solicitar explícitamente el texto de los fragmentos y sus identificadores, y omitir los metadatos del conjunto de campos devueltos. Una implementación que recupera los metadatos y luego los descarta antes de construir el prompt satisface el resultado, pero materializa el contenido en memoria, con la exposición que ello implica ante trazas de error.
+
+Los identificadores de fragmento constituyen la excepción: el sistema los requiere para la trazabilidad y para la verificación de integridad, y su exposición no revela información sobre la estructura del corpus siempre que sean opacos, es decir, que no codifiquen el nombre del documento de origen ni su ruta.
+
+\ficharelacionados{C08 (clasificación por sensibilidad), cuyo metadato este control impide que alcance el contexto; C19 (bloqueo de contenido sensible en la salida), que captura las fugas que este control no previene; C09 (verificación de integridad), que emplea los identificadores que este control preserva.}
+
+% ── C22 ──
+\fichacontrol{C22}{Control de acceso por sesión al vector store}
+  {N2}{Preventivo/Detectivo}{Declarativo}{LLM02:2025}
+
+\fichaseccion{Propósito}
+Determinar, para cada sesión, qué documentos del corpus está autorizada a consultar, y registrar los accesos efectivamente realizados.
+
+\fichaseccion{Justificación}
+Los controles de D2 acotan qué se recupera y cuánto, pero no quién. Un sistema que aplica la totalidad de los controles anteriores sigue tratando a todos sus usuarios como un único sujeto: la clasificación de sensibilidad que C08 establece determina qué niveles son recuperables, pero no en función de quién consulta.
+
+Esa indiferenciación es aceptable en un sistema cuyo corpus es uniformemente accesible para todos sus usuarios legítimos. Deja de serlo en cuanto el corpus contiene información cuya visibilidad depende del rol, la pertenencia organizacional o la autorización individual del consultante, situación que es la norma en un despliegue productivo.
+
+El control es de fuente de evidencia declarativa porque su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG. No es evaluable mediante auditoría ofensiva contra el sistema: un escáner que ataca el endpoint de inferencia no puede constatar si la sesión que lo ejecuta tenía las autorizaciones que se le atribuyen.
+
+\fichaseccion{Guía de implementación}
+La autorización debe determinarse antes de la consulta a la base vectorial y traducirse en el filtro que la consulta aplica, componiéndose con el filtro de sensibilidad que C08 establece. Una implementación que autoriza el acceso al sistema pero no discrimina el corpus recuperable por sesión no satisface este control.
+
+El registro de accesos debe consignar la identidad de la sesión, los identificadores de los fragmentos recuperados y la marca temporal. Ese registro es el artefacto que la auditoría inspecciona, y es además el insumo sobre el que C24 detecta los patrones de reconocimiento sistemático a lo largo de múltiples sesiones.
+
+\ficharelacionados{C08 (clasificación y filtrado por sensibilidad), con cuyo filtro este control se compone; C51 (procedimiento de gestión de accesos), que establece el marco organizacional que este control materializa; C24 (monitoreo de patrones de consulta anómalos), que consume los registros de acceso.}
+
+% ── C12 ──
+\fichacontrol{C12}{Detección de reconocimiento sistemático del corpus}
+  {N3}{Detectivo}{Experimental}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Detectar y bloquear las consultas cuya formulación indica un intento de enumeración o mapeo sistemático del contenido del corpus, en lugar de una pregunta sobre él.
+
+\fichaseccion{Justificación}
+Existe una diferencia observable entre preguntar por el contenido de un corpus y preguntar por su estructura. Una consulta legítima interroga sobre un hecho, un concepto o una relación; una consulta de reconocimiento interroga sobre el continente: qué documentos existen, cuántos son, cómo se organizan, qué temas cubren, qué fragmentos están marcados como sensibles.
+
+Esta segunda clase de consulta es el primer paso de una exfiltración sistemática. El atacante que pretende extraer un corpus no comienza extrayéndolo: comienza determinando qué contiene, para dirigir sus consultas posteriores hacia el contenido que le interesa. Detectar esa fase de reconocimiento permite interrumpir el ataque antes de que alcance la fase de extracción.
+
+El control opera sobre la consulta individual y no sobre el patrón de consultas a lo largo del tiempo. Esa segunda capacidad corresponde a C24, que es un control de nivel N4 y de subdimensión D4. La distinción es relevante: C12 captura la consulta que se delata por su formulación, mientras que C24 captura al atacante que se delata por su comportamiento aunque cada consulta individual parezca inocua.
+
+\fichaseccion{Guía de implementación}
+La detección debe cubrir las formulaciones que interrogan sobre la estructura del corpus, sobre la existencia o el número de documentos, sobre su clasificación, y sobre el contenido del prompt del sistema en cuanto describe el corpus. Debe cubrir asimismo las formulaciones indirectas: solicitudes de listado, de resumen exhaustivo, o de enumeración de temas cubiertos.
+
+El evento de detección debe registrarse aunque la consulta no llegue a bloquearse, dado que la tasa de consultas de reconocimiento es en sí misma un indicador de amenaza que la organización debe poder observar.
+
+\ficharelacionados{C24 (monitoreo de patrones de consulta anómalos), que opera sobre la dimensión temporal que este control no cubre; C10 (control de la cantidad de fragmentos recuperados), que ralentiza la fase de extracción que este control busca prevenir; C31 y C23 (registro de decisiones de bloqueo).}
+
+% ── C62 ──
+\fichacontrol{C62}{Registro versionado del corpus indexado}
+  {N3}{Detectivo}{Configuración}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Mantener un registro persistente de cada evento de indexación del corpus, que permita identificar qué documentos estaban activos en cada sesión y rastrear los cambios entre versiones sucesivas.
+
+\fichaseccion{Justificación}
+El corpus es un activo mutable. Se le agregan documentos, se le retiran, se reindexa con otra estrategia de segmentación, se reclasifica su sensibilidad. Cada una de esas operaciones produce un corpus distinto del anterior, y el sistema que lo consulta no conserva ninguna traza de cuál estaba vigente cuando respondió una consulta determinada.
+
+La ausencia de versionado tiene una consecuencia que solo se manifiesta ante un incidente. Si una respuesta reveló contenido sensible, la investigación requiere saber qué fragmentos estaban indexados en ese momento y con qué clasificación. Un corpus que fue reindexado desde entonces no permite reconstruir esa condición: los fragmentos que se recuperaron pueden ya no existir, y los que existen pueden tener una clasificación distinta de la que tenían.
+
+El registro convierte al corpus en un activo trazable. Es, además, la condición que permite atribuir un incidente a una versión específica del corpus y no al sistema en general, distinción que la investigación de causas requiere.
+
+\fichaseccion{Guía de implementación}
+El registro debe consignar, para cada evento de indexación, la marca temporal, la acción realizada, la cantidad de documentos y fragmentos resultantes, y un resumen criptográfico del conjunto que permita identificar unívocamente la versión.
+
+El registro debe ser persistente e independiente de la base vectorial. Un registro que reside en la misma base que documenta se pierde con ella ante un reinicio o una reindexación destructiva, que es precisamente el evento cuya trazabilidad este control busca preservar.
+
+La correlación entre una sesión y la versión del corpus vigente exige que los registros de solicitud, que C25 produce, consignen el identificador de la versión activa. Sin esa correlación el registro versionado documenta la evolución del corpus pero no permite atribuir una respuesta a una versión determinada.
+
+\ficharelacionados{C09 (verificación de integridad de los fragmentos), cuya línea base este control versiona; C25 (registro de latencia y metadatos de cada solicitud), que debe consignar la versión activa; C61 (inventario de activos), del que este registro es la componente correspondiente al corpus.}
+
+% ── C37 ──
+\fichacontrol{C37}{Medición de la tasa de recuperación de fragmentos sensibles}
+  {N4}{Detectivo}{Declarativo}{LLM02:2025}
+
+\fichaseccion{Propósito}
+Medir y reportar periódicamente la proporción de fragmentos clasificados como sensibles que la etapa de recuperación devuelve ante un conjunto de consultas de prueba.
+
+\fichaseccion{Justificación}
+El filtro de sensibilidad que C08 establece se declara en la configuración, y su presencia es verificable por inspección. Lo que la inspección no acredita es su eficacia: un filtro correctamente declarado puede no alcanzar a los fragmentos cuyo metadato de clasificación falta, o puede resultar insuficiente ante consultas formuladas para maximizar la proximidad semántica con el contenido sensible.
+
+La medición convierte esa incertidumbre en una cifra. Ejecutar un conjunto de consultas dirigidas contra el contenido clasificado como sensible, y medir cuántos de esos fragmentos el sistema devuelve, es la única forma de constatar que el filtro opera como se declara.
+
+Este control es la expresión de la gestión cuantitativa en D2. Su ausencia significa que la organización confía en la corrección de su configuración sin haberla puesto a prueba.
+
+\fichaseccion{Guía de implementación}
+El conjunto de consultas de prueba debe construirse a partir del contenido sensible del corpus, formulando las consultas que un atacante emplearía para alcanzarlo. Un conjunto compuesto de consultas genéricas no ejerce presión sobre el filtro y produce una tasa de recuperación artificialmente baja.
+
+La medición debe repetirse ante cada reindexación del corpus y ante cada cambio en la clasificación de sensibilidad, dado que ambas operaciones pueden alterar la cobertura del filtro sin que la configuración cambie.
+
+\ficharelacionados{C08 (clasificación y filtrado por sensibilidad), cuya eficacia este control mide; C38 (ajuste de parámetros de retrieval), que consume la tasa que este control produce; C42 (medición de la tasa de supresión en la salida), que es su contraparte en D3.}
+
+% ── C38 ──
+\fichacontrol{C38}{Ajuste de los parámetros de recuperación}
+  {N4}{Preventivo}{Declarativo}{LLM02:2025}
+
+\fichaseccion{Propósito}
+Ajustar los parámetros de la etapa de recuperación, incluidos el número de fragmentos devueltos y los umbrales de proximidad semántica, en función de las métricas de exposición observadas.
+
+\fichaseccion{Justificación}
+Los parámetros de recuperación se fijan al desplegar el sistema, con valores que se derivan de la calidad de respuesta esperada y no de la exposición que producen. El resultado es un compromiso que nadie midió: se recuperan tantos fragmentos como se creyó necesario, con la exposición que ello implique.
+
+Este control invierte la relación. Los parámetros dejan de ser una decisión de calidad con consecuencias de seguridad no medidas, y pasan a ser una decisión que integra ambas dimensiones sobre la base de evidencia. Un sistema que mide la tasa de recuperación de fragmentos sensibles y no ajusta sus parámetros en consecuencia mide sin actuar; uno que ajusta sin medir actúa sin fundamento.
+
+\fichaseccion{Guía de implementación}
+El ajuste debe fundarse en las métricas que C37 produce y en la medición de la calidad de respuesta sobre un conjunto de consultas legítimas. Reducir el número de fragmentos recuperados disminuye la exposición y degrada la calidad; el punto de equilibrio exige medir ambas magnitudes, no solo la primera.
+
+Cada modificación debe documentarse indicando los valores anteriores, los nuevos, la evidencia que los justifica y la fecha. Ese registro es el artefacto que la auditoría documental inspecciona.
+
+\ficharelacionados{C10 y C13 (control del volumen recuperado), cuyos valores este control ajusta; C37 (medición de la tasa de recuperación de fragmentos sensibles), que provee la evidencia; C33 (ajuste dinámico de umbrales en la entrada), del que este control es el equivalente en D2.}
+
+% ── C39 ──
+\fichacontrol{C39}{Actualización del particionamiento ante reclasificación}
+  {N5}{Preventivo}{Declarativo}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Actualizar la clasificación de sensibilidad de los fragmentos indexados y el filtro que la aplica, ante cambios en la política de clasificación del corpus o en el contenido de los documentos.
+
+\fichaseccion{Justificación}
+La sensibilidad de un documento no es una propiedad permanente. Un contenido que era público puede pasar a ser reservado ante un cambio normativo; uno que era confidencial puede desclasificarse. La política de clasificación de la organización evoluciona, y un corpus indexado bajo una política anterior conserva una clasificación que ya no corresponde a la vigente.
+
+El riesgo es asimétrico. Un fragmento que se volvió sensible y sigue clasificado como público es recuperable por cualquier consulta, y el filtro que debía protegerlo no lo alcanza porque su metadato dice que no lo necesita. La configuración es correcta, el control opera como se declara, y la fuga ocurre de todos modos.
+
+\fichaseccion{Guía de implementación}
+El ciclo de revisión de la clasificación debe tener una periodicidad declarada y debe dispararse, además, ante todo cambio en la política de clasificación de la organización y ante toda incorporación de documentos al corpus.
+
+La reclasificación exige la reindexación de los fragmentos afectados, dado que el metadato de sensibilidad se establece en la indexación. Un sistema que actualiza la política pero no reindexa opera con un filtro que aplica la política nueva sobre metadatos que reflejan la anterior.
+
+La verificación de este control, tras cada reclasificación, consiste en reejecutar la medición que C37 establece sobre el contenido reclasificado.
+
+\ficharelacionados{C08 (clasificación y filtrado por sensibilidad), cuya vigencia este control mantiene; C62 (registro versionado del corpus), que documenta las versiones sucesivas que la reclasificación produce; C37 (medición de la tasa de recuperación de fragmentos sensibles), que verifica el resultado.}
+
+% ── C40 ──
+\fichacontrol{C40}{Revisión proactiva del corpus ante nuevas amenazas}
+  {N5}{Preventivo}{Declarativo}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Revisar el contenido indexado ante la documentación de nuevas técnicas de exfiltración, evaluando si los fragmentos del corpus resultan explotables por vectores que no existían al momento de su indexación.
+
+\fichaseccion{Justificación}
+Un corpus indexado bajo la evaluación de riesgo de un momento dado contiene fragmentos que se consideraron seguros según los vectores conocidos entonces. La aparición de una técnica nueva puede convertir en explotable un contenido que hasta ese momento no lo era, sin que nada en el corpus haya cambiado.
+
+El caso más claro es el de la exfiltración por agregación: fragmentos que aisladamente no revelan información sensible, pero cuya combinación mediante una secuencia de consultas dirigidas sí lo hace. La vulnerabilidad no está en ningún fragmento sino en la relación entre ellos, y su reconocimiento exige revisar el corpus con el conocimiento de la técnica que la explota.
+
+\fichaseccion{Guía de implementación}
+La revisión debe dispararse ante la documentación de nuevas técnicas de exfiltración en la literatura del área o en los catálogos públicos de amenazas, y debe evaluar el corpus en su conjunto y no fragmento a fragmento, dado que las técnicas de agregación operan sobre el conjunto.
+
+El resultado de la revisión puede ser la reclasificación de fragmentos, su retiro del índice, o la incorporación de controles adicionales. Toda decisión debe documentarse indicando la técnica que la motivó y la evidencia de su aplicabilidad al corpus.
+
+\ficharelacionados{C39 (actualización del particionamiento), que materializa la reclasificación que esta revisión determina; C35 y C43 (actualización de los patrones de detección), que responden al mismo ciclo de vigilancia de amenazas; C58 (revisión proactiva del marco).}
+
+\section{D3: Gestión de salida}
+\label{sec:fichas-d3}
+
+Los controles de esta sección filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario. Los controles transversales C16 y C17, que también pertenecen a D3, se desarrollan en la sección~\ref{sec:fichas-transversales}.
+
+% ── C18 ──
+\fichacontrol{C18}{Sanitización de caracteres de control en la salida}
+  {N2}{Correctivo}{Experimental}{LLM01:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Eliminar de la respuesta generada los caracteres de control y los tokens especiales del modelo, antes de someterla a los escáneres de contenido y de retornarla al usuario.
+
+\fichaseccion{Justificación}
+Este control es el espejo de C02 en la etapa de salida, y su justificación es análoga pero opera sobre un canal distinto.
+
+El modelo puede emitir en su respuesta los tokens especiales de su propia arquitectura, sea porque una inyección exitosa se lo ordenó, sea porque el contenido del corpus los contenía y el modelo los reprodujo. Esos tokens, si alcanzan la salida, comprometen a quien la consuma: un cliente que reenvía la respuesta a otro modelo, o que la incorpora a un prompt posterior, recibe una cadena capaz de alterar la estructura de ese segundo prompt.
+
+La segunda razón es la misma que sostiene C02: los escáneres que evalúan la salida operan sobre el texto que reciben, y un contenido sensible intercalado con caracteres invisibles evade los patrones deterministas que C19 aplica sin dejar de ser legible para el usuario que la recibe.
+
+\fichaseccion{Guía de implementación}
+La sanitización debe ejecutarse antes que los escáneres de contenido de la salida, por la misma razón que C02 debe ejecutarse antes que los de la entrada: un escáner que analiza texto sin sanitizar es evadible por construcción.
+
+El evento debe registrarse cuando la respuesta contenía caracteres removidos. Su presencia en una salida es un indicador de que el modelo emitió contenido anómalo, condición que en un flujo sin incidentes no debería producirse.
+
+\ficharelacionados{C02 (sanitización de la entrada), del que este control es la contraparte en la salida; C19 (bloqueo de contenido sensible por patrones deterministas), que opera sobre la cadena que este control sanea; C16 (proxy de seguridad), que es el componente donde este control se implementa.}
+
+% ── C19 ──
+\fichacontrol{C19}{Bloqueo de contenido sensible por patrones deterministas}
+  {N2}{Detectivo/Correctivo}{Experimental}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Bloquear las respuestas que coincidan con patrones deterministas de contenido sensible: los marcadores de confidencialidad del corpus y los identificadores personales estructurados.
+
+\fichaseccion{Justificación}
+Existe una clase de contenido sensible cuya forma es reconocible con certeza. Los identificadores personales estructurados, como los números de identificación nacional, las direcciones de correo, los números telefónicos y los de tarjeta de crédito, exhiben una estructura sintáctica que un patrón determinista reconoce sin ambigüedad. Lo mismo ocurre con los marcadores de confidencialidad que la organización aplica a su corpus.
+
+Sobre ese contenido, un escáner determinista es superior a uno semántico. No falla, no depende de un umbral, y su decisión es reproducible: una cadena que coincide con el patrón coincide siempre. La detección semántica, que C20 aporta, es necesaria precisamente para el contenido que no exhibe esa regularidad, pero introduce una incertidumbre que sobre este subconjunto sería innecesaria.
+
+El control es detectivo y correctivo a la vez: identifica la coincidencia y suprime la respuesta antes de su entrega.
+
+\fichaseccion{Guía de implementación}
+El conjunto de patrones debe declararse en la configuración y cubrir, como mínimo, los identificadores personales estructurados que la normativa de protección de datos aplicable a la organización reconoce como tales, y los marcadores de confidencialidad que la política de clasificación del corpus emplea.
+
+El marcador de confidencialidad merece una consideración particular. Su presencia en la salida significa que un fragmento clasificado como confidencial alcanzó el contexto de inferencia y el modelo lo reprodujo, lo que constituye una falla de los controles de D2 y no solo de D3. El evento debe registrarse como tal, dado que su ocurrencia indica que el filtro de sensibilidad no operó.
+
+Ante una coincidencia, el comportamiento esperado es el bloqueo de la respuesta completa, no la supresión del fragmento coincidente y la entrega del resto. Una respuesta que contenía un identificador personal probablemente contiene también el contexto que lo rodea, y la supresión selectiva entrega ese contexto.
+
+\ficharelacionados{C08 (clasificación y filtrado por sensibilidad), cuya falla este control revela; C20 (detección semántica de contenido sensible), que cubre el contenido sin estructura reconocible; C42 (medición de la tasa de supresión).}
+
+% ── C20 ──
+\fichacontrol{C20}{Detección semántica de contenido sensible en la salida}
+  {N3}{Detectivo}{Experimental}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Detectar y puntuar mediante análisis semántico las respuestas que contengan información sensible cuya forma no coincide con ningún patrón determinista.
+
+\fichaseccion{Justificación}
+Los patrones deterministas que C19 aplica cubren el contenido cuya estructura los delata. No cubren el que carece de esa estructura: un dato médico expresado en prosa, una condición personal descrita en lenguaje natural, un nombre asociado a una circunstancia reservada, o el contenido del prompt del sistema parafraseado por el modelo en lugar de reproducido literalmente.
+
+Esa segunda clase es la que un atacante persigue cuando el sistema ya bloquea la primera. Una instrucción que ordena al modelo revelar el prompt del sistema puede ser reformulada para que lo parafrasee, con lo que la fuga ocurre sin que ninguna cadena coincida con ningún patrón. El escáner semántico evalúa el significado de la respuesta y no su forma, lo que le permite reconocer el contenido que la reformulación oculta.
+
+El precio de esa capacidad es la incertidumbre. La detección semántica opera sobre un umbral, y todo umbral admite falsos positivos y falsos negativos. Es la razón por la que este control es de nivel N3 y no N2: exige una calibración que los controles deterministas no requieren, y esa calibración es lo que caracteriza al nivel definido del modelo de madurez.
+
+\fichaseccion{Guía de implementación}
+El umbral debe declararse en la configuración antes de la operación y calibrarse contra dos conjuntos: uno de respuestas que contienen contenido sensible del corpus y otro de respuestas legítimas del dominio. La calibración solo contra el primero produce un umbral que bloquea respuestas válidas.
+
+La puntuación asignada a cada respuesta debe registrarse, y no solo la decisión de bloqueo. Sin ese registro, la distribución de puntuaciones de las respuestas legítimas no es observable, y la tasa de falsos positivos que C41 debe ajustar no es medible.
+
+La eficacia de este control depende del dominio. Un corpus cuyo contenido sensible se expresa en la forma que el escáner reconoce produce una tasa de detección alta; uno cuyo contenido sensible es sensible por su contexto y no por su forma puede resultar invisible al escáner. Esa dependencia debe documentarse: un escáner semántico que no activa en un dominio determinado no acredita la ausencia de contenido sensible en la salida.
+
+\ficharelacionados{C19 (bloqueo por patrones deterministas), cuya cobertura este control extiende; C05 (no inclusión del prompt del sistema en la respuesta), cuyas fugas por paráfrasis este control captura; C41 (ajuste de los umbrales de sanitización).}
+
+% ── C41 ──
+\fichacontrol{C41}{Ajuste dinámico de los umbrales de sanitización}
+  {N4}{Detectivo}{Declarativo}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Ajustar periódicamente los umbrales de los escáneres de salida en función de las tasas de falsos positivos observadas sobre las respuestas legítimas del sistema.
+
+\fichaseccion{Justificación}
+El costo de un falso positivo en la salida es mayor que en la entrada. Una consulta legítima bloqueada en la entrada produce un rechazo que el usuario puede reformular; una respuesta legítima bloqueada en la salida produce una consulta que el sistema procesó, cuyo costo de inferencia ya se pagó, y cuya respuesta correcta el usuario no recibe. El sistema aparenta ser incapaz de responder aquello que en realidad respondió bien.
+
+El ajuste de este umbral es, en consecuencia, el que exhibe la tensión más aguda entre seguridad y usabilidad de todo el marco. Un umbral estricto bloquea las fugas y también las respuestas correctas que se le parecen; uno permisivo preserva la usabilidad al costo de dejar pasar contenido sensible cuya expresión no alcanza el corte.
+
+\fichaseccion{Guía de implementación}
+El ajuste debe fundarse en las tasas de error medidas sobre un conjunto de consultas legítimas de control, cuyas respuestas correctas se conocen. Sin ese conjunto, un bloqueo de salida es indistinguible de una detección correcta, y la tasa de falsos positivos no es calculable.
+
+La asimetría de costos entre las dos clases de error debe declararse explícitamente. Una organización cuyo corpus contiene datos personales bajo régimen normativo puede aceptar una tasa de falsos positivos elevada; una cuyo corpus es de acceso público difícilmente lo justifique. La decisión es de la organización y debe estar documentada, no incrustada en un valor por defecto.
+
+\ficharelacionados{C19 y C20 (escáneres de salida), cuyos umbrales este control ajusta; C42 (medición de la tasa de supresión), que provee la evidencia; C33 (ajuste dinámico de los umbrales de entrada), del que este control es la contraparte en D3.}
+
+% ── C42 ──
+\fichacontrol{C42}{Medición de la tasa de supresión de contenido confidencial}
+  {N4}{Detectivo}{Declarativo}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Medir y reportar la proporción de respuestas suprimidas por los escáneres de salida, desglosada por escáner y por categoría de ataque.
+
+\fichaseccion{Justificación}
+El desglose por escáner revela cuál de los dos mecanismos de salida está haciendo el trabajo. Un sistema en que la totalidad de las supresiones proviene del escáner determinista opera con un escáner semántico que no aporta cobertura, sea porque el umbral es demasiado permisivo, sea porque el contenido sensible del dominio no exhibe la forma que reconoce. Ambas condiciones exigen respuesta, y ninguna es visible en una tasa agregada.
+
+El desglose por categoría de ataque revela la asimetría defensiva. Un sistema puede suprimir eficazmente el contenido que las pruebas de exfiltración directa producen, y no suprimir nada ante las pruebas de extracción del prompt del sistema. La tasa agregada oculta esa brecha; el reporte segmentado la expone.
+
+\fichaseccion{Guía de implementación}
+La medición se calcula sobre los registros que C23 produce, agregando los eventos de bloqueo de salida por el escáner que los originó y por la categoría de la prueba que los provocó.
+
+El reporte debe consignar el número de supresiones y la tasa relativa al total de respuestas generadas, no solo el número absoluto. Un aumento en el número de supresiones puede responder a un aumento del tráfico y no a una degradación de la seguridad.
+
+Debe incluirse la tasa de falsos positivos, medida sobre el conjunto de consultas legítimas de control. Un reporte de supresiones sin esa cifra no permite evaluar el costo de la defensa.
+
+\ficharelacionados{C23 (registro de decisiones de bloqueo), cuyos eventos este control agrega; C41 (ajuste dinámico de los umbrales de sanitización), que consume las tasas que este control produce; C34 (medición de la tasa de rechazo en la entrada), del que este control es la contraparte en D3.}
+
+% ── C43 ──
+\fichacontrol{C43}{Actualización de los patrones de detección en la salida}
+  {N5}{Detectivo}{Declarativo}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Revisar y actualizar los patrones deterministas y el modelo de detección semántica de la salida, ante la documentación de nuevas técnicas de exfiltración.
+
+\fichaseccion{Justificación}
+Las técnicas de exfiltración evolucionan, y su evolución se dirige precisamente contra los controles que las bloquean. Una técnica que codifica el contenido sensible antes de emitirlo, o que lo fragmenta a lo largo de varias respuestas, o que lo expresa en un formato que el escáner no reconoce, evade una configuración que era eficaz contra la generación anterior de ataques.
+
+Este control es la contraparte de C35 en la etapa de salida, y comparte con él la lógica del nivel N5: la capa defensiva deja de ser un artefacto estático y se somete a un ciclo de actualización que responde a la evolución de la amenaza y no a los incidentes ya ocurridos.
+
+\fichaseccion{Guía de implementación}
+El ciclo de revisión debe tener una periodicidad declarada y fuentes de vigilancia identificadas. La revisión debe cubrir tanto los patrones deterministas, cuya actualización es directa, como el modelo de detección semántica, cuya actualización exige la sustitución o el reentrenamiento del componente.
+
+Toda actualización debe someterse a la auditoría ofensiva antes de su despliegue. Una ampliación del conjunto de patrones puede elevar la tasa de falsos positivos sobre respuestas legítimas, y esa consecuencia debe medirse antes de que el sistema entre en operación con la nueva configuración.
+
+\ficharelacionados{C35 (actualización de los patrones de detección en la entrada), del que este control es la contraparte; C44 (incorporación de retroalimentación de incidentes), con el que comparte el ciclo de mejora; C29 (plan de pruebas ofensivas previo al despliegue).}
+
+% ── C44 ──
+\fichacontrol{C44}{Incorporación de retroalimentación de incidentes a los patrones}
+  {N5}{Detectivo}{Declarativo}{LLM02:2025, LLM07:2025}
+
+\fichaseccion{Propósito}
+Incorporar al conjunto de patrones de detección de la salida las construcciones que produjeron fugas efectivas en incidentes reales.
+
+\fichaseccion{Justificación}
+Un incidente de exfiltración acredita que una construcción específica atravesó la totalidad de la capa defensiva. Esa construcción es, por definición, el ejemplo más valioso de que la organización dispone: no es una técnica hipotética documentada en la literatura, sino una que funcionó contra su configuración, su corpus y su modelo.
+
+Este control se distingue de C43 en la fuente. C43 responde a la vigilancia externa de amenazas; C44 responde a la evidencia interna de fallas. Un sistema que aplica solo el primero se actualiza contra los ataques que otros sufrieron; uno que aplica ambos se actualiza también contra los que sufrió él mismo.
+
+La distinción es lo que separa la mejora continua de la mera actualización. El nivel N5 exige que el ciclo se cierre: el incidente produce evidencia, la evidencia produce una actualización del control, y la actualización se verifica contra el incidente que la motivó.
+
+\fichaseccion{Guía de implementación}
+El proceso debe estar formalizado: todo incidente de exfiltración debe producir un análisis de la construcción que lo permitió, una propuesta de actualización del control correspondiente y una verificación de que la actualización bloquea el vector original.
+
+La verificación debe extenderse a las variantes de la construcción y no solo a la construcción exacta. Un patrón que bloquea el payload literal del incidente y no sus reformulaciones equivalentes cierra el caso sin cerrar la brecha.
+
+El registro del incidente, del análisis y de la actualización aplicada constituye el artefacto que la auditoría documental inspecciona.
+
+\ficharelacionados{C43 (actualización ante nuevas técnicas documentadas), con el que comparte el destino pero no la fuente; C46 (incorporación de retroalimentación al sistema de alertas), que es el equivalente en D4; C59 (incorporación de lecciones aprendidas al ciclo de gobernanza).}
+
+
