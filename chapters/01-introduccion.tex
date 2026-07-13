@@ -5,8 +5,6 @@
 
 Este documento especifica el marco LLM-Sec, un instrumento de evaluación de la postura de ciberseguridad para plataformas que integran modelos de lenguaje de gran escala (LLM) en arquitecturas de generación aumentada por recuperación (RAG). El marco combina un modelo de madurez de seis niveles con una taxonomía de 62 controles operacionales, proporcionando al evaluador criterios cuantificables y reproducibles para determinar el estado de seguridad de un sistema RAG.
 
-El presente documento es un artefacto independiente de la tesis que lo valida experimentalmente. Su estructura permite su aplicación autónoma por parte de cualquier organización, sin requerir acceso al experimento de laboratorio descrito en la tesis.
-
 \section{Alcance}
 
 El marco LLM-Sec está diseñado para evaluar sistemas RAG que cumplan las siguientes condiciones:
@@ -15,7 +13,11 @@ El marco LLM-Sec está diseñado para evaluar sistemas RAG que cumplan las sigui
   \item Utilizan un modelo de lenguaje como componente de inferencia.
   \item Incorporan una base de datos vectorial como fuente de contexto.
   \item Operan en un entorno donde la entrada del usuario se procesa en lenguaje natural.
+  \item El modelo opera sin agencia sobre el sistema que lo aloja: no invoca funciones, no accede al sistema de archivos, no establece conexiones de red ni ejecuta código. Su única salida es texto generado.
 \end{itemize}
+
+Esta última condición delimita la arquitectura evaluable a un flujo RAG conversacional y excluye las arquitecturas agénticas, en que el modelo dispone de herramientas que le permiten actuar sobre su entorno. Tales sistemas introducen vectores de amenaza adicionales, como la ejecución de acciones no autorizadas derivadas de una instrucción inyectada, que requieren controles de aislamiento y validación de invocación no contemplados en la taxonomía de este marco.
+
 
 El marco cubre cuatro categorías de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG: LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM07 (System Prompt Leakage) y LLM08 (Vector and Embedding Weaknesses).
 
@@ -38,7 +40,6 @@ El marco LLM-Sec se ancla a las siguientes referencias:
     \textbf{ISO/IEC 33001}      & Evaluación de capacidad de procesos \\
     \textbf{ISO/IEC 27002:2022} & Controles de seguridad de la información \\
     \textbf{NIST AI RMF}        & Marco de gestión de riesgos de IA \\
-    \textbf{MITRE ATLAS}        & Tácticas adversariales para sistemas de IA \\
     \textbf{Ley 21.663}         & Marco de Ciberseguridad (Chile) \\
     \textbf{Ley 21.719}         & Protección de Datos Personales (Chile) \\
     \textbf{Boletín 16821-19}   & Proyecto de Ley de Inteligencia Artificial (Chile) \\

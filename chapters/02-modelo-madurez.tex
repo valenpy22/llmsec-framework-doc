@@ -1,6 +1,9 @@
 \chapter{Modelo de madurez}
 \label{ch:modelo-madurez}
 
+El modelo de madurez es el componente del marco LLM-Sec que asigna a un sistema RAG un nivel en una escala ordinal según la solidez de sus controles de seguridad. Su construcción sigue tres pasos: la identificación de los activos que el sistema expone, la valoración del riesgo asociado a cada uno, y la definición de las subdimensiones y niveles sobre los cuales se realiza la evaluación. Las dos primeras secciones establecen el perímetro y la priorización; las restantes especifican la estructura del modelo, los seis niveles de madurez, las cinco subdimensiones y la regla de agregación del nivel global.
+
+
 \section{Identificación de activos del sistema RAG}
 \label{sec:activos}
 
@@ -13,19 +16,19 @@ A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataqu
 \caption{Activos del sistema RAG y riesgos asociados.}
 \label{tab:activos}
 \rowcolors{2}{llmsec-gray}{white}
-\begin{tabularx}{\textwidth}{@{} c l X l @{}}
+\begin{tabularx}{\textwidth}{@{} c >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
   \toprule
   \textbf{ID} & \textbf{Activo} & \textbf{Riesgo principal} & \textbf{Referencia} \\
   \midrule
   A1 & LLM &
     Manipulación del comportamiento del modelo mediante inyección de instrucciones maliciosas en lenguaje natural. &
-    LLM01:2025 \\
+    LLM01 \\
   A2 & Base de datos vectorial &
     Recuperación no autorizada de fragmentos indexados e intoxicación del corpus mediante documentos maliciosos. &
-    LLM08:2025 \\
+    LLM08 \\
   A3 & Corpus de conocimiento &
     Exposición de información sensible contenida en los documentos indexados mediante consultas diseñadas para exfiltración. &
-    LLM02:2025 \\
+    LLM02 \\
   A4 & Canales de entrada y salida &
     Transporte de instrucciones maliciosas en la entrada y filtración de información del corpus o del prompt del sistema en la salida. &
     LLM01, LLM07 \\
@@ -56,11 +59,6 @@ Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, 
 
 Este mapeo justifica la existencia de exactamente cinco subdimensiones y no un número arbitrario: cada subdimensión protege un subconjunto distinto del flujo RAG, y el modelo de madurez evalúa cada uno de forma independiente antes de agregar un nivel global mediante la regla de piso mínimo (sección~\ref{sec:piso-minimo}).
 
-\begin{infobox}
-  La identificación de activos no constituye un componente del marco sino una condición previa a su aplicación. LLM-Sec es un instrumento de evaluación de postura que recibe como entrada un sistema cuyo perímetro ya ha sido delimitado y produce como salida un nivel de madurez verificado. Esta separación es coherente con el diseño agnóstico al dominio: al no fijar el perímetro de activos dentro del marco, este puede aplicarse a cualquier sistema RAG con independencia de su dominio de despliegue.
-\end{infobox}
-
-
 \section{Valoración de riesgo por activo}
 \label{sec:valoracion-riesgo}
 
@@ -71,33 +69,20 @@ Una vez identificados los activos, el paso siguiente consiste en valorar el ries
 La valoración emplea dos ejes, cada uno con tres niveles:
 
 \begin{fichabox}{Escalas de probabilidad e impacto}
-  \begin{minipage}[t]{0.48\textwidth}
-    \textbf{Probabilidad de explotación}
-    \begin{tabularx}{\textwidth}{@{} c l X @{}}
-      \toprule
-      & \textbf{Nivel} & \textbf{Criterio} \\
-      \midrule
-      3 & Alta  & Explotable con herramientas automatizadas de acceso público. \\
-      2 & Media & Requiere conocimiento técnico específico del sistema. \\
-      1 & Baja  & Requiere acceso privilegiado o condiciones poco frecuentes. \\
-      \bottomrule
-    \end{tabularx}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.48\textwidth}
-    \textbf{Impacto de compromiso}
-    \begin{tabularx}{\textwidth}{@{} c l X @{}}
-      \toprule
-      & \textbf{Nivel} & \textbf{Criterio} \\
-      \midrule
-      3 & Alto   & Exfiltración de datos sensibles o pérdida de control del modelo. \\
-      2 & Medio  & Degradación del servicio o exposición parcial de información. \\
-      1 & Bajo   & Impacto operacional contenido, sin exposición de datos. \\
-      \bottomrule
-    \end{tabularx}
-  \end{minipage}
+  \begin{tabularx}{\textwidth}{@{} c l >{\raggedright\arraybackslash}X @{\hspace{1.5em}} c l >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \multicolumn{3}{@{}l}{\textbf{Probabilidad de explotación}} &
+    \multicolumn{3}{l@{}}{\textbf{Impacto de compromiso}} \\
+    \midrule
+    3 & Alta  & Explotable con herramientas automatizadas de acceso público. &
+    3 & Alto  & Exfiltración de datos sensibles o pérdida de control del modelo. \\
+    2 & Media & Requiere conocimiento técnico específico del sistema. &
+    2 & Medio & Degradación del servicio o exposición parcial de información. \\
+    1 & Baja  & Requiere acceso privilegiado o condiciones poco frecuentes. &
+    1 & Bajo  & Impacto operacional contenido, sin exposición de datos. \\
+    \bottomrule
+  \end{tabularx}
 \end{fichabox}
-
 
 \subsection{Matriz de riesgo}
 
@@ -130,7 +115,7 @@ La valoración revela tres hallazgos que condicionan el diseño del modelo de ma
 
   \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (18), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
 
-  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja en el contexto de un sistema RAG desplegado en red controlada, pero el impacto de su compromiso sigue siendo alto. Esto justifica que el control de acceso (C22) se clasifique como declarativo: su implementación es imprescindible en producción, pero su verificación experimental queda fuera del alcance de un laboratorio controlado en TRL~4.
+  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja porque requiere acceso privilegiado o condiciones poco frecuentes, pero el impacto de su compromiso sigue siendo alto. Esto justifica que el control de acceso por sesión (C22) se clasifique con fuente de evidencia declarativa: su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG y por tanto no evaluable mediante auditoría ofensiva contra el sistema. Su implementación sigue siendo imprescindible en todo despliegue productivo.
 \end{enumerate}
 
 \begin{infobox}
@@ -162,7 +147,7 @@ Esta trazabilidad garantiza que la distribución de controles del marco no es ar
 
 \section{Estructura del modelo}
 
-A partir de los activos identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal. Esta propiedad tiene una consecuencia estadística directa: el coeficiente apropiado para medir la correlación entre el nivel asignado y la resistencia experimental observada es Spearman, dado que no se asumen distancias iguales entre categorías.
+A partir de los activos identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
 
 El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez estandarizado para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
 
@@ -297,23 +282,22 @@ La subdimensión D2 abarca los controles que regulan el acceso, la exposición y
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D2}
-  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+  \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.30\hsize\raggedright\arraybackslash}X >{\hsize=0.70\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
-    \textbf{Desde} & \textbf{Entrada} &
-    \textbf{Salida} & \textbf{Hacia} \\
+    \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
     \midrule
     D1 &
       Prompt sanitizado y validado &
+      Contexto recuperado y prompt aumentado &
+      D3 \\
+    Corpus &
+      Documentos indexados &
       Contexto recuperado y prompt aumentado &
       D3 \\
     Sistema &
       Configuración del \textit{vector store} &
       Eventos de recuperación sospechosa &
       D4 \\
-    Corpus &
-      Documentos indexados &
-      --- &
-      --- \\
     D5 &
       Política de clasificación de sensibilidad del corpus &
       --- &
@@ -347,10 +331,9 @@ La subdimensión D3 comprende los controles que filtran y regulan las respuestas
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D3}
-  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+  \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.15\hsize\raggedright\arraybackslash}X >{\hsize=0.85\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
-    \textbf{Desde} & \textbf{Entrada} &
-    \textbf{Salida} & \textbf{Hacia} \\
+    \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
     \midrule
     D2 &
       Prompt aumentado con contexto recuperado &
@@ -398,13 +381,12 @@ D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere q
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D4}
-  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+  \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.20\hsize\raggedright\arraybackslash}X >{\hsize=0.80\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
-    \textbf{Desde} & \textbf{Entrada} &
-    \textbf{Salida} & \textbf{Hacia} \\
+    \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
     \midrule
     D1 &
-      Registro de orompts rechazados y alertas de inyección &
+      Registro de prompts rechazados y alertas de inyección &
       Logs de auditoría consolidados &
       D5 \\
     D2 &
@@ -434,7 +416,7 @@ D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere q
 
 \subsection{D5: Gobernanza organizacional}
 
-La subdimensión D5 opera de forma transversal sobre la organización completa, no sobre una etapa técnica específica del flujo RAG. Captura las obligaciones institucionales de gestión de la seguridad: definición de roles y responsabilidades, políticas de uso, cumplimiento normativo y mejora continua del marco. Su verificación es exclusivamente declarativa, dado que requiere métodos cualitativos como auditorías organizacionales o revisión documental, incompatibles con un entorno de laboratorio controlado.
+La subdimensión D5 opera de forma transversal sobre la organización completa, no sobre una etapa técnica específica del flujo RAG. Captura las obligaciones institucionales de gestión de la seguridad: definición de roles y responsabilidades, políticas de uso, cumplimiento normativo y mejora continua del marco. Su verificación es exclusivamente declarativa porque sus controles son artefactos organizacionales que no producen traza observable en el flujo de inferencia: su cumplimiento se establece mediante revisión documental y auditoría organizacional, no mediante inspección del sistema ni ejecución de pruebas ofensivas contra él.
 
 D5 provee insumos normativos e institucionales a las demás subdimensiones, actuando como el proceso de gobernanza que sustenta la operación segura del sistema RAG en su conjunto. Sus entradas son marcos normativos y retroalimentación de D4, y sus salidas son políticas e instrumentos de gobernanza que condicionan la operación del resto del sistema.
 
@@ -450,7 +432,7 @@ D5 provee insumos normativos e institucionales a las demás subdimensiones, actu
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D5}
-  \begin{tabularx}{\textwidth}{@{} l l X l @{}}
+  \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.10\hsize\raggedright\arraybackslash}X >{\hsize=0.90\hsize\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.2cm} @{}}
     \toprule
     \textbf{Desde} & \textbf{Entrada} &
     \textbf{Salida} & \textbf{Hacia} \\
@@ -463,18 +445,12 @@ D5 provee insumos normativos e institucionales a las demás subdimensiones, actu
       Marco de gestión de riesgos de IA &
       Política de clasificación de sensibilidad &
       D2 \\
-    D4 &
-      Logs de auditoría e informes de incidentes &
+      D4 &
+      \multirow{3}{\hsize}{Logs de auditoría e informes de incidentes} &
       Matriz RACI instanciada &
-      D1, D2, D3, D4 \\
-    D4 &
-      Logs de auditoría e informes de incidentes &
-      Informe de riesgos residuales &
-      Dirección \\
-    D4 & 
-      Logs de auditoría e informes de incidentes &
-      Plan de capacitación en seguridad LLM & 
-      Roles definidos \\
+      D1--D4 \\
+     & & Informe de riesgos residuales & Dirección \\
+     & & Plan de capacitación en seguridad LLM & Roles definidos \\
     \bottomrule
   \end{tabularx}
 \end{fichabox}
