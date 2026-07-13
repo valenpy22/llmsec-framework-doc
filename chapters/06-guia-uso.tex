@@ -1,6 +1,8 @@
 \chapter{Guía de evaluación}
 \label{ch:guia}
 
+Los capítulos anteriores especifican qué evalúa el marco LLM-Sec: un modelo de madurez de seis niveles, una taxonomía de 62 controles y tres perfiles organizacionales que orientan la interpretación del resultado. Este capítulo especifica cómo se conduce la evaluación. Define el flujo de siete pasos que va desde la selección del perfil hasta el plan de remediación, los criterios que el evaluador aplica para dar por cumplido un control según su fuente de evidencia, la matriz de responsabilidades que la organización debe instanciar para que la evaluación sea auditable, y el ciclo iterativo mediante el cual se cierran las brechas identificadas.
+
 \section{Flujo de evaluación}
 \label{sec:flujo-evaluacion}
 
@@ -9,6 +11,7 @@ El proceso de evaluación del marco LLM-Sec sigue seis pasos secuenciales:
 \begin{enumerate}[leftmargin=2em]
   \item \textbf{Selección del perfil organizacional:} identificar el perfil (P1, P2 o P3) que corresponde a la organización según su tipo y obligaciones regulatorias.
   \item \textbf{Evaluación de controles:} verificar cada control de las subdimensiones D1 a D5 utilizando la fuente de evidencia correspondiente (configuración, experimental o declarativa).
+  \item \textbf{Cálculo de métricas:} ejecutar la auditoría ofensiva y calcular TFA, LAS, PCC y NCP conforme al capítulo~\ref{ch:metricas}. Estas métricas constituyen la evidencia experimental que sustenta la verificación de los controles del paso anterior.
   \item \textbf{Asignación de nivel por subdimensión:} el nivel de cada subdimensión es el mayor nivel cuyos controles están completamente implementados, respetando la progresión acumulativa.
   \item \textbf{Cálculo del nivel global:} aplicar la regla de piso mínimo: $L = \min(d_1, d_2, d_3, d_4, d_5)$.
   \item \textbf{Análisis de brechas:} identificar la distancia entre el nivel verificado y el nivel objetivo del perfil seleccionado.
@@ -16,21 +19,6 @@ El proceso de evaluación del marco LLM-Sec sigue seis pasos secuenciales:
 \end{enumerate}
 
 % TODO: Insertar diagrama del flujo de evaluación (Figura 3.13 de la tesis, adaptada).
-
-
-\section{Nivel verificado y nivel declarado}
-\label{sec:verificado-declarado}
-
-El marco distingue dos tipos de nivel asignado según la fuente de evidencia utilizada:
-
-\begin{infobox}
-  \textbf{Nivel verificado:} determinado mediante evidencia experimental (resultados de auditoría ofensiva, logs de la capa defensiva) o de configuración (archivos YAML, prompt del sistema). Aplica a las subdimensiones D1, D2, D3 y D4.
-
-  \textbf{Nivel declarado:} determinado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5.
-\end{infobox}
-
-Al reportar el resultado de una evaluación, el evaluador debe indicar explícitamente qué subdimensiones fueron verificadas y cuáles fueron declaradas. El nivel global debe acompañarse de esta distinción para evitar interpretaciones que asuman verificación completa.
-
 
 \section{Criterios de verificación por fuente de evidencia}
 \label{sec:criterios-verificacion}
@@ -41,7 +29,7 @@ El control se verifica inspeccionando la declaración explícita en los archivos
 
 \subsection{Experimental}
 
-El control se verifica mediante la ejecución de pruebas de auditoría ofensiva contra el sistema bajo evaluación. El resultado se expresa como una métrica cuantificable (tasa de filtrado, latencia, cobertura). La herramienta de auditoría debe ejecutar probes alineados a las categorías OWASP cubiertas por el control.
+El control se verifica mediante la ejecución de pruebas de auditoría ofensiva contra el sistema bajo evaluación. El resultado se expresa como una métrica cuantificable (tasa de filtrado, latencia, cobertura). Las pruebas ejecutadas deben cubrir los vectores OWASP declarados como fuente normativa del control: un control anclado a LLM02:2025 no puede verificarse con pruebas que solo ejerciten inyección de instrucciones.
 
 \subsection{Declarativo}
 
@@ -110,6 +98,7 @@ Ante brechas identificadas entre el nivel verificado y el nivel objetivo, el eva
   \item Identificar la subdimensión que actúa como piso mínimo.
   \item Priorizar los controles faltantes de esa subdimensión en el nivel inmediatamente superior.
   \item Implementar los controles priorizados.
+  \item Re-ejecutar la auditoría ofensiva y recalcular las métricas del capítulo~\ref{ch:metricas}: la TFA verifica que la implementación produjo mejora defensiva efectiva, la LAS caracteriza el costo operacional introducido, el PCC confirma la cobertura de controles alcanzada y el NCP verifica que la mejora es consistente entre vectores de ataque.
   \item Re-ejecutar la evaluación para verificar el tránsito de nivel.
 \end{enumerate}
 

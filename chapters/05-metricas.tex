@@ -45,8 +45,12 @@ que $\text{TFA}_B$ incorpora el efecto de los controles implementados.
 
 Dado que las herramientas de auditoría ofensiva genéricas no tienen acceso
 al corpus indexado ni al prompt del sistema, el marco define fuentes de
-\textit{ground truth} diferenciadas por vector OWASP. El evaluador debe
-implementar estas columnas en el registro de resultados:
+\textit{ground truth} diferenciadas por vector OWASP. Los criterios de la
+Tabla~\ref{tab:ground-truth-metricas} caracterizan el ataque exitoso, es decir,
+el falso negativo del sistema defensivo. Un intento adversarial se contabiliza
+como bloqueado (TP) cuando el criterio correspondiente a su vector no se cumple.
+El evaluador debe implementar estos criterios como columnas del registro de
+resultados.
 
 \begin{table}[H]
     \centering
@@ -76,10 +80,7 @@ implementar estas columnas en el registro de resultados:
       las instrucciones de sistema configuradas. \\
     \addlinespace
     LLM08 &
-      El modelo ejecutó instrucciones inyectadas en el corpus recuperado
-      \textbf{y} modificó su comportamiento como consecuencia, distinguiendo
-      el engaño efectivo de la mera reproducción superficial del contenido
-      inyectado. \\
+      El modelo obedeció una instrucción inyectada en el corpus recuperado \textbf{y} alteró el contenido de su respuesta como consecuencia. Ambas condiciones deben verificarse conjuntamente: la reproducción del contenido inyectado sin alteración del comportamiento no constituye compromiso efectivo del sistema. \\
     \bottomrule
     \end{tabular}
 \end{table}
@@ -105,28 +106,31 @@ usabilidad.
 
 \subsection{Correspondencia con ISO/IEC 25010:2023}
 
+% ── TFA (5.1.4) ──
 \begin{table}[H]
-    \centering
-    \renewcommand{\arraystretch}{1.4}
-    \begin{tabular}{
-      >{\raggedright\arraybackslash}p{4cm}
-      >{\raggedright\arraybackslash}p{7.5cm}
-    }
-    \toprule
-    \textbf{Característica} & \textbf{Subcategorías} \\
-    \midrule
-    Security (\S3.6) &
-      Confidentiality (\S3.6.1), Integrity (\S3.6.2),
-      Resistance (\S3.6.6) \\
-    \bottomrule
-    \end{tabular}
-    \vspace{0.3em}
-    \begin{minipage}{11.5cm}
-      \raggedright\small
-      $^*$ Los nombres de característica y subcategoría se citan en inglés
-      por no existir traducción oficial de ISO/IEC~25010:2023 al español.
-    \end{minipage}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{
+    >{\raggedright\arraybackslash}m{4cm}
+    >{\raggedright\arraybackslash}m{7.5cm}
+  }
+  \toprule
+  \textbf{Característica} & \textbf{Subcategorías} \\
+  \midrule
+  Security (\S3.6) &
+    Confidentiality (\S3.6.1) \newline
+    Integrity (\S3.6.2) \newline
+    Resistance (\S3.6.6) \\
+  \bottomrule
+  \end{tabular}
+  \vspace{0.3em}
+  \begin{minipage}{11.5cm}
+    \raggedright\small
+    $^*$ Los nombres de característica y subcategoría se citan en inglés
+    por no existir traducción oficial de ISO/IEC~25010:2023 al español.
+  \end{minipage}
 \end{table}
+
 \section{Latencia Agregada de Seguridad (LAS)}
 \label{sec:las}
 
@@ -157,81 +161,74 @@ operacionales entre ambos tipos de consulta.
 
 \subsection{Correspondencia con ISO/IEC 25010:2023}
 
+% ── LAS (5.2.2) ──
 \begin{table}[H]
-    \centering
-    \renewcommand{\arraystretch}{1.4}
-    \begin{tabular}{
-      >{\raggedright\arraybackslash}p{4cm}
-      >{\raggedright\arraybackslash}p{7.5cm}
-    }
-    \toprule
-    \textbf{Característica} & \textbf{Subcategorías} \\
-    \midrule
-    Performance Efficiency (\S3.2) &
-      Time behaviour (\S3.2.1), Resource utilization (\S3.2.2) \\
-    \bottomrule
-    \end{tabular}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{
+    >{\raggedright\arraybackslash}m{4cm}
+    >{\raggedright\arraybackslash}m{7.5cm}
+  }
+  \toprule
+  \textbf{Característica} & \textbf{Subcategorías} \\
+  \midrule
+  Performance Efficiency (\S3.2) &
+    Time behaviour (\S3.2.1) \newline
+    Resource utilization (\S3.2.2) \\
+  \bottomrule
+  \end{tabular}
 \end{table}
 
 \section{Porcentaje de Controles Cumplidos (PCC)}
 \label{sec:pcc}
 
-El Porcentaje de Controles Cumplidos cuantifica la proporción de
-controles efectivamente implementados sobre un universo de controles
-definido según el criterio de clasificación seleccionado. Su fórmula
-general es:
+El Porcentaje de Controles Cumplidos cuantifica la proporción de controles implementados sobre un universo de controles que el evaluador define. Su fórmula es:
 
 \[
-  \text{PCC} = \frac{C_{\text{verificados}}}{C_{\text{aplicables}}} \times 100
+  \text{PCC}(U) = \frac{|C_{\text{implementados}} \cap U|}{|U|} \times 100
 \]
 
-donde $C_{\text{verificados}}$ corresponde a los controles con fuente
-de evidencia experimental o de configuración confirmada dentro del
-subconjunto analizado, y $C_{\text{aplicables}}$ al total de controles
-definidos en ese mismo subconjunto.
+donde $U$ denota el universo de controles bajo análisis y $C_{\text{implementados}}$ el conjunto de controles cuyo cumplimiento fue constatado conforme a los criterios de verificación de la sección~\ref{sec:criterios-verificacion}.
 
-El evaluador puede calcular PCC segmentando el universo de controles
-según distintos criterios de clasificación, de forma no excluyente:
+PCC es una métrica paramétrica: el universo $U$ no está fijado por el marco sino que constituye una decisión del evaluador, determinada por la pregunta que la evaluación busca responder. Un mismo sistema admite tantos valores de PCC como universos se declaren, y todos son igualmente válidos. La condición de interpretabilidad es que el universo se declare explícitamente junto al valor reportado: un PCC sin universo especificado no es interpretable ni comparable.
+
+\subsection{Definición del universo}
+
+El universo se construye acotando el conjunto de los 62 controles del marco mediante uno o más de los siguientes criterios, aplicables de forma combinada:
 
 \begin{itemize}
-  \item \textbf{Por subdimensión} (D1--D5): permite identificar qué
-  área del modelo presenta menor cobertura de implementación.
-  \item \textbf{Por nivel de madurez} (N1--N5): permite verificar si
-  la cobertura es homogénea entre niveles o si existe acumulación de
-  brechas en niveles específicos.
-  \item \textbf{Por fuente de evidencia} (configuración, experimental,
-  declarativo): permite distinguir controles verificables técnicamente
-  de los que requieren auditoría organizacional.
-  \item \textbf{Por tipo funcional} (preventivo, detectivo, correctivo,
-  gobernanza): permite analizar si la implementación está sesgada hacia
-  algún tipo de control.
+  \item \textbf{Nivel de madurez:} los controles definidos hasta un nivel determinado, sea el nivel alcanzado por el sistema o el nivel objetivo al que la organización aspira.
+  \item \textbf{Subdimensión:} los controles de una o varias subdimensiones, para identificar qué área del modelo presenta menor cobertura.
+  \item \textbf{Fuente de evidencia:} los controles verificables técnicamente, o bien los declarativos, según se busque medir cobertura técnica o cobertura organizacional.
+  \item \textbf{Tipo funcional:} los controles preventivos, detectivos, correctivos o de gobernanza, para detectar sesgos en la estrategia de implementación.
+  \item \textbf{Perfil organizacional:} los controles prioritarios del perfil aplicable (capítulo~\ref{ch:perfiles}), para medir avance respecto de la trayectoria recomendada.
 \end{itemize}
 
-PCC opera como validador de coherencia interna del marco: un nivel de
-madurez alto acompañado de un PCC bajo señala una discrepancia entre
-el nivel asignado y los controles realmente operativos, lo que indica
-una sobreestimación del nivel declarado. Al ser una proporción
-descriptiva, no requiere prueba estadística de contraste.
+La elección del universo determina qué significa el valor obtenido. Un PCC calculado sobre los controles verificables hasta el nivel alcanzado mide la coherencia entre el nivel asignado y los controles efectivamente operativos. Uno calculado sobre los controles hasta el nivel objetivo del perfil mide la distancia que resta por cubrir. Uno calculado sobre la totalidad de los 62 controles mide la cobertura absoluta del marco, valor que solo alcanza el 100\% en un sistema de nivel N5 con todos sus controles de gobernanza implementados.
+
+PCC opera como validador de coherencia interna: un nivel de madurez alto acompañado de un PCC bajo sobre los controles de ese mismo nivel señala una discrepancia entre el nivel asignado y los controles realmente operativos, lo que indica una sobreestimación del nivel. Al ser una proporción descriptiva, no requiere prueba estadística de contraste.
 
 \subsection{Correspondencia con ISO/IEC 25010:2023}
 
+% ── PCC (5.3.1) ──
 \begin{table}[H]
-    \centering
-    \renewcommand{\arraystretch}{1.4}
-    \begin{tabular}{
-      >{\raggedright\arraybackslash}p{4cm}
-      >{\raggedright\arraybackslash}p{7.5cm}
-    }
-    \toprule
-    \textbf{Característica} & \textbf{Subcategorías} \\
-    \midrule
-    Security (\S3.6) &
-      Cobertura interna de controles implementados \\
-    \addlinespace
-    Maintainability (\S3.7) &
-      Analysability (\S3.7.3), Testability (\S3.7.5) \\
-    \bottomrule
-    \end{tabular}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{
+    >{\raggedright\arraybackslash}m{4cm}
+    >{\raggedright\arraybackslash}m{7.5cm}
+  }
+  \toprule
+  \textbf{Característica} & \textbf{Subcategorías} \\
+  \midrule
+  Security (\S3.6) &
+    Cobertura interna de controles implementados \\
+  \addlinespace
+  Maintainability (\S3.7) &
+    Analysability (\S3.7.3) \newline
+    Testability (\S3.7.5) \\
+  \bottomrule
+  \end{tabular}
 \end{table}
 
 \section{Nivel de Consistencia de Protección (NCP)}
@@ -245,9 +242,12 @@ en todas las suites de ataque evaluadas. Su fórmula es:
   \text{NCP} = \frac{S_{\Delta \geq 0}}{S_{\text{total}}}
 \]
 
-donde $S_{\Delta \geq 0}$ corresponde al número de suites en que
+donde $S_{\Delta \geq 0}$ corresponde al número de suites de ataque en que
 $\Delta\text{TFA} \geq 0$ (definido en la sección~\ref{sec:tfa}), y
-$S_{\text{total}}$ al total de suites evaluadas.
+$S_{\text{total}}$ al total de suites evaluadas. Cada suite agrupa las
+pruebas adversariales correspondientes a un vector OWASP, de modo que
+$S_{\text{total}}$ equivale al número de vectores cubiertos por la
+evaluación.
 
 NCP es de carácter descriptivo: no contrasta una hipótesis estadística
 sino que verifica si la mejora defensiva asociada al nivel asignado es
@@ -265,8 +265,7 @@ de madurez si se cumplen conjuntamente las siguientes condiciones:
 \begin{enumerate}[leftmargin=2em]
   \item La mejora en TFA entre el escenario sin protección y el
   escenario protegido es estadísticamente significativa ($p < 0{,}05$).
-  \item El PCC sobre los controles verificables hasta el nivel
-  alcanzado es $\geq 90\%$.
+  \item El PCC calculado sobre los controles verificables definidos hasta el nivel alcanzado en cada subdimensión es $\geq 90\%$.
   \item NCP = 1{,}0, es decir, el incremento de nivel se asocia a
   mejora no negativa en la totalidad de las suites evaluadas.
 \end{enumerate}
@@ -278,21 +277,18 @@ analice sus causas antes de reportar el nivel asignado.
 \subsection{Correspondencia con ISO/IEC 25010:2023}
 
 \begin{table}[H]
-    \centering
-    \renewcommand{\arraystretch}{1.4}
-    \begin{tabular}{
-      >{\raggedright\arraybackslash}p{4cm}
-      >{\raggedright\arraybackslash}p{7.5cm}
-    }
-    \toprule
-    \textbf{Característica} & \textbf{Subcategorías} \\
-    \midrule
-      Functional Suitability (\S3.1) &
-      Functional correctness (\S3.1.2),
-      Functional appropriateness (\S3.1.3) \\
-    \bottomrule
-    \end{tabular}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{
+    >{\raggedright\arraybackslash}m{4cm}
+    >{\raggedright\arraybackslash}m{7.5cm}
+  }
+  \toprule
+  \textbf{Característica} & \textbf{Subcategorías} \\
+  \midrule
+  Functional Suitability (\S3.1) &
+    Functional correctness (\S3.1.2) \newline
+    Functional appropriateness (\S3.1.3) \\
+  \bottomrule
+  \end{tabular}
 \end{table}
-
-Las métricas del marco se anclan a las características de calidad de
-producto definidas en ISO/IEC 25010:2023 de la siguiente forma:

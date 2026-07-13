@@ -16,7 +16,7 @@ A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataqu
 \caption{Activos del sistema RAG y riesgos asociados.}
 \label{tab:activos}
 \rowcolors{2}{llmsec-gray}{white}
-\begin{tabularx}{\textwidth}{@{} c >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+\begin{tabularx}{\textwidth}{@{} c >{\hsize=0.85\hsize\raggedright\arraybackslash}X >{\hsize=1.45\hsize\raggedright\arraybackslash}X >{\hsize=0.70\hsize\raggedright\arraybackslash}X @{}}
   \toprule
   \textbf{ID} & \textbf{Activo} & \textbf{Riesgo principal} & \textbf{Referencia} \\
   \midrule
@@ -105,6 +105,61 @@ La Tabla~\ref{tab:matriz-riesgo} presenta la valoración de riesgo para cada act
 \end{tabularx}
 \end{table}
 
+La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\times$ impacto, evidenciando la concentración del riesgo en la zona superior derecha.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  cell/.style={
+    minimum width=3.1cm, minimum height=1.9cm,
+    draw=white, line width=1.5pt,
+    align=center, font=\small\bfseries
+  },
+  axislabel/.style={font=\small\bfseries, text=llmsec-dark},
+  ticklabel/.style={font=\scriptsize, text=llmsec-dark}
+]
+
+% Zonas de riesgo
+\definecolor{riesgo-alto}{HTML}{E5534B}
+\definecolor{riesgo-medio}{HTML}{E8A33D}
+\definecolor{riesgo-bajo}{HTML}{4CAF7D}
+
+% Fila Impacto = 3 (Alto)
+\node[cell, fill=riesgo-medio, text=white] at (0,0)   {3\\[-2pt]\scriptsize Medio};
+\node[cell, fill=riesgo-alto,  text=white] at (3.2,0) {6\\[-2pt]\scriptsize Alto};
+\node[cell, fill=riesgo-alto,  text=white] at (6.4,0) {9\\[-2pt]\scriptsize Alto};
+
+% Fila Impacto = 2 (Medio)
+\node[cell, fill=riesgo-bajo,  text=white] at (0,-2)   {2\\[-2pt]\scriptsize Bajo};
+\node[cell, fill=riesgo-medio, text=white] at (3.2,-2) {4\\[-2pt]\scriptsize Medio};
+\node[cell, fill=riesgo-alto,  text=white] at (6.4,-2) {6\\[-2pt]\scriptsize Alto};
+
+% Fila Impacto = 1 (Bajo)
+\node[cell, fill=riesgo-bajo, text=white] at (0,-4)   {1\\[-2pt]\scriptsize Bajo};
+\node[cell, fill=riesgo-bajo, text=white] at (3.2,-4) {2\\[-2pt]\scriptsize Bajo};
+\node[cell, fill=riesgo-medio,text=white] at (6.4,-4) {3\\[-2pt]\scriptsize Medio};
+
+% Activos ubicados
+\node[font=\footnotesize\bfseries, text=white] at (0,0.55) {A5};
+\node[font=\footnotesize\bfseries, text=white] at (3.2,0.55) {A2};
+\node[font=\footnotesize\bfseries, text=white] at (6.4,0.55) {A1 \ A3 \ A4};
+
+% Etiquetas de eje X (probabilidad)
+\node[ticklabel] at (0,-5.2)   {1 (Baja)};
+\node[ticklabel] at (3.2,-5.2) {2 (Media)};
+\node[ticklabel] at (6.4,-5.2) {3 (Alta)};
+\node[axislabel] at (3.2,-5.8) {Probabilidad de explotación};
+
+% Etiquetas de eje Y (impacto)
+\node[ticklabel, rotate=90] at (-2.0,0)  {3 (Alto)};
+\node[ticklabel, rotate=90] at (-2.0,-2) {2 (Medio)};
+\node[ticklabel, rotate=90] at (-2.0,-4) {1 (Bajo)};
+\node[axislabel, rotate=90] at (-2.6,-2) {Impacto de compromiso};
+
+\end{tikzpicture}
+\caption{Matriz de riesgo probabilidad $\times$ impacto con la ubicación de los activos del sistema RAG.}
+\label{fig:matriz-visual}
+\end{figure}
 
 \subsection{Interpretación y priorización}
 
@@ -125,7 +180,7 @@ La valoración revela tres hallazgos que condicionan el diseño del modelo de ma
 
 \subsection{Trazabilidad hacia las subdimensiones}
 
-La siguiente tabla sintetiza cómo la valoración de riesgo justifica la estructura del modelo de madurez:
+La valoración de riesgo justifica la estructura del modelo de madurez de la siguiente forma:
 
 \begin{fichabox}{Riesgo $\rightarrow$ subdimensión $\rightarrow$ densidad de controles}
   \begin{tabularx}{\textwidth}{@{} c l c c c @{}}
@@ -191,7 +246,7 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
 \section{Subdimensiones}
 \label{sec:subdimensiones}
 
-El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. La Figura~\ref{fig:diagrama-general} ilustra las relaciones de entrada y salida entre las cinco subdimensiones.
+El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. El siguiente cuadro sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura.
 
 \begin{fichabox}{Subdimensiones del modelo LLM-Sec}
   \begin{tabularx}{\textwidth}{@{}c l l X@{}}
@@ -218,6 +273,8 @@ El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de 
 
 La subdimensión D1 representa el primer punto de contacto entre el usuario y el sistema RAG, constituyendo la primera línea de defensa para garantizar una secuencia de acciones segura. Los activos sobre los que opera son los canales de entrada y el propio LLM, cuyo comportamiento puede ser manipulado si el prompt no es validado previamente.
 
+La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d1} representa gráficamente el mismo flujo.
+
 \begin{fichabox}{Ficha del proceso D1: Protección de entrada}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
@@ -232,6 +289,7 @@ La subdimensión D1 representa el primer punto de contacto entre el usuario y el
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D1}
+  \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l l X l @{}}
     \toprule
     \textbf{Desde} & \textbf{Entrada} &
@@ -270,6 +328,8 @@ La subdimensión D1 representa el primer punto de contacto entre el usuario y el
 
 La subdimensión D2 abarca los controles que regulan el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. Opera sobre la etapa de recuperación del flujo RAG, donde los fragmentos de contexto son seleccionados y entregados al modelo como parte del prompt aumentado.
 
+La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d2} representa gráficamente el mismo flujo.
+
 \begin{fichabox}{Ficha del proceso D2: Control de contexto RAG}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
@@ -282,7 +342,8 @@ La subdimensión D2 abarca los controles que regulan el acceso, la exposición y
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D2}
-  \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.30\hsize\raggedright\arraybackslash}X >{\hsize=0.70\hsize\raggedright\arraybackslash}X l @{}}
+  \rowcolors{2}{llmsec-gray}{white}
+  \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.10\hsize\raggedright\arraybackslash}X >{\hsize=0.90\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
     \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
     \midrule
@@ -319,6 +380,9 @@ La subdimensión D2 abarca los controles que regulan el acceso, la exposición y
 
 La subdimensión D3 comprende los controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario. Opera sobre el canal de salida del flujo RAG, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
 
+La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d3} representa gráficamente el mismo flujo.
+
+
 \begin{fichabox}{Ficha del proceso D3: Gestión de salida}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
@@ -331,6 +395,7 @@ La subdimensión D3 comprende los controles que filtran y regulan las respuestas
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D3}
+  \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.15\hsize\raggedright\arraybackslash}X >{\hsize=0.85\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
     \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
@@ -369,6 +434,8 @@ La subdimensión D4 opera de forma transversal sobre el sistema RAG completo. Su
 
 D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva. Un sistema en esa condición se clasifica como no conforme en esta subdimensión.
 
+La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d4} representa gráficamente el mismo flujo.
+
 \begin{fichabox}{Ficha del proceso D4: Monitoreo y trazabilidad}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
@@ -381,6 +448,7 @@ D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere q
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D4}
+  \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.20\hsize\raggedright\arraybackslash}X >{\hsize=0.80\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
     \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
@@ -420,6 +488,8 @@ La subdimensión D5 opera de forma transversal sobre la organización completa, 
 
 D5 provee insumos normativos e institucionales a las demás subdimensiones, actuando como el proceso de gobernanza que sustenta la operación segura del sistema RAG en su conjunto. Sus entradas son marcos normativos y retroalimentación de D4, y sus salidas son políticas e instrumentos de gobernanza que condicionan la operación del resto del sistema.
 
+La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d5} representa gráficamente el mismo flujo.
+
 \begin{fichabox}{Ficha del proceso D5: Gobernanza organizacional}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
@@ -432,10 +502,10 @@ D5 provee insumos normativos e institucionales a las demás subdimensiones, actu
 \end{fichabox}
 
 \begin{fichabox}{Entradas y salidas del proceso D5}
+  \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.10\hsize\raggedright\arraybackslash}X >{\hsize=0.90\hsize\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.2cm} @{}}
     \toprule
-    \textbf{Desde} & \textbf{Entrada} &
-    \textbf{Salida} & \textbf{Hacia} \\
+    \textbf{Desde} & \textbf{Entrada} & \textbf{Salida} & \textbf{Hacia} \\
     \midrule
     Normativa &
       Ley 21.663, Ley 21.719, Proyecto Ley IA &
@@ -445,12 +515,18 @@ D5 provee insumos normativos e institucionales a las demás subdimensiones, actu
       Marco de gestión de riesgos de IA &
       Política de clasificación de sensibilidad &
       D2 \\
-      D4 &
-      \multirow{3}{\hsize}{Logs de auditoría e informes de incidentes} &
+    D4 &
+      Logs de auditoría e informes de incidentes &
       Matriz RACI instanciada &
       D1--D4 \\
-     & & Informe de riesgos residuales & Dirección \\
-     & & Plan de capacitación en seguridad LLM & Roles definidos \\
+    D4 &
+      Logs de auditoría e informes de incidentes &
+      Informe de riesgos residuales &
+      Dirección \\
+    D4 &
+      Logs de auditoría e informes de incidentes &
+      Plan de capacitación en seguridad LLM &
+      Roles definidos \\
     \bottomrule
   \end{tabularx}
 \end{fichabox}
@@ -464,6 +540,18 @@ D5 provee insumos normativos e institucionales a las demás subdimensiones, actu
     \label{fig:diagrama-d5}
 \end{figure}
 
+\section{Nivel verificado y nivel declarado}
+\label{sec:verificado-declarado}
+
+Las subdimensiones del modelo no admiten el mismo tipo de evidencia. D1 a D4 operan sobre componentes técnicos del flujo RAG y su cumplimiento es constatable mediante inspección del sistema o ejecución de pruebas contra él. D5 captura obligaciones organizacionales que no producen traza técnica observable. El modelo distingue en consecuencia dos tipos de nivel asignado según la fuente de evidencia que lo sustenta:
+
+\begin{infobox}
+  \textbf{Nivel verificado:} determinado mediante evidencia experimental (resultados de auditoría ofensiva, logs de la capa defensiva) o de configuración (archivos YAML, prompt del sistema). Aplica a las subdimensiones D1, D2, D3 y D4.
+
+  \textbf{Nivel declarado:} determinado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5.
+\end{infobox}
+
+Esta distinción no establece una jerarquía entre ambos tipos de nivel: un control declarativo no es menos exigible que uno verificable, sino que su cumplimiento se constata por un medio distinto. La consecuencia práctica es que el nivel global de un sistema RAG no puede reportarse como un valor único sin especificar qué subdimensiones lo sustentan con evidencia técnica y cuáles con evidencia documental.
 
 \section{Regla de piso mínimo}
 \label{sec:piso-minimo}
@@ -474,6 +562,6 @@ El nivel global $L$ del sistema se determina como:
 \]
 donde $d_i$ es el nivel verificado de la subdimensión $i$. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4 pero D4 alcanza nivel 2, el nivel global verificado es 2.
 
-Dado que D5 opera exclusivamente con fuente de evidencia declarativa, su nivel no es verificable mediante experimento de laboratorio. El marco distingue por tanto entre \textbf{nivel verificado} (determinado mediante evidencia experimental o de configuración, aplicable a D1--D4) y \textbf{nivel declarado} (determinado mediante lista de chequeo sin evidencia técnica directa, aplicable a D5).
+Dado que D5 opera exclusivamente con fuente de evidencia declarativa (sección~\ref{sec:verificado-declarado}), el nivel global resultante de la regla de piso mínimo integra necesariamente una componente declarada.
 
 En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión se justifica porque la ausencia de literatura previa comparable impide anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable.

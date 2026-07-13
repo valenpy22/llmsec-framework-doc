@@ -1,0 +1,71 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Control de versiones}{2}{chapter*.1}%
+\contentsline {chapter}{\numberline {1}Introducción}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Propósito del documento}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Alcance}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Audiencia}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Referencias normativas}{2}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Convenciones del documento}{2}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Modelo de madurez}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Identificación de activos del sistema RAG}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Valoración de riesgo por activo}{4}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Escala de valoración}{5}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Matriz de riesgo}{5}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Interpretación y priorización}{6}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Trazabilidad hacia las subdimensiones}{7}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Estructura del modelo}{7}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Niveles de madurez}{7}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Subdimensiones}{8}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}D1: Protección de entrada}{9}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}D2: Control de contexto RAG}{10}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}D3: Gestión de salida}{11}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}D4: Monitoreo y trazabilidad}{12}{subsection.2.5.4}%
+\contentsline {subsection}{\numberline {2.5.5}D5: Gobernanza organizacional}{13}{subsection.2.5.5}%
+\contentsline {section}{\numberline {2.6}Nivel verificado y nivel declarado}{15}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Regla de piso mínimo}{15}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Taxonomía de controles}{17}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Estructura de los controles}{17}{section.3.1}%
+\contentsline {section}{\numberline {3.2}D1: Protección de entrada}{18}{section.3.2}%
+\contentsline {section}{\numberline {3.3}D2: Control de contexto RAG}{20}{section.3.3}%
+\contentsline {section}{\numberline {3.4}D3: Gestión de salida}{22}{section.3.4}%
+\contentsline {section}{\numberline {3.5}D4: Monitoreo y trazabilidad}{24}{section.3.5}%
+\contentsline {section}{\numberline {3.6}D5: Gobernanza organizacional}{25}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Distribución de controles}{27}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Perfiles organizacionales}{28}{chapter.4}%
+\contentsline {section}{\numberline {4.1}P1: PYME}{28}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Trayectoria recomendada}{29}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Controles prioritarios}{29}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}P2: Mediana/Grande}{30}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Trayectoria recomendada}{30}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Controles prioritarios}{30}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}P3: Crítica regulada}{31}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Trayectoria recomendada}{32}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Obligaciones regulatorias aplicables}{32}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Controles prioritarios}{32}{subsection.4.3.3}%
+\contentsline {chapter}{\numberline {5}Métricas de evaluación}{34}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Tasa de Filtrado de Ataques (TFA)}{34}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Fuentes de \textit {ground truth} por vector}{35}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Prueba estadística}{35}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Tasa de falsos positivos}{35}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Correspondencia con ISO/IEC 25010:2023}{36}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Latencia Agregada de Seguridad (LAS)}{36}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Prueba estadística}{36}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Correspondencia con ISO/IEC 25010:2023}{36}{subsection.5.2.2}%
+\contentsline {section}{\numberline {5.3}Porcentaje de Controles Cumplidos (PCC)}{36}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Definición del universo}{37}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Correspondencia con ISO/IEC 25010:2023}{37}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Nivel de Consistencia de Protección (NCP)}{38}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Criterios de validez}{38}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Correspondencia con ISO/IEC 25010:2023}{38}{subsection.5.4.2}%
+\contentsline {chapter}{\numberline {6}Guía de evaluación}{39}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Flujo de evaluación}{39}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Criterios de verificación por fuente de evidencia}{39}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Configuración}{40}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Experimental}{40}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Declarativo}{40}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}Matriz RACI}{40}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Ciclo de mejora}{41}{section.6.4}%
+\contentsline {chapter}{\numberline {A}Resumen de controles por nivel}{42}{appendix.Alph1}%
+\contentsline {chapter}{\numberline {B}Mapeo normativo}{47}{appendix.Alph2}%
+\contentsline {chapter}{\numberline {C}Glosario}{50}{appendix.Alph3}%
+\contentsline {chapter}{Referencias}{53}{appendix*.21}%
