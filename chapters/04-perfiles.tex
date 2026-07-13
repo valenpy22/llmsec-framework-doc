@@ -3,7 +3,7 @@
 
 Los perfiles organizacionales orientan la interpretación del nivel de madurez asignado según el tipo de organización. No modifican los criterios de asignación ni la definición de los niveles; únicamente establecen el nivel mínimo recomendado y el nivel objetivo según las obligaciones regulatorias aplicables. El nivel mínimo recomendado corresponde al nivel verificado, por constituir un umbral de seguridad técnica demostrable mediante evidencia experimental o de configuración. El nivel objetivo corresponde al nivel declarado, incorporando los controles de gobernanza de D5 cuya verificación es declarativa y representa la madurez organizacional completa que la organización debería aspirar a alcanzar.
 
-Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia Configuración se priorizan sobre los experimentales y declarativos, dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado es relativo al contexto de cada perfil y se define en la nota informativa de cada tabla.
+Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia \textbf{Configuración} se priorizan sobre los de tipo \textbf{Experimental} y \textbf{Declarativo}, dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado es relativo al contexto de cada perfil y se define en la nota informativa de cada tabla.
 
 \begin{fichabox}{Resumen de perfiles}
   \begin{tabularx}{\textwidth}{@{}c l C{2cm} C{2cm} X@{}}
@@ -22,6 +22,8 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
 \label{sec:perfil-p1}
 
 El perfil P1 está diseñado para pequeñas y medianas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
+
+Los perfiles del marco LLM-Sec clasifican a las organizaciones según su capacidad de seguridad, no según su categoría legal. La Ley 21.663 no establece un régimen específico para este perfil, de modo que una organización bajo P1 queda por lo general fuera de sus obligaciones reforzadas. Esto no la exime de la Ley 21.719 sobre protección de datos personales, cuyas obligaciones aplican con independencia del tamaño de la organización.
 
 \subsection{Trayectoria recomendada}
 
@@ -99,6 +101,8 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 
 El perfil P2 aplica a organizaciones medianas y grandes con infraestructura formal de seguridad de la información. El nivel mínimo recomendado es N3 y el nivel objetivo es N4.
 
+Una organización bajo este perfil puede quedar comprendida entre los prestadores de servicios esenciales que define el artículo 4 de la Ley 21.663, según el sector económico en que opere. La pertenencia a la categoría no depende del tamaño de la organización sino de la actividad que desarrolla, por lo que el evaluador debe verificar la aplicabilidad sectorial antes de asumir el régimen de obligaciones correspondiente.
+
 \subsection{Trayectoria recomendada}
 
 \begin{enumerate}[leftmargin=2em]
@@ -108,7 +112,7 @@ El perfil P2 aplica a organizaciones medianas y grandes con infraestructura form
 
 \subsection{Controles prioritarios}
 
-El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles prioritarios se concentran en la activación de mecanismos detectivos y el inicio de la gestión cuantitativa. Se asume que los controles de N1 ya están implementados.
+El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles prioritarios se concentran en la trazabilidad, la auditoría formal y el inicio de la gestión cuantitativa. Se asume que los controles de N1 y N2 ya están implementados, conforme a la progresión acumulativa del modelo.
 
 \begin{table}[H]
   \centering
@@ -119,44 +123,6 @@ El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles priorit
     \toprule
     \textbf{Ctrl} & \textbf{Nivel} & \textbf{Dim.} &
     \textbf{Costo} & \textbf{Acción requerida} \\
-    \midrule
-    \multicolumn{5}{@{}l}{\textit{Consolidación del nivel N2
-      (detectivos y particionamiento)}} \\
-    \midrule
-    C08 & N2 & D2     & Medio &
-      Particionar vector store por nivel de sensibilidad. \\
-    C09 & N2 & D2     & Medio &
-      Validar integridad de fragmentos antes de inyección al contexto. \\
-    C11 & N2 & D2     & Medio &
-      Validar semánticamente la query antes del retrieval. \\
-    C14 & N2 & D2, D3 & Medio &
-      Suprimir metadatos de documentos en las respuestas. \\
-    C17 & N2 & D2, D3 & Medio &
-      Restringir respuestas a información fundamentada en el contexto. \\
-    C18 & N2 & D3     & Medio &
-      Activar sanitización de salida en el proxy. \\
-    C19 & N2 & D3     & Medio &
-      Activar detección de contenido confidencial en la salida. \\
-    C22 & N2 & D2     & Alto &
-      Implementar control de acceso por sesión al vector store. \\
-    C26 & N2 & D4     & Bajo &
-      Documentar política de umbrales de detección y bloqueo. \\
-    C27 & N2 & D4     & Bajo &
-      Establecer procedimiento de notificación ante autoridades. \\
-    C28 & N2 & D4     & Bajo &
-      Definir política de retención y eliminación de datos de sesión. \\
-    C50 & N2 & D5     & Bajo &
-      Instanciar la matriz RACI con cargos concretos. \\
-    C51 & N2 & D5     & Medio &
-      Establecer procedimiento formal de gestión de accesos. \\
-    C52 & N2 & D5     & Medio &
-      Documentar inventario de datos personales procesados. \\
-    C03 & N2 & D1     & Medio &
-      Activar detección de patrones sintácticos de inyección. \\
-    C04 & N2 & D1     & Medio &
-      Validar relevancia semántica del prompt respecto al dominio. \\
-    C05 & N2 & D1     & Medio &
-      Ocultar contenido del prompt del sistema al usuario. \\
     \midrule
     \multicolumn{5}{@{}l}{\textit{Tránsito a N3
         (trazabilidad y auditoría formal)}} \\
@@ -245,10 +211,10 @@ El perfil P3 aplica a organizaciones que operan infraestructura crítica o perte
 
 \subsection{Controles prioritarios}
 
-El perfil P3 parte de N3 como nivel mínimo y apunta a N5. Los controles prioritarios
+El perfil P3 parte de N4 como nivel mínimo y apunta a N5. Los controles prioritarios
 enfatizan la gestión cuantitativa, la mejora continua y el cumplimiento normativo de la
 Ley 21.663, la Ley 21.719 y el Proyecto de Ley de IA. Se asume que los controles de
-N1 a N2 ya están implementados y que la organización cuenta con los recursos para
+N1 a N3 ya están implementados y que la organización cuenta con los recursos para
 sostener un ciclo de mejora continua.
 
 \begin{table}[H]
