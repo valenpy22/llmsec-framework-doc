@@ -798,4 +798,540 @@ El registro del incidente, del análisis y de la actualización aplicada constit
 
 \ficharelacionados{C43 (actualización ante nuevas técnicas documentadas), con el que comparte el destino pero no la fuente; C46 (incorporación de retroalimentación al sistema de alertas), que es el equivalente en D4; C59 (incorporación de lecciones aprendidas al ciclo de gobernanza).}
 
+\section{D4: Monitoreo y trazabilidad}
+\label{sec:fichas-d4}
 
+Los controles de esta sección registran, alertan y auditan los eventos de seguridad que las subdimensiones anteriores generan. Su naturaleza es observacional: no intervienen sobre el flujo de inferencia sino que lo documentan. D4 no define controles de nivel N1, por la razón que la sección~\ref{sec:controles-d4} establece.
+
+% ── C26 ──
+\fichacontrol{C26}{Política documentada de umbrales de detección y bloqueo}
+  {N2}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Definir y documentar, con anterioridad a la operación del sistema, los umbrales que cada escáner aplicará y el criterio que justifica cada valor.
+
+\fichaseccion{Justificación}
+Un umbral fijado después de conocer los resultados de la auditoría incorpora un sesgo que invalida la medición. El evaluador que observa que el sistema bloquea el noventa por ciento de los ataques con un umbral determinado, y ajusta ese umbral hasta alcanzar una cifra más favorable, no está midiendo la efectividad del sistema: está eligiendo la cifra que quiere reportar. El resultado no es reproducible ni comparable, y no acredita nada sobre la postura de seguridad.
+
+La declaración previa es lo que convierte la medición en evidencia. Un umbral documentado antes de la operación es un compromiso contrastable: el sistema opera con el valor declarado y la auditoría mide lo que ese valor produce, sin que el criterio pueda acomodarse a los datos.
+
+La Ley 21.663 exige evidencia técnica cuantificable sobre la gestión del riesgo. Una cifra obtenida con un criterio ajustado a posteriori no satisface esa exigencia, con independencia de cuán favorable sea.
+
+\fichaseccion{Guía de implementación}
+La política debe consignar, para cada escáner, el umbral aplicado, la evidencia sobre la que se derivó, la fecha de su fijación y el responsable de la decisión. Un umbral declarado sin justificación documenta el valor pero no el criterio, y no permite evaluar si el compromiso entre seguridad y usabilidad que representa es el que la organización quería asumir.
+
+La política debe versionarse. Los ajustes que C33, C38 y C41 introducen en niveles superiores modifican los umbrales, y la trazabilidad de esos cambios exige que cada versión de la política registre qué valor estuvo vigente y durante cuánto tiempo.
+
+\ficharelacionados{C03, C11, C17, C19 y C20 (escáneres con umbral configurable), cuyos valores esta política declara; C21 (externalización de la configuración), que establece que esos valores residan en artefactos inspeccionables; C33, C38 y C41 (ajustes dinámicos), que actualizan la política que este control establece.}
+
+% ── C27 ──
+\fichacontrol{C27}{Procedimiento de notificación de incidentes ante la autoridad}
+  {N2}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Establecer el procedimiento formal mediante el cual la organización notifica a las autoridades competentes los incidentes de seguridad que afecten al sistema RAG.
+
+\fichaseccion{Justificación}
+La Ley 21.663 impone a los sujetos obligados el deber de notificar los incidentes de ciberseguridad, con plazos y contenidos determinados. El cumplimiento de ese deber no admite improvisación: un procedimiento inexistente al momento del incidente produce una notificación tardía, incompleta o dirigida al destinatario equivocado, y el incumplimiento es imputable con independencia de que el incidente mismo no lo fuera.
+
+La razón por la que este control es de nivel N2, y no de un nivel superior, es que la obligación existe desde el momento en que el sistema entra en operación. No es una capacidad avanzada que la organización adquiera al madurar: es una condición de licitud de la operación.
+
+Un sistema RAG plantea, además, una dificultad de calificación que el procedimiento debe resolver por anticipado. No toda respuesta que expone contenido sensible constituye un incidente notificable, y la determinación exige un criterio establecido antes de que el caso se presente.
+
+\fichaseccion{Guía de implementación}
+El procedimiento debe identificar la autoridad competente, el plazo de notificación aplicable, el contenido exigido y el rol responsable de ejecutarla, conforme a la matriz que C50 instancia.
+
+Debe establecer el criterio de calificación de un evento como incidente notificable, distinguiéndolo de los eventos de seguridad que el sistema registra en su operación normal. Un bloqueo de salida no es un incidente; una fuga efectiva de datos personales del corpus probablemente lo sea. El criterio debe ser explícito y no depender del juicio de quien detecte el evento.
+
+El procedimiento debe ejercitarse. Una notificación que nunca se ha ensayado se ejecuta por primera vez bajo la presión de un incidente real, que es la peor condición posible para descubrir que el destinatario cambió o que el formato exigido es otro.
+
+\ficharelacionados{C47 (designación del responsable de seguridad), que es el rol que ejecuta la notificación; C23 (registro de decisiones de bloqueo), cuyos eventos alimentan la calificación; C55 (comunicación de riesgos residuales a la dirección).}
+
+% ── C28 ──
+\fichacontrol{C28}{Política de retención y eliminación de datos de sesión}
+  {N2}{Gobernanza}{Declarativo}{Ley 21.719}
+
+\fichaseccion{Propósito}
+Definir el plazo durante el cual los registros de sesión se conservan, el criterio que lo justifica y el procedimiento mediante el cual se eliminan al vencer.
+
+\fichaseccion{Justificación}
+Los controles de registro que este marco exige producen un artefacto que la organización no siempre reconoce como tal: un repositorio de las consultas que los usuarios formularon. Ese repositorio contiene datos personales, tanto por lo que las consultas dicen de quien las formula como por lo que pueden contener en su texto.
+
+La tensión es directa. La trazabilidad que la seguridad exige empuja hacia la conservación indefinida de los registros; el principio de limitación temporal que la Ley 21.719 establece empuja hacia su eliminación. Un sistema que aplica rigurosamente los controles de registro sin una política de retención construye, sin proponérselo, la base de datos personales cuya existencia la norma restringe.
+
+Este control resuelve la tensión mediante un plazo declarado. No elimina el conflicto, pero lo convierte en una decisión documentada que la organización asume, en lugar de una omisión que la expone.
+
+\fichaseccion{Guía de implementación}
+La política debe declarar el plazo de retención de cada clase de registro y el criterio que lo justifica: la finalidad para la que el dato se conserva y el tiempo durante el cual esa finalidad subsiste. Un plazo declarado sin finalidad es un plazo arbitrario, que la norma no admite.
+
+La eliminación debe ser efectiva y verificable. Un procedimiento que marca los registros como eliminados sin removerlos del soporte no satisface el control, y la verificación debe alcanzar a las copias de respaldo, que con frecuencia conservan lo que el sistema en producción ya eliminó.
+
+Los registros de latencia que C25 produce y los de acceso que C22 exige contienen datos de distinta naturaleza y pueden justificar plazos distintos. La política debe distinguirlos en lugar de aplicar un plazo único.
+
+\ficharelacionados{C25 (registro de latencia y metadatos), cuyos artefactos esta política gobierna; C52 (inventario de datos personales procesados), que debe incluir los registros de sesión; C22 (registro de acceso por sesión).}
+
+% ── C23 ──
+\fichacontrol{C23}{Registro de las decisiones de bloqueo}
+  {N3}{Detectivo}{Experimental}{LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Registrar cada decisión de bloqueo producida en la entrada o en la salida, identificando el componente que la originó y la etapa del flujo en que se produjo.
+
+\fichaseccion{Justificación}
+Este control es la contraparte de C31 en D4, y su alcance es más amplio: mientras aquel cubre los rechazos de la etapa de entrada, este cubre la totalidad de las decisiones de bloqueo del flujo, incluidas las de salida.
+
+Su función no es meramente documental. Un sistema con múltiples escáneres operando en distintas etapas produce bloqueos cuya atribución no es evidente: una solicitud rechazada pudo serlo por el límite de longitud, por el escáner de inyección, por el filtro de dominio o por el de coherencia. Sin registro atribuible, el operador observa una tasa de rechazo y no puede descomponerla.
+
+La atribución es, además, la condición sobre la que descansa la totalidad de las métricas de nivel N4. La tasa de rechazo por categoría que C34 mide, y la tasa de supresión por escáner que C42 mide, se calculan sobre los registros que este control produce. Un sistema que no los produce no puede alcanzar el nivel de gestión cuantitativa, con independencia de qué controles adicionales implemente.
+
+\fichaseccion{Guía de implementación}
+El registro debe consignar el identificador de la solicitud, el componente que originó el bloqueo, la etapa del flujo, la marca temporal y, cuando el componente opere con umbral, la puntuación que motivó la decisión.
+
+La puntuación es esencial y con frecuencia se omite. Un registro que consigna únicamente la decisión permite contar bloqueos; uno que consigna la puntuación permite observar la distribución de las solicitudes respecto del umbral, y por tanto evaluar si el corte está bien situado. Sin ella, los ajustes de nivel N4 operan a ciegas.
+
+El registro debe producirse en un formato estructurado y no como texto libre, dado que su destino es la agregación por categoría.
+
+\ficharelacionados{C31 (registro del motivo de bloqueo en la entrada), del que este control es la extensión al flujo completo; C34 y C42 (métricas de nivel N4), que se calculan sobre estos registros; C25 (registro de latencia y metadatos), con el que comparte el artefacto de destino.}
+
+% ── C25 ──
+\fichacontrol{C25}{Registro de latencia y metadatos de las solicitudes}
+  {N3}{Detectivo}{Experimental}{LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Registrar la latencia y los metadatos de cada solicitud procesada, en un formato que permita el análisis posterior del comportamiento del flujo de inferencia.
+
+\fichaseccion{Justificación}
+La latencia es un canal de información que la seguridad tiende a ignorar. Un flujo cuyo tiempo de respuesta se aparta sistemáticamente de su distribución habitual está procesando algo distinto de lo habitual: entradas de longitud anómala, consultas que activan escáneres que normalmente no se activan, o volúmenes de recuperación superiores a los previstos.
+
+La detección de esas condiciones no requiere inspeccionar el contenido de las solicitudes. La forma de la distribución de latencias las revela, y lo hace con independencia de que el contenido esté cifrado, ofuscado o codificado.
+
+Este control tiene, además, una función que el marco explicita en su capítulo de métricas: la Latencia Agregada de Seguridad, que cuantifica el costo operacional de la capa defensiva, se calcula sobre los registros que este control produce. Sin ellos, la organización implementa controles cuyo costo en usabilidad no puede medir, y por tanto no puede justificar ante quien lo padece.
+
+\fichaseccion{Guía de implementación}
+El registro debe consignar, para cada solicitud, la latencia total y la de cada etapa que el flujo atraviesa, de modo que el costo pueda atribuirse a los componentes que lo producen. Una latencia total sin desglose acredita que el sistema es lento pero no permite determinar qué lo hace lento.
+
+Debe consignar asimismo el identificador de la versión del corpus vigente, que C62 registra, para permitir la correlación entre una respuesta y el estado del corpus que la produjo.
+
+El artefacto de destino debe ser persistente y estructurado, y su retención debe someterse a la política que C28 establece: los registros de solicitud contienen datos personales.
+
+\ficharelacionados{C23 (registro de decisiones de bloqueo), con el que comparte el artefacto de destino; C62 (registro versionado del corpus), cuya versión este registro consigna; C28 (política de retención), que gobierna la conservación de estos registros; C24 (monitoreo de patrones anómalos), que opera sobre ellos.}
+
+% ── C29 ──
+\fichacontrol{C29}{Plan de pruebas de seguridad ofensiva previo al despliegue}
+  {N3}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Documentar y ejecutar, con anterioridad a cada despliegue del sistema, un plan de pruebas de seguridad ofensiva que verifique la eficacia de los controles implementados.
+
+\fichaseccion{Justificación}
+Los controles de fuente de evidencia experimental no se acreditan por inspección. Su presencia en el código es constatable; su eficacia no. Un escáner correctamente desplegado con un umbral mal calibrado, o un filtro que no alcanza a los fragmentos cuyo metadato falta, exhiben una configuración impecable y una protección inexistente.
+
+La auditoría ofensiva es el único mecanismo que convierte la implementación declarada en efectividad medida. Es, además, lo que distingue este marco de un cuestionario de cumplimiento: la exigencia de que los controles se prueben contra ataques reales y no se den por implementados porque el código los contiene.
+
+La condición de que el plan preceda a cada despliegue, y no que se ejecute periódicamente, responde a que un cambio en el sistema puede degradar la eficacia de un control sin modificarlo. Una actualización del modelo base altera la respuesta a las mismas instrucciones adversariales; una reindexación del corpus altera la cobertura del filtro de sensibilidad. En ambos casos el control permanece idéntico y su eficacia cambia.
+
+\fichaseccion{Guía de implementación}
+El plan debe cubrir la totalidad de los vectores de amenaza que el marco declara, y ejecutar sobre cada uno un conjunto de pruebas cuya composición esté documentada y sea reproducible entre despliegues. Una auditoría cuya composición varía no permite comparar resultados y no detecta degradación.
+
+Debe incluir un conjunto de consultas legítimas de control, ejecutadas bajo las mismas condiciones. Sin él, las pruebas miden la tasa de bloqueo pero no la tasa de falsos positivos, y una configuración que bloquea todo aparece como perfectamente segura.
+
+El criterio de aceptación debe declararse antes de ejecutar el plan. Un despliegue cuyos resultados se evalúan sin criterio previo se aprueba siempre, porque el criterio se construye para admitir el resultado obtenido.
+
+\ficharelacionados{C26 (política de umbrales), cuyos valores esta auditoría pone a prueba; C35, C36, C43 y C39 (actualizaciones de nivel N5), cuyo despliegue este plan debe verificar; C60 (evaluación formal de riesgos), que consume los resultados de esta auditoría.}
+
+% ── C24 ──
+\fichacontrol{C24}{Monitoreo de patrones de consulta anómalos}
+  {N4}{Detectivo}{Experimental}{LLM02:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Detectar, mediante el análisis del comportamiento de una sesión a lo largo del tiempo, los patrones de consulta que sugieren reconocimiento o extracción sistemática del corpus.
+
+\fichaseccion{Justificación}
+Los controles de las subdimensiones anteriores evalúan cada solicitud de forma aislada. Esa evaluación es ciega a la clase de ataque cuya firma no está en ninguna consulta individual sino en la secuencia: un atacante que formula cien consultas legítimas, cada una de las cuales el sistema responde correctamente, y que reconstruye el corpus a partir de la unión de las respuestas.
+
+Ninguna de esas consultas activa un escáner. Todas son coherentes, todas pertenecen al dominio, todas obtienen respuestas fundamentadas en el contexto recuperado. El ataque es invisible en el eje de la solicitud individual y evidente en el eje temporal: una sesión que barre sistemáticamente el espacio semántico del corpus exhibe un comportamiento que ninguna consulta legítima produce.
+
+Este control es de nivel N4 porque su implementación exige la capacidad analítica que los niveles inferiores no requieren: no basta con registrar, hay que correlacionar los registros a lo largo de las sesiones y establecer qué constituye un comportamiento anómalo respecto de una línea base de comportamiento normal.
+
+\fichaseccion{Guía de implementación}
+El análisis debe operar sobre los registros que C25 y C22 producen, correlacionando las consultas por sesión y evaluando su distribución en el espacio semántico del corpus. La señal de reconocimiento es la cobertura: una sesión cuyas consultas se distribuyen uniformemente sobre el corpus, en lugar de concentrarse en la vecindad de un tema, exhibe el comportamiento de un barrido y no el de una consulta.
+
+La detección exige una línea base de comportamiento normal, construida sobre el tráfico legítimo del sistema. Un umbral fijado sin esa línea base produce alertas sobre usuarios que simplemente consultan mucho.
+
+La correlación por sesión presupone que las sesiones son identificables, condición que C22 establece. Un sistema sin control de acceso por sesión no puede atribuir un conjunto de consultas a un mismo actor, y este control opera sobre una agregación que no distingue a un atacante de la suma de sus usuarios legítimos.
+
+\ficharelacionados{C22 (control de acceso por sesión), que es la condición previa para la atribución; C25 (registro de latencia y metadatos), que provee los datos; C12 (detección de reconocimiento en la consulta individual), cuya cobertura este control extiende al eje temporal.}
+
+% ── C45 ──
+\fichacontrol{C45}{Actualización de los patrones de detección de anomalías}
+  {N5}{Detectivo}{Declarativo}{LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Revisar y actualizar los criterios de detección de comportamiento anómalo ante la documentación de nuevas técnicas de reconocimiento y extracción.
+
+\fichaseccion{Justificación}
+Los patrones de comportamiento anómalo que un sistema reconoce son los que se documentaron hasta el momento de su configuración. Una técnica de extracción que distribuye las consultas entre múltiples sesiones, que las espacia en el tiempo para no exceder los umbrales de frecuencia, o que las intercala con tráfico legítimo, evade una detección calibrada contra el barrido concentrado.
+
+La línea base de comportamiento normal, además, se desplaza. El tráfico legítimo de un sistema cambia a medida que cambian sus usuarios y sus casos de uso, y un criterio de anomalía calibrado contra una línea base antigua produce falsos positivos crecientes sobre un comportamiento que se volvió habitual.
+
+Este control atiende ambas derivas: la de la amenaza y la del tráfico legítimo.
+
+\fichaseccion{Guía de implementación}
+El ciclo de revisión debe recalibrar la línea base de comportamiento normal sobre el tráfico reciente, y no solo incorporar los nuevos patrones de amenaza. Una actualización que agrega criterios de detección sin actualizar la referencia contra la que se contrastan eleva la tasa de falsos positivos sin mejorar la cobertura.
+
+Toda actualización debe verificarse sobre los registros históricos: un criterio nuevo debe reconocer los incidentes pasados que el criterio anterior no reconoció, y no debe alertar sobre las sesiones legítimas que el histórico contiene.
+
+\ficharelacionados{C24 (monitoreo de patrones anómalos), cuyos criterios este control actualiza; C35 y C43 (actualización de los patrones de detección en entrada y salida), con los que comparte el ciclo de vigilancia; C46 (incorporación de retroalimentación al sistema de alertas).}
+
+% ── C46 ──
+\fichacontrol{C46}{Incorporación de retroalimentación de incidentes al sistema de alertas}
+  {N5}{Correctivo}{Declarativo}{LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025}
+
+\fichaseccion{Propósito}
+Incorporar de forma sistemática y periódica al sistema de alertas los criterios derivados de los incidentes efectivamente ocurridos.
+
+\fichaseccion{Justificación}
+Un incidente que el sistema de monitoreo no alertó es una falla del monitoreo, con independencia de que los controles preventivos lo hayan permitido. La distinción importa: un ataque que atraviesa la capa defensiva y además pasa inadvertido es cualitativamente peor que uno que la atraviesa y se detecta, porque el segundo admite respuesta y el primero no.
+
+Este control cierra el ciclo del nivel N5 en D4. C45 actualiza los criterios de detección contra las amenazas documentadas externamente; C46 los actualiza contra las que la organización padeció. La diferencia es que estas últimas están acreditadas: se sabe que funcionaron contra esta configuración, este corpus y este modelo.
+
+El control es correctivo y no detectivo, a diferencia de los demás de su subdimensión, porque su objeto no es detectar sino reparar la capacidad de detección que el incidente demostró insuficiente.
+
+\fichaseccion{Guía de implementación}
+Todo incidente debe producir un análisis retrospectivo que determine si el sistema de monitoreo lo señaló, y en caso negativo, qué criterio lo habría señalado. Ese criterio es el que la actualización incorpora.
+
+La verificación de la actualización debe realizarse contra los registros históricos que contienen el incidente: el criterio nuevo debe alertar sobre él. Una actualización que no se contrasta contra el caso que la motivó no acredita haber cerrado la brecha.
+
+La periodicidad debe declararse. Un proceso que se ejecuta únicamente cuando ocurre un incidente deja de operar durante los períodos sin incidentes, que son precisamente aquellos en que la línea base debe recalibrarse.
+
+\ficharelacionados{C44 (incorporación de retroalimentación a los patrones de sanitización), del que este control es el equivalente en D4; C45 (actualización de los patrones de detección de anomalías), con el que comparte el destino; C59 (incorporación de lecciones aprendidas al ciclo de gobernanza), que es su correlato organizacional.}
+
+\section{D5: Gobernanza organizacional}
+\label{sec:fichas-d5}
+
+Los controles de esta sección capturan las obligaciones institucionales que sustentan la operación segura del sistema RAG. Su verificación es exclusivamente declarativa, conforme a lo establecido en la sección~\ref{sec:verificado-declarado}. Ninguno de ellos produce traza observable en el flujo de inferencia: su cumplimiento se acredita mediante los artefactos documentales que cada ficha identifica.
+
+% ── C47 ──
+\fichacontrol{C47}{Designación del responsable de la seguridad del sistema}
+  {N1}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Designar formalmente a una persona o cargo como responsable de la seguridad del sistema RAG, con atribuciones documentadas.
+
+\fichaseccion{Justificación}
+Un sistema sin responsable designado es un sistema cuya seguridad es responsabilidad de todos, condición que en la práctica significa que no lo es de nadie. Los controles de este marco exigen decisiones: qué umbral fijar, cuándo notificar un incidente, si un despliegue puede proceder tras los resultados de la auditoría. Ninguna de esas decisiones se toma sola.
+
+La Ley 21.663 exige la designación como condición del régimen de deberes que impone. La obligación de notificar un incidente presupone un sujeto obligado a hacerlo; la de mantener un inventario de activos presupone un sujeto que responda por su vigencia.
+
+Este control es de nivel N1 porque su ausencia bloquea el resto de la subdimensión. La totalidad de los controles de D5 asigna responsabilidades, y todas ellas convergen en el rol que este control establece.
+
+\fichaseccion{Guía de implementación}
+La designación debe constar en un acto formal de la organización, con identificación del cargo, sus atribuciones y la fecha. Las atribuciones deben incluir, como mínimo, la potestad de suspender un despliegue cuya auditoría no satisfizo el criterio de aceptación.
+
+Una designación sin esa potestad produce un responsable que responde por decisiones que no puede tomar. Es el modo más frecuente en que este control se implementa nominalmente y se incumple en sustancia.
+
+\ficharelacionados{C50 (instanciación de la matriz RACI), donde este rol se articula con los demás; C27 (procedimiento de notificación), que este rol ejecuta; C29 (plan de pruebas ofensivas), cuya aprobación este rol otorga.}
+
+% ── C48 ──
+\fichacontrol{C48}{Declaración del sistema RAG como activo de información}
+  {N1}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Declarar formalmente el sistema RAG como activo de información sujeto a las obligaciones de la normativa vigente.
+
+\fichaseccion{Justificación}
+Un sistema que la organización no ha declarado como activo de información queda fuera de su marco de gestión de riesgos. No aparece en el inventario, no se le asigna responsable, no se le aplican las políticas de seguridad, y las obligaciones que la normativa impone sobre los activos de información no se le atribuyen.
+
+Esa omisión es más frecuente de lo que parece en los sistemas basados en modelos de lenguaje. La organización que despliega un asistente sobre su documentación tiende a percibirlo como una herramienta de productividad y no como un sistema que procesa, indexa y expone su corpus documental. La percepción es errada: el sistema RAG es precisamente un mecanismo de acceso a información, y su superficie de exposición es el corpus completo.
+
+La declaración es el acto que incorpora el sistema al marco de gestión. Sin ella, los controles de este marco pueden implementarse técnicamente y carecer de todo respaldo institucional.
+
+\fichaseccion{Guía de implementación}
+La declaración debe consignar la finalidad del sistema, el corpus que indexa, la clasificación de sensibilidad de ese corpus y las obligaciones normativas que le resultan aplicables.
+
+La clasificación del corpus es el elemento crítico. Un sistema RAG hereda la clasificación del contenido más sensible que indexa, no la del promedio: un corpus mayoritariamente público que contiene un subconjunto reservado es, a efectos de la declaración, un sistema que procesa información reservada.
+
+\ficharelacionados{C61 (inventario de activos), que materializa esta declaración en un registro; C52 (inventario de datos personales), que la complementa cuando el corpus los contiene; C57 (clasificación del sistema por criticidad).}
+
+% ── C49 ──
+\fichacontrol{C49}{Política de uso aceptable del sistema}
+  {N1}{Gobernanza}{Declarativo}{Ley 21.719}
+
+\fichaseccion{Propósito}
+Establecer una política de uso aceptable del sistema RAG, accesible a la totalidad de sus usuarios, que declare los usos autorizados y los prohibidos.
+
+\fichaseccion{Justificación}
+Los controles técnicos de este marco bloquean lo que reconocen. Un usuario que formula una consulta inapropiada pero no adversarial, que introduce datos personales de terceros en el texto de su pregunta, o que emplea el sistema para un fin ajeno a su propósito, no activa ningún escáner: su conducta no es un ataque, es un uso indebido.
+
+La política es el único mecanismo que gobierna esa clase de conducta. Establece el marco de lo autorizado y, al hacerlo, convierte el uso indebido en un incumplimiento imputable en lugar de una zona gris.
+
+La Ley 21.719 exige que el tratamiento de datos personales se realice para finalidades determinadas y comunicadas. Un sistema cuyos usuarios ingresan datos personales en sus consultas, sin que exista política que lo regule, realiza un tratamiento cuya finalidad nadie declaró.
+
+\fichaseccion{Guía de implementación}
+La política debe declarar explícitamente la prohibición de introducir datos personales de terceros en las consultas, cuando el sistema no esté destinado a procesarlos, y advertir que las consultas se registran conforme a la política de retención que C28 establece.
+
+La accesibilidad es parte del control y no un accesorio. Una política que existe en un repositorio que los usuarios no consultan no gobierna nada. Debe presentarse en el punto de uso.
+
+\ficharelacionados{C28 (política de retención de datos de sesión), cuyo contenido esta política debe comunicar; C52 (inventario de datos personales); C51 (procedimiento de gestión de accesos).}
+
+% ── C61 ──
+\fichacontrol{C61}{Inventario de activos del sistema RAG}
+  {N1}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Mantener un inventario actualizado de los activos que integran el sistema RAG: el modelo de inferencia y su versión, el corpus y su versión, la base vectorial y su configuración, y los componentes de la capa defensiva con sus umbrales activos.
+
+\fichaseccion{Justificación}
+Los controles de verificación de integridad de este marco, tanto sobre el modelo como sobre el corpus y el prompt del sistema, operan sobre componentes que deben estar formalmente identificados. Sin inventario, esos controles verifican elementos cuya identidad no fue declarada: no es posible afirmar que se verificó el modelo correcto si no está registrado qué modelo debía estar en ejecución.
+
+El inventario materializa la declaración que C48 establece. Aquella declara que el sistema es un activo; este identifica de qué está hecho.
+
+Su función se manifiesta con claridad ante un incidente. La investigación exige saber qué modelo estaba desplegado, qué versión del corpus estaba indexada y con qué umbrales operaban los escáneres. Un sistema sin inventario obliga a reconstruir esa información desde el estado actual, que ya no es el que produjo el incidente.
+
+\fichaseccion{Guía de implementación}
+El inventario debe registrar, como mínimo, los cinco activos que la sección~\ref{sec:activos} define, con los atributos que permitan identificar unívocamente la instancia desplegada de cada uno.
+
+Debe actualizarse ante todo cambio en la versión del modelo, la composición del corpus o la configuración de la capa defensiva. Un inventario que se actualiza periódicamente y no ante los cambios documenta un estado que ya no existe.
+
+Su formato no está prescrito. Admite desde un registro documental hasta un inventario derivado automáticamente de la configuración del despliegue, siendo esta última la forma que mejor garantiza su vigencia.
+
+\ficharelacionados{C48 (declaración del sistema como activo), que este inventario materializa; C30 (verificación de procedencia del modelo) y C62 (registro versionado del corpus), que son sus componentes técnicos; C26 (política de umbrales), cuyos valores el inventario consigna.}
+
+% ── C50 ──
+\fichacontrol{C50}{Instanciación de la matriz RACI}
+  {N2}{Gobernanza}{Declarativo}{Ley 21.663}
+
+\fichaseccion{Propósito}
+Adoptar la matriz RACI que el marco define, asignando cada rol genérico a las personas o cargos concretos de la organización.
+
+\fichaseccion{Justificación}
+La matriz que este marco provee define roles genéricos: responsable de seguridad, operador técnico, propietario del corpus, dirección y cumplimiento. Esos roles son funciones, no personas, y su valor es nulo mientras no se les atribuya un sujeto.
+
+La instanciación es la condición que hace auditables los controles de D5. Una actividad cuya responsabilidad recae sobre el rol de propietario del corpus, en una organización que no ha designado a nadie como tal, es una actividad sin responsable, con independencia de que la matriz la asigne.
+
+Este control es, en consecuencia, el que convierte el resto de D5 de un catálogo de buenas intenciones en un conjunto de obligaciones exigibles.
+
+\fichaseccion{Guía de implementación}
+La asignación debe recaer sobre cargos y no sobre personas, para que sobreviva a la rotación del personal. Una matriz instanciada con nombres propios se vuelve obsoleta ante la primera renuncia.
+
+Un mismo cargo puede asumir más de un rol en organizaciones pequeñas, condición admisible salvo en un caso: el rol que ejecuta una actividad y el que rinde cuentas por ella no deben coincidir cuando la actividad es la aprobación de un despliegue o la calificación de un incidente. Esa coincidencia elimina la supervisión que la matriz busca establecer.
+
+\ficharelacionados{C47 (designación del responsable de seguridad), que es el primero de los roles a instanciar; C53 (programa de capacitación), dirigido a los roles que esta matriz define; la totalidad de los controles de D5, cuyas responsabilidades esta matriz distribuye.}
+
+% ── C51 ──
+\fichacontrol{C51}{Procedimiento de gestión de accesos}
+  {N2}{Gobernanza}{Declarativo}{Ley 21.719}
+
+\fichaseccion{Propósito}
+Establecer el procedimiento formal que regula las altas, bajas y modificaciones de los permisos de acceso al sistema RAG y a su corpus.
+
+\fichaseccion{Justificación}
+El control técnico de acceso por sesión, que C22 establece, determina qué puede consultar cada sesión según las autorizaciones que se le atribuyen. De dónde provienen esas autorizaciones, quién las otorga y cuándo se revocan es lo que este control gobierna.
+
+Un sistema con control de acceso técnicamente impecable y sin procedimiento de gestión acumula autorizaciones que nadie revoca. El usuario que cambió de función conserva el acceso a un corpus que ya no le corresponde; el que dejó la organización conserva credenciales activas. La falla no está en el mecanismo sino en el proceso que lo alimenta.
+
+La Ley 21.719 exige que el acceso a los datos personales se limite a quienes lo requieran para la finalidad declarada. Un acceso que subsiste tras extinguirse la finalidad que lo justificaba constituye un tratamiento sin fundamento.
+
+\fichaseccion{Guía de implementación}
+El procedimiento debe declarar quién autoriza el acceso, sobre qué criterio, y qué eventos disparan su revisión o revocación: el cambio de función, el término de la relación laboral, y la reclasificación del corpus que el usuario consulta.
+
+Debe establecer una revisión periódica de los accesos vigentes, cuyo resultado se documente. La revocación por evento captura los cambios que la organización registra; la revisión periódica captura los que se le pasaron.
+
+\ficharelacionados{C22 (control de acceso por sesión al vector store), que es el mecanismo que este procedimiento alimenta; C08 (clasificación por sensibilidad), cuya política determina qué autorizaciones son necesarias; C52 (inventario de datos personales).}
+
+% ── C52 ──
+\fichacontrol{C52}{Inventario de datos personales procesados}
+  {N2}{Gobernanza}{Declarativo}{Ley 21.719}
+
+\fichaseccion{Propósito}
+Documentar el inventario de los datos personales que el sistema RAG procesa, conforme a las obligaciones del responsable de tratamiento.
+
+\fichaseccion{Justificación}
+Un sistema RAG procesa datos personales por dos canales que la organización tiende a evaluar de forma desigual. El primero es el corpus: los documentos indexados pueden contener nombres, identificadores y circunstancias personales, y el sistema los expone en sus respuestas. El segundo son los registros de sesión, que los controles de este marco exigen producir y que documentan qué consultó cada usuario.
+
+El segundo canal es el que se omite. La organización que inventaría el contenido personal de su corpus rara vez inventaría los registros que su propia capa de trazabilidad genera, pese a que estos últimos constituyen un tratamiento tan sujeto a la norma como el primero.
+
+El inventario es la condición previa de la totalidad de las obligaciones que la Ley 21.719 impone. No es posible aplicar el principio de finalidad, ni el de limitación temporal, ni atender un derecho de acceso, sobre datos cuya existencia no está documentada.
+
+\fichaseccion{Guía de implementación}
+El inventario debe cubrir ambos canales: el contenido personal del corpus, con su clasificación de sensibilidad, y los registros de sesión que el sistema produce, identificando qué campos de esos registros constituyen datos personales.
+
+Debe consignar, para cada categoría, la finalidad del tratamiento, la base de licitud que lo habilita y el plazo de conservación que C28 establece. Un inventario que enumera los datos sin declarar su finalidad no satisface la obligación.
+
+\ficharelacionados{C28 (política de retención), cuyos plazos este inventario consigna; C08 (clasificación del corpus por sensibilidad), que identifica el contenido personal indexado; C49 (política de uso aceptable), que advierte a los usuarios sobre el tratamiento de sus consultas.}
+
+% ── C53 ──
+\fichacontrol{C53}{Programa de capacitación en seguridad de sistemas LLM}
+  {N3}{Gobernanza}{Declarativo}{NIST AI RMF}
+
+\fichaseccion{Propósito}
+Establecer un programa formal de capacitación en seguridad de sistemas basados en modelos de lenguaje, dirigido a los roles que la matriz RACI define.
+
+\fichaseccion{Justificación}
+Los vectores de amenaza que este marco aborda no tienen precedente en la experiencia de seguridad de la mayoría de las organizaciones. Un profesional formado en seguridad de aplicaciones reconoce una inyección de código y no necesariamente una inyección de instrucciones; sabe que la entrada del usuario no es confiable y no necesariamente que el contenido recuperado del propio corpus tampoco lo es.
+
+La consecuencia práctica es que los controles de este marco se implementan sin comprenderse. Un operador que despliega un escáner de inyección sin entender qué evade y qué no lo calibra mal; un propietario de corpus que desconoce el vector de intoxicación no evalúa la procedencia de los documentos que incorpora.
+
+La capacitación es lo que convierte la implementación en competencia. Es, además, la única defensa contra la clase de falla que ningún control técnico cubre: la decisión desinformada de quien opera el sistema.
+
+\fichaseccion{Guía de implementación}
+El programa debe diferenciarse por rol. El operador técnico requiere formación en la calibración de umbrales y en la interpretación de los registros; el propietario del corpus, en la clasificación de sensibilidad y en los vectores de intoxicación; la dirección, en la interpretación de las métricas que el marco produce.
+
+El programa debe someterse al mismo ciclo de actualización que los controles técnicos, dado que las técnicas que enseña evolucionan a la misma velocidad que las que los controles bloquean.
+
+\ficharelacionados{C50 (instanciación de la matriz RACI), que define los roles a los que este programa se dirige; C58 (revisión proactiva del marco), cuyo ciclo este programa debe seguir; C35, C43 y C45 (actualización de los patrones de detección), cuya ejecución competente este programa habilita.}
+
+% ── C54 ──
+\fichacontrol{C54}{Ciclo de revisión periódica del marco}
+  {N3}{Gobernanza}{Declarativo}{NIST AI RMF}
+
+\fichaseccion{Propósito}
+Definir y ejecutar un ciclo de revisión del marco LLM-Sec aplicado al sistema, con una frecuencia mínima anual.
+
+\fichaseccion{Justificación}
+Una evaluación de madurez es una fotografía. Acredita el estado del sistema en el momento en que se realizó, y su vigencia decae desde entonces: el corpus crece, el modelo se actualiza, los umbrales se ajustan, y el nivel verificado que se reportó deja de corresponder al sistema que está en operación.
+
+La revisión periódica es lo que convierte la evaluación en un instrumento de gestión y no en un certificado. Su ausencia produce el fenómeno más común en los marcos de madurez: una organización que reporta un nivel alcanzado hace tres años sobre un sistema que ya no es el que se evaluó.
+
+La frecuencia mínima anual no responde a un criterio técnico sino a la práctica establecida en los marcos de gestión de riesgos. Un sistema con un ritmo de cambio superior exige un ciclo más frecuente.
+
+\fichaseccion{Guía de implementación}
+La revisión debe reejecutar la evaluación completa que el capítulo~\ref{ch:guia} establece, incluidas las métricas, y no limitarse a constatar que los controles siguen presentes. Un control presente cuya eficacia decayó produce un nivel que ya no corresponde.
+
+Debe disparse además ante los eventos que alteran la eficacia de los controles sin modificarlos: el cambio del modelo base, la reindexación del corpus y la modificación de la política de clasificación.
+
+El resultado debe documentarse y comunicarse conforme a C55, incluso cuando la revisión no arroje cambios: la constatación de que el nivel se mantiene es un resultado tan reportable como su variación.
+
+\ficharelacionados{C60 (evaluación formal de riesgos), con la que este ciclo debe coordinarse; C55 (comunicación de riesgos residuales), que reporta los resultados; C29 (plan de pruebas ofensivas), que provee la evidencia experimental de la revisión.}
+
+% ── C55 ──
+\fichacontrol{C55}{Comunicación de los riesgos residuales a la dirección}
+  {N3}{Gobernanza}{Declarativo}{NIST AI RMF}
+
+\fichaseccion{Propósito}
+Documentar y comunicar formalmente a la dirección de la organización los riesgos que subsisten tras la implementación de los controles.
+
+\fichaseccion{Justificación}
+Ningún conjunto de controles elimina el riesgo. El sistema que implementa la totalidad de este marco sigue expuesto: los escáneres operan con umbrales que admiten falsos negativos, la detección semántica depende de un dominio que puede resultarle opaco, y el modelo puede obedecer una instrucción adversarial que ningún control reconoció.
+
+Ese riesgo residual es de la organización, no del equipo técnico. Su aceptación es una decisión de dirección, y solo puede tomarse si la dirección lo conoce. Un equipo que implementa controles y no comunica lo que queda fuera de su alcance ha asumido, por omisión, una decisión que no le corresponde.
+
+La comunicación no es un trámite. Es el acto mediante el cual el riesgo se traslada al nivel en que puede aceptarse, mitigarse con recursos adicionales o transferirse.
+
+\fichaseccion{Guía de implementación}
+El informe debe expresar el riesgo en términos que la dirección pueda evaluar: qué información puede exponerse, ante qué clase de ataque y con qué probabilidad estimada, en lugar de enumerar los controles no implementados.
+
+Debe incluir el costo de mitigación de cada riesgo residual, dado que la decisión que la dirección debe tomar es de asignación de recursos y no de aprobación técnica.
+
+La aceptación del riesgo residual debe constar formalmente. Un informe entregado y no respondido no acredita aceptación, y ante un incidente la responsabilidad revierte a quien lo emitió.
+
+\ficharelacionados{C60 (evaluación formal de riesgos), que produce el análisis que este control comunica; C56 (métricas de desempeño de la gobernanza), que acompaña el informe; C54 (ciclo de revisión periódica), cuya cadencia este control sigue.}
+
+% ── C60 ──
+\fichacontrol{C60}{Evaluación formal de riesgos del sistema}
+  {N3}{Gobernanza}{Declarativo}{NIST AI RMF}
+
+\fichaseccion{Propósito}
+Realizar y documentar una evaluación formal de los riesgos del sistema RAG, con frecuencia mínima anual o ante cambios significativos en el modelo o el corpus.
+
+\fichaseccion{Justificación}
+La valoración de riesgo que este marco presenta en la sección~\ref{sec:valoracion-riesgo} corresponde a un sistema RAG genérico. Es un punto de partida, no un sustituto de la evaluación que cada organización debe realizar sobre su propio despliegue.
+
+Los factores que la alteran son concretos. Un corpus que contiene datos personales bajo régimen normativo eleva el impacto de la exfiltración; un sistema expuesto a usuarios externos eleva la probabilidad de explotación; un modelo desplegado en infraestructura de terceros incorpora activos que la valoración genérica no contempla.
+
+La evaluación propia es, además, lo que determina qué perfil organizacional aplica y por tanto qué nivel objetivo la organización debe alcanzar. Sin ella, la elección del perfil es arbitraria.
+
+\fichaseccion{Guía de implementación}
+La evaluación debe emplear las escalas que la sección~\ref{sec:valoracion-riesgo} define, y recalcular la probabilidad y el impacto de cada activo según el contexto de despliegue. Adoptar la valoración genérica sin recalcularla no satisface este control.
+
+Debe disparse ante todo cambio significativo, entendiendo por tal la sustitución del modelo, la incorporación de documentos que alteren la clasificación del corpus, y la modificación del perímetro de exposición del sistema.
+
+El resultado debe expresarse como una matriz de riesgo actualizada, cuya comparación con la de la evaluación anterior evidencie la evolución del riesgo.
+
+\ficharelacionados{C48 (declaración del sistema como activo), que es su presupuesto; C55 (comunicación de riesgos residuales), que reporta sus resultados; C57 (clasificación por criticidad), que se deriva de esta evaluación; C29 (plan de pruebas ofensivas), que provee evidencia experimental sobre la eficacia de los controles evaluados.}
+
+% ── C56 ──
+\fichacontrol{C56}{Métricas de desempeño de la gobernanza de seguridad}
+  {N4}{Gobernanza}{Declarativo}{Proyecto Ley IA}
+
+\fichaseccion{Propósito}
+Establecer métricas de desempeño de la gobernanza de seguridad del sistema y reportarlas periódicamente a la dirección.
+
+\fichaseccion{Justificación}
+Las métricas que el capítulo~\ref{ch:metricas} define cuantifican la postura técnica del sistema. No cuantifican la gobernanza: cuántos de los controles declarativos están efectivamente implementados, con qué latencia se cierran las brechas identificadas, cuántos incidentes se notificaron dentro del plazo, cuántos accesos se revocaron ante los eventos que lo exigían.
+
+Esa segunda dimensión es la que determina si la organización opera el marco o solo lo implementó. Un sistema con excelente tasa de filtrado y un proceso de gobernanza que no cierra brechas exhibe una seguridad que decae desde el momento de su medición.
+
+El nivel N4 se define por la gestión cuantitativa, y este control extiende esa exigencia al plano organizacional: la gobernanza deja de evaluarse por la existencia de sus artefactos y pasa a evaluarse por su desempeño.
+
+\fichaseccion{Guía de implementación}
+Las métricas deben incluir, como mínimo, el Porcentaje de Controles Cumplidos calculado sobre los controles declarativos, el tiempo medio de cierre de las brechas identificadas y la tasa de cumplimiento de los plazos que los procedimientos establecen.
+
+El reporte debe dirigirse a la dirección y no al equipo técnico. Su función es habilitar la decisión de asignación de recursos, que es la que resuelve las brechas que la gobernanza no cierra por falta de capacidad.
+
+\ficharelacionados{C34 y C42 (métricas técnicas de nivel N4), que este control complementa en el plano organizacional; C55 (comunicación de riesgos residuales), con la que este reporte se coordina; el capítulo~\ref{ch:metricas}, cuya métrica de Porcentaje de Controles Cumplidos este control emplea.}
+
+% ── C57 ──
+\fichacontrol{C57}{Clasificación del sistema por nivel de criticidad}
+  {N4}{Gobernanza}{Declarativo}{Proyecto Ley IA}
+
+\fichaseccion{Propósito}
+Implementar un proceso formal de gestión de riesgos de inteligencia artificial que clasifique el sistema RAG según su nivel de criticidad.
+
+\fichaseccion{Justificación}
+El proyecto de ley de inteligencia artificial en tramitación establece un régimen de obligaciones diferenciado según el nivel de riesgo del sistema. La clasificación determina qué deberes le resultan aplicables, y es en consecuencia el acto que define el alcance del cumplimiento.
+
+Un sistema RAG puede quedar en categorías muy distintas según su despliegue. El asistente que responde consultas sobre documentación técnica interna no plantea el mismo riesgo que aquel que informa decisiones sobre personas, y el régimen que les corresponde difiere en consecuencia.
+
+Anticipar la clasificación es, además, una decisión de prudencia. Una organización que la realiza antes de que la norma entre en vigor conoce el régimen que le será aplicable y dispone del tiempo para prepararse; una que espera al vencimiento del plazo lo enfrenta con el sistema ya desplegado.
+
+\fichaseccion{Guía de implementación}
+La clasificación debe fundarse en la evaluación de riesgos que C60 produce, y debe considerar el uso efectivo del sistema y no solo el declarado: un sistema desplegado para consulta documental cuyos usuarios lo emplean para fundamentar decisiones sobre personas opera en la categoría del uso real.
+
+El proceso debe revisar la clasificación ante cambios en el uso del sistema, en su corpus o en el marco normativo aplicable.
+
+\ficharelacionados{C60 (evaluación formal de riesgos), sobre la que esta clasificación se funda; C48 (declaración del sistema como activo); C58 (revisión proactiva del marco ante cambios normativos), que actualiza esta clasificación cuando la norma evoluciona.}
+
+% ── C58 ──
+\fichacontrol{C58}{Revisión proactiva del marco ante cambios del entorno}
+  {N5}{Gobernanza}{Declarativo}{Proyecto Ley IA}
+
+\fichaseccion{Propósito}
+Revisar y actualizar proactivamente la aplicación del marco LLM-Sec ante cambios normativos, la aparición de nuevas amenazas o la modificación del modelo base.
+
+\fichaseccion{Justificación}
+El marco que este documento especifica se ancla a un estado del conocimiento y de la normativa. Ambos cambian. Los vectores de amenaza que el OWASP LLM Top 10 reconoce evolucionan con cada revisión; el proyecto de ley de inteligencia artificial se aprobará con un contenido que aún no es definitivo; las técnicas de ataque que hoy no existen serán las que en dos años definan la superficie de exposición.
+
+La distinción entre este control y C54 es la de la iniciativa. C54 establece un ciclo de revisión periódica, que se ejecuta con una cadencia declarada. C58 exige la revisión ante el evento, con independencia de dónde esté el ciclo: una amenaza documentada en el mes posterior a la revisión anual no espera once meses a la siguiente.
+
+El nivel N5 se define por la anticipación. Una organización que solo revisa cuando le toca revisar reacciona; una que revisa cuando el entorno cambia se adelanta.
+
+\fichaseccion{Guía de implementación}
+La organización debe identificar las fuentes de vigilancia que dispararán la revisión: las publicaciones normativas, los catálogos de amenazas del área y los avisos del proveedor del modelo.
+
+La revisión debe evaluar si el conjunto de controles del marco sigue siendo suficiente, y no solo si los controles implementados siguen operando. Un vector de amenaza nuevo puede exigir un control que el marco no contempla, y en ese caso la respuesta correcta es extender el marco y no forzar el nuevo riesgo dentro de una categoría existente.
+
+\ficharelacionados{C54 (ciclo de revisión periódica), que este control complementa con la revisión ante evento; C35, C40, C43 y C45 (actualizaciones técnicas ante nuevas amenazas), que este control coordina; C57 (clasificación por criticidad), que se revisa ante cambio normativo.}
+
+% ── C59 ──
+\fichacontrol{C59}{Incorporación de lecciones aprendidas al ciclo de gobernanza}
+  {N5}{Gobernanza}{Declarativo}{Proyecto Ley IA}
+
+\fichaseccion{Propósito}
+Incorporar las lecciones derivadas de los incidentes de seguridad al ciclo de mejora continua del marco de gobernanza.
+
+\fichaseccion{Justificación}
+Un incidente revela más que la falla técnica que lo permitió. Revela también las fallas de gobernanza que la hicieron posible: el umbral que nadie recalibró, la brecha que se identificó y no se cerró, la revisión que se pospuso, el acceso que no se revocó.
+
+Los controles de nivel N5 de las demás subdimensiones incorporan la retroalimentación del incidente a los mecanismos técnicos. Este la incorpora al proceso. La distinción importa porque una organización puede cerrar la brecha técnica que el incidente explotó y conservar intacto el proceso que permitió que esa brecha existiera, con lo que el próximo incidente ocurrirá por una vía distinta y la misma causa.
+
+Este control cierra el ciclo del marco completo. Es el punto en que la evidencia de la falla retorna a la gobernanza que debe prevenirla.
+
+\fichaseccion{Guía de implementación}
+El análisis retrospectivo debe alcanzar la cadena de decisiones que precedió al incidente, y no detenerse en el control que falló. Debe determinar si la falla respondió a un control ausente, a uno mal calibrado, a una brecha conocida y no cerrada, o a un proceso que no se ejecutó.
+
+El resultado debe traducirse en modificaciones de los procedimientos, de las periodicidades declaradas o de la asignación de responsabilidades, y no únicamente en la corrección técnica del control que falló.
+
+El registro del análisis y de las modificaciones aplicadas constituye el artefacto que la auditoría documental inspecciona, y es la evidencia de que el ciclo de mejora continua opera.
+
+\ficharelacionados{C44 y C46 (incorporación de retroalimentación en D3 y D4), de los que este control es el correlato organizacional; C27 (procedimiento de notificación), cuya ejecución el análisis retrospectivo evalúa; C58 (revisión proactiva del marco), con el que comparte el ciclo de mejora.}
