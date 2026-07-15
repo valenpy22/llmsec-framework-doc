@@ -1,0 +1,140 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Control de versiones}{2}{chapter*.1}%
+\contentsline {chapter}{\numberline {1}Introducción}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Propósito del documento}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Alcance}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Audiencia}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Referencias normativas}{2}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Convenciones del documento}{2}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Modelo de madurez}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Identificación de activos del sistema RAG}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Valoración de riesgo por activo}{4}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Escala de valoración}{5}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Matriz de riesgo}{5}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Interpretación y priorización}{6}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Trazabilidad hacia las subdimensiones}{7}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Estructura del modelo}{7}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Niveles de madurez}{7}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Subdimensiones}{8}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}D1: Protección de entrada}{9}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}D2: Control de contexto RAG}{10}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}D3: Gestión de salida}{11}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}D4: Monitoreo y trazabilidad}{12}{subsection.2.5.4}%
+\contentsline {subsection}{\numberline {2.5.5}D5: Gobernanza organizacional}{13}{subsection.2.5.5}%
+\contentsline {section}{\numberline {2.6}Nivel verificado y nivel declarado}{15}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Regla de piso mínimo}{15}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Taxonomía de controles}{17}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Estructura de los controles}{17}{section.3.1}%
+\contentsline {section}{\numberline {3.2}D1: Protección de entrada}{18}{section.3.2}%
+\contentsline {section}{\numberline {3.3}D2: Control de contexto RAG}{20}{section.3.3}%
+\contentsline {section}{\numberline {3.4}D3: Gestión de salida}{23}{section.3.4}%
+\contentsline {section}{\numberline {3.5}D4: Monitoreo y trazabilidad}{24}{section.3.5}%
+\contentsline {section}{\numberline {3.6}D5: Gobernanza organizacional}{25}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Distribución de controles}{27}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Perfiles organizacionales}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}P1: PYME}{29}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Trayectoria recomendada}{30}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Controles prioritarios}{30}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}P2: Mediana/Grande}{31}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Trayectoria recomendada}{31}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Controles prioritarios}{31}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}P3: Crítica regulada}{32}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Trayectoria recomendada}{33}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Obligaciones regulatorias aplicables}{33}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Controles prioritarios}{33}{subsection.4.3.3}%
+\contentsline {chapter}{\numberline {5}Métricas de evaluación}{35}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Tasa de Filtrado de Ataques (TFA)}{35}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Fuentes de \textit {ground truth} por vector}{36}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Prueba estadística}{36}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Tasa de falsos positivos}{36}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Correspondencia con ISO/IEC 25010:2023}{37}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Latencia Agregada de Seguridad (LAS)}{37}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Prueba estadística}{37}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Correspondencia con ISO/IEC 25010:2023}{37}{subsection.5.2.2}%
+\contentsline {section}{\numberline {5.3}Porcentaje de Controles Cumplidos (PCC)}{37}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Definición del universo}{38}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Correspondencia con ISO/IEC 25010:2023}{38}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Nivel de Consistencia de Protección (NCP)}{39}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Criterios de validez}{39}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Correspondencia con ISO/IEC 25010:2023}{39}{subsection.5.4.2}%
+\contentsline {chapter}{\numberline {6}Guía de evaluación}{40}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Flujo de evaluación}{40}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Criterios de verificación por fuente de evidencia}{40}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Configuración}{41}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Experimental}{41}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Declarativo}{41}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}Matriz RACI}{41}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Ciclo de mejora}{42}{section.6.4}%
+\contentsline {chapter}{\numberline {A}Resumen de controles por nivel}{43}{appendix.Alph1}%
+\contentsline {chapter}{\numberline {B}Mapeo normativo}{48}{appendix.Alph2}%
+\contentsline {chapter}{\numberline {C}Fichas técnicas de control}{51}{appendix.Alph3}%
+\contentsline {section}{\numberline {C.1}Controles transversales}{51}{section.Alph3.1}%
+\contentsline {subsection}{\numberline {C.1.1}C06: Delimitación explícita del contenido recuperado}{51}{subsection.Alph3.1.1}%
+\contentsline {subsection}{\numberline {C.1.2}C13: Límite de volumen de contexto inyectado}{52}{subsection.Alph3.1.2}%
+\contentsline {subsection}{\numberline {C.1.3}C15: Definición del rol y las restricciones del modelo}{53}{subsection.Alph3.1.3}%
+\contentsline {subsection}{\numberline {C.1.4}C16: Proxy de seguridad independiente del generador}{54}{subsection.Alph3.1.4}%
+\contentsline {subsection}{\numberline {C.1.5}C17: Fundamentación de la respuesta en el contexto recuperado}{55}{subsection.Alph3.1.5}%
+\contentsline {subsection}{\numberline {C.1.6}C21: Externalización de la configuración de tiempo de ejecución}{56}{subsection.Alph3.1.6}%
+\contentsline {subsection}{\numberline {C.1.7}C30: Verificación de procedencia e integridad del modelo}{56}{subsection.Alph3.1.7}%
+\contentsline {section}{\numberline {C.2}D1: Protección de entrada}{57}{section.Alph3.2}%
+\contentsline {subsection}{\numberline {C.2.1}C01: Límite de longitud del prompt de entrada}{57}{subsection.Alph3.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}C02: Sanitización de caracteres de control en la entrada}{58}{subsection.Alph3.2.2}%
+\contentsline {subsection}{\numberline {C.2.3}C03: Bloqueo de intentos de inyección de instrucciones}{59}{subsection.Alph3.2.3}%
+\contentsline {subsection}{\numberline {C.2.4}C04: Restricción de la consulta al dominio autorizado}{60}{subsection.Alph3.2.4}%
+\contentsline {subsection}{\numberline {C.2.5}C05: No inclusión del prompt del sistema en la respuesta}{61}{subsection.Alph3.2.5}%
+\contentsline {subsection}{\numberline {C.2.6}C31: Registro estructurado del motivo de bloqueo}{62}{subsection.Alph3.2.6}%
+\contentsline {subsection}{\numberline {C.2.7}C32: Verificación de integridad del prompt del sistema}{63}{subsection.Alph3.2.7}%
+\contentsline {subsection}{\numberline {C.2.8}C33: Ajuste dinámico de los umbrales de detección}{64}{subsection.Alph3.2.8}%
+\contentsline {subsection}{\numberline {C.2.9}C34: Medición de la tasa de rechazo por categoría de ataque}{65}{subsection.Alph3.2.9}%
+\contentsline {subsection}{\numberline {C.2.10}C35: Actualización de los patrones de detección}{65}{subsection.Alph3.2.10}%
+\contentsline {subsection}{\numberline {C.2.11}C36: Revisión del prompt del sistema ante cambios del modelo}{66}{subsection.Alph3.2.11}%
+\contentsline {section}{\numberline {C.3}D2: Control de contexto RAG}{67}{section.Alph3.3}%
+\contentsline {subsection}{\numberline {C.3.1}C07: Restricción al uso exclusivo del contexto recuperado}{67}{subsection.Alph3.3.1}%
+\contentsline {subsection}{\numberline {C.3.2}C10: Control de la cantidad de fragmentos recuperados}{68}{subsection.Alph3.3.2}%
+\contentsline {subsection}{\numberline {C.3.3}C08: Clasificación y filtrado del corpus por sensibilidad}{69}{subsection.Alph3.3.3}%
+\contentsline {subsection}{\numberline {C.3.4}C09: Verificación de integridad de los fragmentos recuperados}{70}{subsection.Alph3.3.4}%
+\contentsline {subsection}{\numberline {C.3.5}C11: Validación de coherencia de la consulta}{71}{subsection.Alph3.3.5}%
+\contentsline {subsection}{\numberline {C.3.6}C14: Exclusión de metadatos en la recuperación}{72}{subsection.Alph3.3.6}%
+\contentsline {subsection}{\numberline {C.3.7}C22: Control de acceso por sesión al vector store}{73}{subsection.Alph3.3.7}%
+\contentsline {subsection}{\numberline {C.3.8}C12: Detección de reconocimiento sistemático del corpus}{74}{subsection.Alph3.3.8}%
+\contentsline {subsection}{\numberline {C.3.9}C62: Registro versionado del corpus indexado}{75}{subsection.Alph3.3.9}%
+\contentsline {subsection}{\numberline {C.3.10}C37: Medición de la tasa de recuperación de fragmentos sensibles}{76}{subsection.Alph3.3.10}%
+\contentsline {subsection}{\numberline {C.3.11}C38: Ajuste de los parámetros de recuperación}{76}{subsection.Alph3.3.11}%
+\contentsline {subsection}{\numberline {C.3.12}C39: Actualización del particionamiento ante reclasificación}{77}{subsection.Alph3.3.12}%
+\contentsline {subsection}{\numberline {C.3.13}C40: Revisión proactiva del corpus ante nuevas amenazas}{78}{subsection.Alph3.3.13}%
+\contentsline {section}{\numberline {C.4}D3: Gestión de salida}{79}{section.Alph3.4}%
+\contentsline {subsection}{\numberline {C.4.1}C18: Sanitización de caracteres de control en la salida}{79}{subsection.Alph3.4.1}%
+\contentsline {subsection}{\numberline {C.4.2}C19: Bloqueo de contenido sensible por patrones deterministas}{80}{subsection.Alph3.4.2}%
+\contentsline {subsection}{\numberline {C.4.3}C20: Detección semántica de contenido sensible en la salida}{81}{subsection.Alph3.4.3}%
+\contentsline {subsection}{\numberline {C.4.4}C41: Ajuste dinámico de los umbrales de sanitización}{82}{subsection.Alph3.4.4}%
+\contentsline {subsection}{\numberline {C.4.5}C42: Medición de la tasa de supresión de contenido confidencial}{83}{subsection.Alph3.4.5}%
+\contentsline {subsection}{\numberline {C.4.6}C43: Actualización de los patrones de detección en la salida}{84}{subsection.Alph3.4.6}%
+\contentsline {subsection}{\numberline {C.4.7}C44: Incorporación de retroalimentación de incidentes a los patrones}{84}{subsection.Alph3.4.7}%
+\contentsline {section}{\numberline {C.5}D4: Monitoreo y trazabilidad}{85}{section.Alph3.5}%
+\contentsline {subsection}{\numberline {C.5.1}C26: Política documentada de umbrales de detección y bloqueo}{85}{subsection.Alph3.5.1}%
+\contentsline {subsection}{\numberline {C.5.2}C27: Procedimiento de notificación de incidentes ante la autoridad}{86}{subsection.Alph3.5.2}%
+\contentsline {subsection}{\numberline {C.5.3}C28: Política de retención y eliminación de datos de sesión}{87}{subsection.Alph3.5.3}%
+\contentsline {subsection}{\numberline {C.5.4}C23: Registro de las decisiones de bloqueo}{88}{subsection.Alph3.5.4}%
+\contentsline {subsection}{\numberline {C.5.5}C25: Registro de latencia y metadatos de las solicitudes}{89}{subsection.Alph3.5.5}%
+\contentsline {subsection}{\numberline {C.5.6}C29: Plan de pruebas de seguridad ofensiva previo al despliegue}{90}{subsection.Alph3.5.6}%
+\contentsline {subsection}{\numberline {C.5.7}C24: Monitoreo de patrones de consulta anómalos}{91}{subsection.Alph3.5.7}%
+\contentsline {subsection}{\numberline {C.5.8}C45: Actualización de los patrones de detección de anomalías}{92}{subsection.Alph3.5.8}%
+\contentsline {subsection}{\numberline {C.5.9}C46: Incorporación de retroalimentación de incidentes al sistema de alertas}{93}{subsection.Alph3.5.9}%
+\contentsline {section}{\numberline {C.6}D5: Gobernanza organizacional}{94}{section.Alph3.6}%
+\contentsline {subsection}{\numberline {C.6.1}C47: Designación del responsable de la seguridad del sistema}{94}{subsection.Alph3.6.1}%
+\contentsline {subsection}{\numberline {C.6.2}C48: Declaración del sistema RAG como activo de información}{95}{subsection.Alph3.6.2}%
+\contentsline {subsection}{\numberline {C.6.3}C49: Política de uso aceptable del sistema}{96}{subsection.Alph3.6.3}%
+\contentsline {subsection}{\numberline {C.6.4}C61: Inventario de activos del sistema RAG}{97}{subsection.Alph3.6.4}%
+\contentsline {subsection}{\numberline {C.6.5}C50: Instanciación de la matriz RACI}{97}{subsection.Alph3.6.5}%
+\contentsline {subsection}{\numberline {C.6.6}C51: Procedimiento de gestión de accesos}{98}{subsection.Alph3.6.6}%
+\contentsline {subsection}{\numberline {C.6.7}C52: Inventario de datos personales procesados}{99}{subsection.Alph3.6.7}%
+\contentsline {subsection}{\numberline {C.6.8}C53: Programa de capacitación en seguridad de sistemas LLM}{100}{subsection.Alph3.6.8}%
+\contentsline {subsection}{\numberline {C.6.9}C54: Ciclo de revisión periódica del marco}{101}{subsection.Alph3.6.9}%
+\contentsline {subsection}{\numberline {C.6.10}C55: Comunicación de los riesgos residuales a la dirección}{102}{subsection.Alph3.6.10}%
+\contentsline {subsection}{\numberline {C.6.11}C60: Evaluación formal de riesgos del sistema}{103}{subsection.Alph3.6.11}%
+\contentsline {subsection}{\numberline {C.6.12}C56: Métricas de desempeño de la gobernanza de seguridad}{103}{subsection.Alph3.6.12}%
+\contentsline {subsection}{\numberline {C.6.13}C57: Clasificación del sistema por nivel de criticidad}{104}{subsection.Alph3.6.13}%
+\contentsline {subsection}{\numberline {C.6.14}C58: Revisión proactiva del marco ante cambios del entorno}{105}{subsection.Alph3.6.14}%
+\contentsline {subsection}{\numberline {C.6.15}C59: Incorporación de lecciones aprendidas al ciclo de gobernanza}{106}{subsection.Alph3.6.15}%
+\contentsline {chapter}{\numberline {D}Glosario}{108}{appendix.Alph4}%
+\contentsline {chapter}{Referencias}{111}{appendix*.21}%
