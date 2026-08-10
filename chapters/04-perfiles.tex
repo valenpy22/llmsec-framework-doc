@@ -5,7 +5,10 @@ Los perfiles organizacionales orientan la interpretación del nivel de madurez a
 
 Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia \textbf{Configuración} se priorizan sobre los de tipo \textbf{Experimental} y \textbf{Declarativo}, dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado es relativo al contexto de cada perfil y se define en la nota informativa de cada tabla.
 
-\begin{fichabox}{Resumen de perfiles}
+\begin{table}[H]
+  \centering
+  \caption{Resumen de perfiles organizacionales.}
+  \label{tab:resumen-perfiles}
   \begin{tabularx}{\textwidth}{@{}c l C{2cm} C{2cm} X@{}}
     \toprule
     \textbf{Perfil} & \textbf{Tipo} & \textbf{Nivel mínimo} & \textbf{Nivel objetivo} & \textbf{Descripción} \\
@@ -15,7 +18,7 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
     P3 & Crítica regulada   & N4 & N5 & Infraestructura crítica, sector regulado \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 
 \section{P1: Micro/Pequeña empresa}

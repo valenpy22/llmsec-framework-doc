@@ -333,6 +333,7 @@
 }
 
 \renewcommand{\contentsname}{Contenidos}
+\AtBeginDocument{\renewcommand{\tablename}{Tabla}}
 
 \newfontfamily{\titlefont}{Roboto Black}
 

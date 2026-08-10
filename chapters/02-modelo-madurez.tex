@@ -41,7 +41,10 @@ A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataqu
 
 Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, lo que determina qué vectores de amenaza le son aplicables y, en consecuencia, qué subdimensión del modelo de madurez lo cubre. Las subdimensiones D1 a D5 referidas en este mapeo se definen formalmente en la sección \ref{sec:subdimensiones}; se anticipan aquí únicamente para establecer la trazabilidad entre activos de información y estructura del modelo.
 
-\begin{fichabox}{Mapeo activo $\rightarrow$ subdimensión}
+\begin{table}[H]
+  \centering
+  \caption{Mapeo de activos de información a subdimensiones y vectores de amenaza.}
+  \label{tab:mapeo-activos-subdim}
   \begin{tabularx}{\textwidth}{@{} c l l l @{}}
     \toprule
     \textbf{Activo} & \textbf{Etapa del flujo} & \textbf{Subdimensión} & \textbf{Vectores} \\
@@ -53,7 +56,7 @@ Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, 
     A5 (Acceso y sesión)      & Transversal          & D4, D5       & Transversal \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{6pt}
 
@@ -68,7 +71,10 @@ Una vez identificados los activos de información, el paso siguiente consiste en
 
 La valoración emplea dos ejes, cada uno con tres niveles:
 
-\begin{fichabox}{Escalas de probabilidad e impacto}
+\begin{table}[H]
+  \centering
+  \caption{Escalas de valoración de probabilidad e impacto.}
+  \label{tab:escalas-riesgo}
   \begin{tabularx}{\textwidth}{@{} c l >{\raggedright\arraybackslash}X @{\hspace{1.5em}} c l >{\raggedright\arraybackslash}X @{}}
     \toprule
     \multicolumn{3}{@{}l}{\textbf{Probabilidad de explotación}} &
@@ -82,7 +88,7 @@ La valoración emplea dos ejes, cada uno con tres niveles:
     1 & Bajo  & Impacto operacional contenido, sin exposición de datos. \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \subsection{Matriz de riesgo}
 
@@ -182,7 +188,10 @@ La valoración revela tres hallazgos que condicionan el diseño del modelo de ma
 
 La valoración de riesgo justifica la estructura del modelo de madurez de la siguiente forma:
 
-\begin{fichabox}{Riesgo $\rightarrow$ subdimensión $\rightarrow$ densidad de controles}
+\begin{table}[H]
+  \centering
+  \caption{Trazabilidad entre riesgo valorado y densidad de controles.}
+  \label{tab:trazabilidad-riesgo}
   \begin{tabularx}{\textwidth}{@{} c l c c c @{}}
     \toprule
     \textbf{Activo} & \textbf{Riesgo} & \textbf{Subdimensión} & \textbf{Controles} & \textbf{Prioridad} \\
@@ -194,7 +203,7 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
     A5 (Acceso y sesión)  & Medio (3) & D4, D5 & 9 + 15 & Media \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{6pt}
 
@@ -246,9 +255,12 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
 \section{Subdimensiones}
 \label{sec:subdimensiones}
 
-El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. El siguiente cuadro sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura.
+El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura.
 
-\begin{fichabox}{Subdimensiones del modelo LLM-Sec}
+\begin{table}[H]
+  \centering
+  \caption{Subdimensiones del modelo LLM-Sec.}
+  \label{tab:subdimensiones}
   \begin{tabularx}{\textwidth}{@{}c l l X@{}}
     \toprule
     \textbf{ID} & \textbf{Nombre} & \textbf{OWASP} & \textbf{Captura} \\
@@ -260,7 +272,7 @@ El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de 
     D5 & Gobernanza organizacional & ---           & Roles, políticas y cultura de seguridad \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \begin{figure}[H]
   \centering
@@ -288,7 +300,10 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
   \end{tabularx}
 \end{fichabox}
 
-\begin{fichabox}{Entradas y salidas del proceso D1}
+\begin{table}[H]
+  \centering
+  \caption{Entradas y salidas del proceso D1: Protección de entrada.}
+  \label{tab:es-d1}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l l X l @{}}
     \toprule
@@ -313,7 +328,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       --- \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{8pt}
 
@@ -341,7 +356,10 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
   \end{tabularx}
 \end{fichabox}
 
-\begin{fichabox}{Entradas y salidas del proceso D2}
+\begin{table}[H]
+  \centering
+  \caption{Entradas y salidas del proceso D2: Control de contexto RAG.}
+  \label{tab:es-d2}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.10\hsize\raggedright\arraybackslash}X >{\hsize=0.90\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
@@ -365,7 +383,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       --- \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{8pt}
 
@@ -394,7 +412,10 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
   \end{tabularx}
 \end{fichabox}
 
-\begin{fichabox}{Entradas y salidas del proceso D3}
+\begin{table}[H]
+  \centering
+  \caption{Entradas y salidas del proceso D3: Gestión de salida.}
+  \label{tab:es-d3}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.15\hsize\raggedright\arraybackslash}X >{\hsize=0.85\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
@@ -418,7 +439,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       --- \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{8pt}
 
@@ -447,7 +468,10 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
   \end{tabularx}
 \end{fichabox}
 
-\begin{fichabox}{Entradas y salidas del proceso D4}
+\begin{table}[H]
+  \centering
+  \caption{Entradas y salidas del proceso D4: Monitoreo y trazabilidad.}
+  \label{tab:es-d4}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.20\hsize\raggedright\arraybackslash}X >{\hsize=0.80\hsize\raggedright\arraybackslash}X l @{}}
     \toprule
@@ -471,7 +495,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       --- \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{8pt}
 
@@ -501,7 +525,10 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
   \end{tabularx}
 \end{fichabox}
 
-\begin{fichabox}{Entradas y salidas del proceso D5}
+\begin{table}[H]
+  \centering
+  \caption{Entradas y salidas del proceso D5: Gobernanza organizacional.}
+  \label{tab:es-d5}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.10\hsize\raggedright\arraybackslash}X >{\hsize=0.90\hsize\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.2cm} @{}}
     \toprule
@@ -529,7 +556,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       Roles definidos \\
     \bottomrule
   \end{tabularx}
-\end{fichabox}
+\end{table}
 
 \vspace{8pt}
 
