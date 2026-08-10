@@ -1,0 +1,12 @@
+# Artefactos de compilación LaTeX
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.toc
+*.lot
+*.lof
+*.synctex.gz
