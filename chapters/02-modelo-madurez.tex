@@ -1,13 +1,13 @@
 \chapter{Modelo de madurez}
 \label{ch:modelo-madurez}
 
-El modelo de madurez es el componente del marco LLM-Sec que asigna a un sistema RAG un nivel en una escala ordinal según la solidez de sus controles de seguridad. Su construcción sigue tres pasos: la identificación de los activos que el sistema expone, la valoración del riesgo asociado a cada uno, y la definición de las subdimensiones y niveles sobre los cuales se realiza la evaluación. Las dos primeras secciones establecen el perímetro y la priorización; las restantes especifican la estructura del modelo, los seis niveles de madurez, las cinco subdimensiones y la regla de agregación del nivel global.
+El modelo de madurez es el componente del marco LLM-Sec que asigna a un sistema RAG un nivel en una escala ordinal según la solidez de sus controles de seguridad. Su construcción sigue tres pasos: la identificación de los activos de información que el sistema expone, la valoración del riesgo asociado a cada uno, y la definición de las subdimensiones y niveles sobre los cuales se realiza la evaluación. Las dos primeras secciones establecen el perímetro y la priorización; las restantes especifican la estructura del modelo, los seis niveles de madurez, las cinco subdimensiones y la regla de agregación del nivel global.
 
 
-\section{Identificación de activos del sistema RAG}
+\section{Identificación de activos de información del sistema RAG}
 \label{sec:activos}
 
-Toda evaluación de seguridad requiere, como paso previo a la definición de controles, la identificación de los activos sobre los cuales opera el riesgo. Esta práctica está establecida en el NIST CSF 2.0, cuya función \textit{Identify} define la gestión de activos como condición necesaria antes de seleccionar e implementar medidas de protección. En consecuencia, esta sección declara los activos del sistema RAG que el marco LLM-Sec tiene por objeto proteger, delimitando el perímetro de evaluación sobre el cual se articulan los componentes del marco.
+Toda evaluación de seguridad requiere, como paso previo a la definición de controles, la identificación de los activos de información sobre los cuales opera el riesgo. Esta práctica está establecida en el NIST CSF 2.0, cuya función \textit{Identify} define la gestión de activos como condición necesaria antes de seleccionar e implementar medidas de protección. En consecuencia, esta sección declara los activos del sistema RAG que el marco LLM-Sec tiene por objeto proteger, delimitando el perímetro de evaluación sobre el cual se articulan los componentes del marco. En este documento, el término activos de información se emplea en el sentido amplio de la norma ISO/IEC 27002:2022, que comprende tanto la información misma como los componentes tecnológicos que la procesan, almacenan y transportan, distinguiéndolo así del concepto contable de activo.
 
 A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataque distribuida en múltiples componentes encadenados, cada uno de los cuales constituye un activo susceptible de ser comprometido de forma independiente. La Tabla~\ref{tab:activos} presenta los cinco activos identificados, su descripción funcional dentro del flujo RAG y el riesgo principal asociado a cada uno.
 
@@ -62,7 +62,7 @@ Este mapeo justifica la existencia de exactamente cinco subdimensiones y no un n
 \section{Valoración de riesgo por activo}
 \label{sec:valoracion-riesgo}
 
-Una vez identificados los activos, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663, que lo formula en términos de \textbf{probabilidad de ocurrencia} de un incidente y el \textbf{impacto de sus consecuencias}. Esta formulación exige que la valoración no sea cualitativa sino cuantificable, lo que justifica el uso de una matriz de riesgo como instrumento de priorización.
+Una vez identificados los activos de información, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663, que lo formula en términos de \textbf{probabilidad de ocurrencia} de un incidente y el \textbf{impacto de sus consecuencias}. Esta formulación exige que la valoración no sea cualitativa sino cuantificable, lo que justifica el uso de una matriz de riesgo como instrumento de priorización.
 
 \subsection{Escala de valoración}
 
@@ -202,7 +202,7 @@ Esta trazabilidad garantiza que la distribución de controles del marco no es ar
 
 \section{Estructura del modelo}
 
-A partir de los activos identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
+A partir de los activos de información identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
 
 El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez estandarizado para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
 
@@ -271,7 +271,7 @@ El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de 
 
 \subsection{D1: Protección de entrada}
 
-La subdimensión D1 representa el primer punto de contacto entre el usuario y el sistema RAG, constituyendo la primera línea de defensa para garantizar una secuencia de acciones segura. Los activos sobre los que opera son los canales de entrada y el propio LLM, cuyo comportamiento puede ser manipulado si el prompt no es validado previamente.
+La subdimensión D1 representa el primer punto de contacto entre el usuario y el sistema RAG, constituyendo la primera línea de defensa para garantizar una secuencia de acciones segura. Los activos de información sobre los que opera son los canales de entrada y el propio LLM, cuyo comportamiento puede ser manipulado si el prompt no es validado previamente.
 
 La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d1} representa gráficamente el mismo flujo.
 
