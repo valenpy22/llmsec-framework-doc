@@ -10,7 +10,7 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
     \toprule
     \textbf{Perfil} & \textbf{Tipo} & \textbf{Nivel mínimo} & \textbf{Nivel objetivo} & \textbf{Descripción} \\
     \midrule
-    P1 & PYME              & N2 & N3 & Organizaciones pequeñas y medianas \\
+    P1 & Micro/Pequeña empresa & N2 & N3 & Organizaciones pequeñas y medianas \\
     P2 & Mediana/Grande     & N3 & N4 & Organizaciones con infraestructura formal \\
     P3 & Crítica regulada   & N4 & N5 & Infraestructura crítica, sector regulado \\
     \bottomrule
@@ -18,10 +18,10 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
 \end{fichabox}
 
 
-\section{P1: PYME}
+\section{P1: Micro/Pequeña empresa}
 \label{sec:perfil-p1}
 
-El perfil P1 está diseñado para pequeñas y medianas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
+El perfil P1 está diseñado para micro y pequeñas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
 
 Los perfiles del marco LLM-Sec clasifican a las organizaciones según su capacidad de seguridad, no según su categoría legal. La Ley 21.663 no establece un régimen específico para este perfil, de modo que una organización bajo P1 queda por lo general fuera de sus obligaciones reforzadas. Esto no la exime de la Ley 21.719 sobre protección de datos personales, cuyas obligaciones aplican con independencia del tamaño de la organización.
 
@@ -39,7 +39,7 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 
 \begin{table}[H]
   \centering
-  \caption{Controles prioritarios para el perfil P1 (PYME).}
+  \caption{Controles prioritarios para el perfil P1 (Micro/Pequeña empresa).}
   \label{tab:p1-prioridad}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} c c c l X @{}}
@@ -89,7 +89,7 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 \end{table}
 
 \begin{infobox}
-  El costo estimado es relativo al contexto PYME. \textbf{Bajo} indica
+  El costo estimado es relativo al contexto de micro y pequeña empresa. \textbf{Bajo} indica
   parametrización sin componentes adicionales. \textbf{Medio} indica
   despliegue o configuración de un componente nuevo (proxy, particiones).
   Los controles de D5 (gobernanza) aplican transversalmente a todos
