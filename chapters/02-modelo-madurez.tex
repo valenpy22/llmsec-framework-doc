@@ -39,7 +39,7 @@ A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataqu
 \end{tabularx}
 \end{table}
 
-Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, lo que determina qué vectores de amenaza le son aplicables y, en consecuencia, qué subdimensión del modelo de madurez lo cubre:
+Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, lo que determina qué vectores de amenaza le son aplicables y, en consecuencia, qué subdimensión del modelo de madurez lo cubre. Las subdimensiones D1 a D5 referidas en este mapeo se definen formalmente en la sección \ref{sec:subdimensiones}; se anticipan aquí únicamente para establecer la trazabilidad entre activos de información y estructura del modelo.
 
 \begin{fichabox}{Mapeo activo $\rightarrow$ subdimensión}
   \begin{tabularx}{\textwidth}{@{} c l l l @{}}
@@ -198,7 +198,7 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
 
 \vspace{6pt}
 
-Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria, sino proporcional al riesgo valorado de cada activo. Las subdimensiones con mayor densidad de controles (D1, D2, D3) corresponden a los activos con mayor nivel de riesgo, mientras que D4 y D5, asociadas a activos de riesgo medio, priorizan la observación y la gobernanza sobre la intervención directa.
+Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria, sino proporcional al riesgo valorado de cada activo. Las subdimensiones (sección \ref{sec:subdimensiones}) con mayor densidad de controles (D1, D2, D3) corresponden a los activos con mayor nivel de riesgo, mientras que D4 y D5, asociadas a activos de riesgo medio, priorizan la observación y la gobernanza sobre la intervención directa.
 
 \section{Estructura del modelo}
 
