@@ -7,7 +7,7 @@ El modelo de madurez es el componente del marco LLM-Sec que asigna a un sistema 
 \section{Identificación de activos de información del sistema RAG}
 \label{sec:activos}
 
-Toda evaluación de seguridad requiere, como paso previo a la definición de controles, la identificación de los activos de información sobre los cuales opera el riesgo. Esta práctica está establecida en el NIST CSF 2.0, cuya función \textit{Identify} define la gestión de activos como condición necesaria antes de seleccionar e implementar medidas de protección. En consecuencia, esta sección declara los activos del sistema RAG que el marco LLM-Sec tiene por objeto proteger, delimitando el perímetro de evaluación sobre el cual se articulan los componentes del marco. En este documento, el término activos de información se emplea en el sentido amplio de la norma ISO/IEC 27002:2022, que comprende tanto la información misma como los componentes tecnológicos que la procesan, almacenan y transportan, distinguiéndolo así del concepto contable de activo.
+Toda evaluación de seguridad requiere, como paso previo a la definición de controles, la identificación de los activos de información sobre los cuales opera el riesgo. Esta práctica está establecida en el NIST CSF 2.0 \cite{nistcsf}, cuya función \textit{Identify} define la gestión de activos como condición necesaria antes de seleccionar e implementar medidas de protección. En consecuencia, esta sección declara los activos del sistema RAG que el marco LLM-Sec tiene por objeto proteger, delimitando el perímetro de evaluación sobre el cual se articulan los componentes del marco. En este documento, el término activos de información se emplea en el sentido amplio de la norma ISO/IEC 27002:2022 \cite{iso27002}, que comprende tanto la información misma como los componentes tecnológicos que la procesan, almacenan y transportan, distinguiéndolo así del concepto contable de activo.
 
 A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataque distribuida en múltiples componentes encadenados, cada uno de los cuales constituye un activo susceptible de ser comprometido de forma independiente. La Tabla~\ref{tab:activos} presenta los cinco activos identificados, su descripción funcional dentro del flujo RAG y el riesgo principal asociado a cada uno.
 
@@ -34,7 +34,7 @@ A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataqu
     LLM01, LLM07 \\
   A5 & Mecanismos de acceso y sesión &
     Acceso no autorizado a información sensible por ausencia de control de identidad o segregación de permisos. &
-    NIST AI RMF \\
+    NIST AI RMF \cite{nistairmf} \\
   \bottomrule
 \end{tabularx}
 \end{table}
@@ -65,7 +65,7 @@ Este mapeo justifica la existencia de exactamente cinco subdimensiones y no un n
 \section{Valoración de riesgo por activo}
 \label{sec:valoracion-riesgo}
 
-Una vez identificados los activos de información, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663, que lo formula en términos de \textbf{probabilidad de ocurrencia} de un incidente y el \textbf{impacto de sus consecuencias}. Esta formulación exige que la valoración no sea cualitativa sino cuantificable, lo que justifica el uso de una matriz de riesgo como instrumento de priorización.
+Una vez identificados los activos de información, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663 \cite{ley21663}, que lo formula en términos de \textbf{probabilidad de ocurrencia} de un incidente y el \textbf{impacto de sus consecuencias}. Esta formulación exige que la valoración no sea cualitativa sino cuantificable, lo que justifica el uso de una matriz de riesgo como instrumento de priorización.
 
 \subsection{Escala de valoración}
 
@@ -172,7 +172,7 @@ La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\
 La valoración revela tres hallazgos que condicionan el diseño del modelo de madurez y la distribución de controles:
 
 \begin{enumerate}[leftmargin=2em]
-  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones D1 (Protección de entrada), D2 (Control de contexto RAG) y D3 (Gestión de salida) concentren el mayor volumen de controles en la taxonomía: 17, 18 y 10 respectivamente, frente a 9 de D4 y 15 de D5.
+  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones D1 (Protección de entrada), D2 (Control de contexto RAG) y D3 (Gestión de salida) concentren el mayor volumen de controles en la taxonomía: 17, 18 y 10 respectivamente, frente a 9 de D4 y 15 de D5.
 
   \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (18), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
 
@@ -211,9 +211,9 @@ Esta trazabilidad garantiza que la distribución de controles del marco no es ar
 
 \section{Estructura del modelo}
 
-A partir de los activos de información identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
+A partir de los activos de información identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG, conforme a los conceptos de evaluación de procesos de ISO/IEC 33001 \cite{iso33001}. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
 
-El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez estandarizado para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
+El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez estandarizado para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
 
 \section{Niveles de madurez}
 
@@ -255,7 +255,7 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
 \section{Subdimensiones}
 \label{sec:subdimensiones}
 
-El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura.
+El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura.
 
 \begin{table}[H]
   \centering

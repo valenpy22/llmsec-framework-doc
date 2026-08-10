@@ -26,7 +26,7 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
 
 El perfil P1 está diseñado para micro y pequeñas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
 
-Los perfiles del marco LLM-Sec clasifican a las organizaciones según su capacidad de seguridad, no según su categoría legal. La Ley 21.663 no establece un régimen específico para este perfil, de modo que una organización bajo P1 queda por lo general fuera de sus obligaciones reforzadas. Esto no la exime de la Ley 21.719 sobre protección de datos personales, cuyas obligaciones aplican con independencia del tamaño de la organización.
+Los perfiles del marco LLM-Sec clasifican a las organizaciones según su capacidad de seguridad, no según su categoría legal. La Ley 21.663 \cite{ley21663} no establece un régimen específico para este perfil, de modo que una organización bajo P1 queda por lo general fuera de sus obligaciones reforzadas. Esto no la exime de la Ley 21.719 \cite{ley21719} sobre protección de datos personales, cuyas obligaciones aplican con independencia del tamaño de la organización.
 
 \subsection{Trayectoria recomendada}
 
@@ -68,7 +68,7 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
     C21 & N1 & D1, D2 & Bajo &
       Variables de entorno para credenciales. \\
     C16 & N1 & D1, D2, D3 & Medio &
-      Desplegar proxy de seguridad (ej. LLM Guard). \\
+      Desplegar proxy de seguridad (ej. LLM Guard \cite{llmguard}). \\
     \midrule
     \multicolumn{5}{@{}l}{\textit{Fase siguiente
       (requiere proxy activo, niveles N2--N3)}} \\
