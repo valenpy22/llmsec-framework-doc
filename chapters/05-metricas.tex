@@ -21,13 +21,19 @@ independiente. La cuarta requiere los resultados de al menos dos
 configuraciones de seguridad distintas para establecer la correlación
 entre nivel de madurez y resistencia observada.
 
+\section{Fundamento del conjunto de métricas}
+\label{sec:fundamento-metricas}
+
+La selección de las cuatro métricas del marco sigue el enfoque Goal-Question-Metric \cite{gqm}: cada métrica se deriva de una pregunta de evaluación que operacionaliza el objetivo general del marco, esto es, evaluar cuantitativamente la postura de ciberseguridad de un sistema RAG con evidencia técnica verificable, conforme a la exigencia de la Ley 21.663 \cite{ley21663}. Las cuatro preguntas son complementarias y ninguna es reducible a las demás. 
+
+La TFA responde a la pregunta de eficacia: ¿en qué medida el sistema resiste los ataques dirigidos contra su flujo? Es la métrica primaria porque mide directamente el fenómeno que los controles existen para producir. La LAS responde a la pregunta de costo operacional: ¿qué sobrecarga introduce la protección? Sin ella, la eficacia sería reportada sin su contraparte de desempeño, ocultando configuraciones defensivas inviables en operación. El PCC responde a la pregunta de cobertura: ¿qué proporción de los controles definidos está efectivamente implementada? Vincula el resultado experimental con la taxonomía del marco, permitiendo atribuir la eficacia observada a controles constatables y no a resistencia accidental. El NCP responde a la pregunta de consistencia: ¿la mejora defensiva asociada al nivel asignado se sostiene en todos los vectores evaluados? Sin él, un promedio favorable podría ocultar una regresión en un vector específico, contradiciendo la lógica de piso mínimo del modelo de madurez (sección~\ref{sec:piso-minimo}).
+
+En conjunto, las cuatro métricas cubren eficacia, costo, cobertura y consistencia: las dos primeras caracterizan el comportamiento del sistema ante el ataque y ante el uso legítimo, y las dos segundas validan la coherencia entre ese comportamiento y el nivel de madurez asignado. La correspondencia de cada métrica con las características de calidad de ISO/IEC 25010:2023 se declara en la sección respectiva.
 
 \section{Tasa de Filtrado de Ataques (TFA)}
 \label{sec:tfa}
 
-La Tasa de Filtrado de Ataques cuantifica la proporción de intentos
-adversariales que el sistema resistió exitosamente, ya sea por acción
-de la capa defensiva o por resistencia intrínseca del modelo. Su fórmula es:
+La Tasa de Filtrado de Ataques cuantifica la proporción de intentos adversariales que el sistema resistió exitosamente, ya sea por acción de la capa defensiva o por resistencia intrínseca del modelo. Su fórmula es:
 
 \[
   \text{TFA} = \frac{TP}{TP + FN}
@@ -264,21 +270,17 @@ no se tradujo en mejora observable, lo que requiere análisis de causas
 antes de reportar el nivel.
 
 \subsection{Criterios de validez}
+\label{sec:criterios-validez}
 
-El marco considera que los resultados son coherentes con el modelo
-de madurez si se cumplen conjuntamente las siguientes condiciones:
+El marco considera que los resultados son coherentes con el modelo de madurez si se cumplen conjuntamente las siguientes condiciones. Cada umbral declara su origen: convención estadística establecida, decisión fundamentada del marco o derivación lógica del propio modelo.
 
 \begin{enumerate}[leftmargin=2em]
-  \item La mejora en TFA entre el escenario sin protección y el
-  escenario protegido es estadísticamente significativa ($p < 0{,}05$).
-  \item El PCC calculado sobre los controles verificables definidos hasta el nivel alcanzado en cada subdimensión es $\geq 90\%$.
-  \item NCP = 1{,}0, es decir, el incremento de nivel se asocia a
-  mejora no negativa en la totalidad de las suites evaluadas.
+  \item \textbf{La mejora en TFA entre el escenario sin protección y el escenario protegido es estadísticamente significativa ($p < 0{,}05$).} El umbral corresponde a la convención estándar de significancia en contraste de hipótesis \cite{asa2016}, adoptada sin modificación por no existir en el dominio razones para un nivel más o menos exigente. Conforme a las recomendaciones de la práctica estadística contemporánea, el valor $p$ debe reportarse junto al tamaño del efecto ($\Delta$TFA) y no como criterio único de relevancia.
+  \item \textbf{El PCC calculado sobre los controles verificables definidos hasta el nivel alcanzado en cada subdimensión es $\geq 90\,\%$.} Este umbral es una decisión del marco y su fundamento es el siguiente: dado que la asignación de nivel exige la satisfacción de la totalidad de los controles (sección~\ref{sec:piso-minimo}), el valor de referencia teórico es 100\,\%; el margen de tolerancia de hasta 10\,\% absorbe controles cuya verificación experimental se degrada por limitaciones del instrumento de auditoría o por dependencia del dominio de despliegue, sin que ello implique ausencia del control. Un PCC bajo el umbral señala una sobreestimación del nivel asignado; un PCC entre el umbral y el 100\,\% exige identificar y documentar los controles con evidencia degradada.
+  \item \textbf{NCP = 1{,}0.} Este valor no es un umbral elegido sino una derivación de la regla de piso mínimo: si la postura de seguridad es tan sólida como su componente más débil, un incremento de nivel que empeora la defensa en algún vector ($\Delta$TFA $< 0$ en alguna suite) contradice la asignación, con independencia de cuán favorable sea el promedio. Cualquier valor de aceptación inferior a 1{,}0 admitiría regresiones defensivas encubiertas por la agregación.
 \end{enumerate}
 
-El incumplimiento de cualquiera de estas condiciones no invalida el
-marco, pero requiere que el evaluador documente la discrepancia y
-analice sus causas antes de reportar el nivel asignado.
+El incumplimiento de cualquiera de estas condiciones no invalida el marco, pero requiere que el evaluador documente la discrepancia y analice sus causas antes de reportar el nivel asignado.
 
 \subsection{Correspondencia con ISO/IEC 25010:2023}
 
