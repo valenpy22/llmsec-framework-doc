@@ -31,6 +31,7 @@
 \RequirePackage{hyperref}
 \RequirePackage{caption}
 \RequirePackage{float}
+\RequirePackage{needspace}
 \RequirePackage{parskip}
 \RequirePackage{lastpage}
 \RequirePackage{amssymb}

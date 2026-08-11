@@ -22,6 +22,8 @@ Todos los controles de un mismo nivel tienen peso equivalente dentro de su subdi
 
 Un control transversal pertenece a más de una subdimensión y conserva una única fuente canónica, que comprende todos los vectores que el control aborda a lo largo del flujo. El proxy de seguridad (C16) ilustra el caso: detecta intentos de inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07), por lo que su fuente comprende los tres vectores en todas sus apariciones. Los vectores principales que cada subdimensión aborda se declaran en su ficha de proceso (Capítulo~\ref{ch:modelo-madurez}, sección~\ref{sec:subdimensiones}); la fuente de un control puede ser más amplia que esos vectores principales. Los controles transversales, pertenecientes a más de una subdimensión, incluyen adicionalmente el campo Subdimensiones, que declara la totalidad de su pertenencia; estos controles se listan en cada subdimensión a la que pertenecen y su ficha canónica se presenta en el Apéndice~\ref{app:fichas}.
 
+Un segundo criterio de clasificación corresponde a la distinción entre los controles de medición de las subdimensiones técnicas y los controles de D4. Los controles de gestión cuantitativa de nivel N4 (C34 en D1, C37 en D2, C42 en D3) se clasifican en la subdimensión cuyo desempeño miden, no en D4, porque el modelo trata la medición como la expresión madura del proceso de protección correspondiente: cada subdimensión técnica progresa desde la implementación de salvaguardas (N1 y N2) hacia su documentación (N3), su gestión cuantitativa (N4) y su mejora continua (N5). D4, en cambio, agrupa los controles cuyo objeto es la infraestructura transversal de observación del sistema (registro, alertamiento, detección de anomalías), sobre la cual las mediciones de las demás subdimensiones se sustentan. Bajo este criterio, un control pertenece a D4 cuando su objeto es la capacidad de observar, y a una subdimensión técnica cuando su objeto es el desempeño de la protección que esa subdimensión provee, aun cuando su naturaleza sea de medición.
+
 El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión.
 
 % ══════════════════════════════════════════════
@@ -31,6 +33,24 @@ El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones
 \label{sec:controles-d1}
 
 La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez: 8 en N1, 3 en N2, 2 en N3, 2 en N4 y 2 en N5. El predominio de controles preventivos refleja la naturaleza de esta subdimensión: interceptar la amenaza antes de que alcance la capa de inferencia.
+
+La Tabla~\ref{tab:niveles-d1} sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel.
+
+\begin{table}[H]
+  \centering
+  \caption{Controles de D1 por nivel de madurez.}
+  \label{tab:niveles-d1}
+  \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \cellcolor{level-n1!15}\textbf{N1} & \cellcolor{level-n2!15}\textbf{N2} & \cellcolor{level-n3!15}\textbf{N3} & \cellcolor{level-n4!15}\textbf{N4} & \cellcolor{level-n5!15}\textbf{N5} \\
+    \midrule
+    C01, C02, C06, C13, C15, C16, C21, C30 & C03, C04, C05 & C31, C32 & C33, C34 & C35, C36 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N1: Inicial}
 
 \control{C01}{1}{Preventivo}{Configuración}
   {Limitar la longitud máxima del prompt de entrada, medida en la misma unidad que el modelo emplea para su ventana de contexto.}
@@ -64,6 +84,9 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
   {Verificar la procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
   {Ley 21.663, LLM08:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N2: Reactivo}
+
 \control{C03}{2}{Preventivo}{Experimental}
   {Bloquear las entradas clasificadas como intento de inyección de instrucciones por un escáner que asigne una puntuación de riesgo contrastada contra un umbral configurado.}
   {LLM01:2025}
@@ -76,6 +99,9 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
   {Extraer de la respuesta del modelo únicamente el texto generado, sin incorporar el prompt del sistema ni sus restricciones al contenido retornado al usuario.}
   {LLM01:2025, LLM07:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N3: Definido}
+
 \control{C31}{3}{Detectivo}{Experimental}
   {Registrar un motivo de bloqueo estructurado para cada solicitud rechazada, identificando el componente que originó el rechazo.}
   {LLM01:2025}
@@ -84,6 +110,9 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
   {Verificar mediante función de resumen criptográfico que el prompt del sistema y sus restricciones no han sido modificados desde el arranque.}
   {LLM01:2025, LLM07:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N4: Gestionado}
+
 \control{C33}{4}{Preventivo}{Declarativo}
   {Ajustar dinámicamente los umbrales de detección de inyección según las tasas de falsos positivos observadas.}
   {LLM01:2025}
@@ -91,6 +120,9 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 \control{C34}{4}{Detectivo}{Declarativo}
   {Medir y reportar periódicamente la tasa de prompts rechazados por categoría de ataque.}
   {LLM01:2025}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N5: Optimizado}
 
 \control{C35}{5}{Preventivo}{Declarativo}
   {Actualizar los patrones de detección ante nuevas técnicas de inyección documentadas.}
@@ -107,6 +139,24 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 \label{sec:controles-d2}
 
 La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
+
+La Tabla~\ref{tab:niveles-d2} sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel.
+
+\begin{table}[H]
+  \centering
+  \caption{Controles de D2 por nivel de madurez.}
+  \label{tab:niveles-d2}
+  \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \cellcolor{level-n1!15}\textbf{N1} & \cellcolor{level-n2!15}\textbf{N2} & \cellcolor{level-n3!15}\textbf{N3} & \cellcolor{level-n4!15}\textbf{N4} & \cellcolor{level-n5!15}\textbf{N5} \\
+    \midrule
+    C06, C07, C10, C13, C15, C16, C21, C30 & C08, C09, C11, C14, C17, C22 & C12, C62 & C37, C38 & C39, C40 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N1: Inicial}
 
 \control[D1, D2]{C06}{1}{Preventivo}{Configuración}
   {Segregar e identificar el contenido recuperado del corpus mediante delimitadores explícitos que lo separen de la consulta del usuario en el prompt aumentado.}
@@ -140,6 +190,9 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {Verificar la procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
   {Ley 21.663, LLM08:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N2: Reactivo}
+
 \control{C08}{2}{Preventivo}{Configuración}
   {Clasificar cada fragmento del corpus según su nivel de sensibilidad al momento de la indexación, y restringir la recuperación a los niveles autorizados.}
   {LLM02:2025, LLM08:2025}
@@ -164,6 +217,9 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {Controlar y auditar el acceso por sesión a los documentos del \textit{vector store}.}
   {LLM02:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N3: Definido}
+
 \control{C12}{3}{Detectivo}{Experimental}
   {Detectar y bloquear las consultas indicativas de reconocimiento o enumeración sistemática del corpus.}
   {LLM02:2025, LLM08:2025}
@@ -172,6 +228,9 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {Mantener un registro versionado y persistente de cada evento de indexación del corpus, que permita identificar qué documentos estaban activos en cada sesión y rastrear los cambios entre versiones.}
   {LLM02:2025, LLM08:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N4: Gestionado}
+
 \control{C37}{4}{Detectivo}{Declarativo}
   {Medir y reportar periódicamente la tasa de recuperación de fragmentos sensibles ante consultas de prueba.}
   {LLM02:2025}
@@ -179,6 +238,9 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
 \control{C38}{4}{Preventivo}{Declarativo}
   {Ajustar los parámetros de \textit{retrieval} según las métricas de exposición observadas.}
   {LLM02:2025}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N5: Optimizado}
 
 \control{C39}{5}{Preventivo}{Declarativo}
   {Actualizar el particionamiento del \textit{vector store} ante cambios en la clasificación de sensibilidad del corpus.}
@@ -189,16 +251,37 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {LLM02:2025, LLM08:2025}
 
 % ══════════════════════════════════════════════
-% D3: Gestión de salida (10 controles)
+% D3: Gestión de salida (9 controles)
 % ══════════════════════════════════════════════
 \section{D3: Gestión de salida}
 \label{sec:controles-d3}
 
 La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
 
+La Tabla~\ref{tab:niveles-d3} sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel.
+
+\begin{table}[H]
+  \centering
+  \caption{Controles de D3 por nivel de madurez.}
+  \label{tab:niveles-d3}
+  \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \cellcolor{level-n1!15}\textbf{N1} & \cellcolor{level-n2!15}\textbf{N2} & \cellcolor{level-n3!15}\textbf{N3} & \cellcolor{level-n4!15}\textbf{N4} & \cellcolor{level-n5!15}\textbf{N5} \\
+    \midrule
+    C16 & C17, C18, C19 & C20 & C41, C42 & C43, C44 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N1: Inicial}
+
 \control[D1, D2, D3]{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025, LLM07:2025}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N2: Reactivo}
 
 \control[D2, D3]{C17}{2}{Preventivo/Detectivo}{Experimental}
   {Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado.}
@@ -212,9 +295,15 @@ La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas g
   {Bloquear las respuestas que coincidan con patrones deterministas de contenido sensible: marcadores de confidencialidad e identificadores personales estructurados.}
   {LLM02:2025, LLM07:2025}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N3: Definido}
+
 \control{C20}{3}{Detectivo}{Experimental}
   {Detectar y puntuar mediante análisis semántico las respuestas que contengan información sensible no capturada por los patrones deterministas.}
   {LLM02:2025, LLM07:2025}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N4: Gestionado}
 
 \control{C41}{4}{Detectivo}{Declarativo}
   {Ajustar dinámicamente los umbrales de sanitización según las métricas de falsos positivos observadas en la salida.}
@@ -223,6 +312,9 @@ La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas g
 \control{C42}{4}{Detectivo}{Declarativo}
   {Medir y reportar la tasa de supresión de fragmentos confidenciales por tipo de ataque.}
   {LLM02:2025, LLM07:2025}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N5: Optimizado}
 
 \control{C43}{5}{Detectivo}{Declarativo}
   {Revisar y actualizar los patrones de detección de contenido sensible en la salida ante nuevas técnicas de exfiltración.}
@@ -240,6 +332,24 @@ La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas g
 
 La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos a partir de N2. D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva.
 
+La Tabla~\ref{tab:niveles-d4} sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel.
+
+\begin{table}[H]
+  \centering
+  \caption{Controles de D4 por nivel de madurez.}
+  \label{tab:niveles-d4}
+  \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \cellcolor{level-n1!15}\textbf{N1} & \cellcolor{level-n2!15}\textbf{N2} & \cellcolor{level-n3!15}\textbf{N3} & \cellcolor{level-n4!15}\textbf{N4} & \cellcolor{level-n5!15}\textbf{N5} \\
+    \midrule
+    --- & C26, C27, C28 & C23, C25, C29 & C24 & C45, C46 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N2: Reactivo}
+
 \control{C26}{2}{Gobernanza}{Declarativo}
   {Definir y documentar la política de umbrales de detección y bloqueo con anterioridad a la operación.}
   {Ley 21.663}
@@ -251,6 +361,9 @@ La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos
 \control{C28}{2}{Gobernanza}{Declarativo}
   {Definir la política de retención y eliminación de datos de sesión conforme a la normativa aplicable.}
   {Ley 21.719}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N3: Definido}
 
 \control{C23}{3}{Detectivo}{Experimental}
   {Registrar cada decisión de bloqueo en la entrada y en la salida, identificando el componente que la originó.}
@@ -264,9 +377,15 @@ La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos
   {Documentar y ejecutar un plan de pruebas de seguridad ofensiva con anterioridad a cada despliegue.}
   {Ley 21.663}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N4: Gestionado}
+
 \control{C24}{4}{Detectivo}{Experimental}
   {Monitorear los patrones de consulta anómalos que sugieran reconocimiento sistemático del corpus a lo largo de múltiples sesiones.}
   {LLM02:2025, LLM08:2025}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N5: Optimizado}
 
 \control{C45}{5}{Detectivo}{Declarativo}
   {Revisar y actualizar los patrones de detección de anomalías ante nuevas amenazas documentadas.}
@@ -286,6 +405,24 @@ La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos
 
 La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fuente de evidencia Declarativa. Estos controles capturan las obligaciones institucionales derivadas de la Ley 21.663, la Ley 21.719, el NIST AI RMF y el Proyecto de Ley de IA.
 
+La Tabla~\ref{tab:niveles-d5} sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel.
+
+\begin{table}[H]
+  \centering
+  \caption{Controles de D5 por nivel de madurez.}
+  \label{tab:niveles-d5}
+  \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \cellcolor{level-n1!15}\textbf{N1} & \cellcolor{level-n2!15}\textbf{N2} & \cellcolor{level-n3!15}\textbf{N3} & \cellcolor{level-n4!15}\textbf{N4} & \cellcolor{level-n5!15}\textbf{N5} \\
+    \midrule
+    C47, C48, C49, C61 & C50, C51, C52 & C53, C54, C55, C60 & C56, C57 & C58, C59 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N1: Inicial}
+
 \control{C47}{1}{Gobernanza}{Declarativo}
   {Designar formalmente un responsable de la seguridad del sistema RAG con atribuciones documentadas.}
   {Ley 21.663}
@@ -302,6 +439,9 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {Mantener un inventario actualizado de los activos del sistema RAG, incluyendo modelo, corpus, base vectorial y componentes de seguridad, conforme a lo definido en la sección~\ref{sec:activos}.}
   {Ley 21.663}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N2: Reactivo}
+
 \control{C50}{2}{Gobernanza}{Declarativo}
   {Adoptar y adaptar la matriz RACI del marco LLM-Sec, asignando los roles genéricos definidos a personas o cargos concretos de la organización.}
   {Ley 21.663}
@@ -313,6 +453,9 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
 \control{C52}{2}{Gobernanza}{Declarativo}
   {Documentar el inventario de datos personales procesados por el sistema RAG conforme a las obligaciones del responsable de tratamiento.}
   {Ley 21.719}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N3: Definido}
 
 \control{C53}{3}{Gobernanza}{Declarativo}
   {Establecer un programa formal de capacitación en seguridad de sistemas LLM dirigido a los roles definidos en la matriz RACI.}
@@ -330,6 +473,9 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
   {Realizar y documentar una evaluación formal de riesgos del sistema RAG con frecuencia mínima anual o ante cambios significativos en el modelo o el corpus.}
   {NIST AI RMF}
 
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N4: Gestionado}
+
 \control{C56}{4}{Gobernanza}{Declarativo}
   {Establecer métricas de desempeño de la gobernanza de seguridad y reportarlas periódicamente a la dirección.}
   {Proyecto Ley IA}
@@ -337,6 +483,9 @@ La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fu
 \control{C57}{4}{Gobernanza}{Declarativo}
   {Implementar un proceso formal de gestión de riesgos de IA que clasifique el sistema RAG según su nivel de criticidad.}
   {Proyecto Ley IA}
+
+\needspace{6\baselineskip}
+\subsubsection*{Nivel N5: Optimizado}
 
 \control{C58}{5}{Gobernanza}{Declarativo}
   {Revisar y actualizar proactivamente el marco LLM-Sec ante cambios normativos, nuevas amenazas o modificaciones del modelo base.}

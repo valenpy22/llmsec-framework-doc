@@ -33,7 +33,7 @@ Versión 1.0 | Julio 2026
 |1.5. Convenciones del documento<br>. . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>2|
 |**2. Modelo de madurez**<br>|**3**|
 |2.1. Identifcación de activos de información del sistema RAG<br>. . . . . .|. . . . . . .<br>3|
-|<br>2.2. Valoración de riesgo por activo. . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>4|
+|2.2. Valoración de riesgo por activo. . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>4|
 |2.2.1. Escala de valoración<br>. . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>5|
 |2.2.2. Matriz de riesgo . . . . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>5|
 |2.2.3. Interpretación y priorización . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>6|
@@ -51,146 +51,146 @@ Versión 1.0 | Julio 2026
 |**3. Taxonomía de controles**|**18**|
 |3.1. Estructura de los controles . . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>18|
 |3.2. D1: Protección de entrada<br>. . . . . . . . . . . . . . . . . . . . . . . . <br>|. . . . . . .<br>19<br>|
-|3.3. D2: Control de contexto y confguración RAG . . . . . . . . . . . . . .|. . . . . . .<br>21|
-|<br>3.4. D3: Gestión de salida<br>. . . . . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>24|
-|3.5. D4: Monitoreo y trazabilidad<br>. . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>25|
-|3.6. D5: Gobernanza organizacional<br>. . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>27|
-|3.7. Distribución de controles . . . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>29|
-|**4. Perfles organizacionales**|**30**|
-|4.1. P1: Micro/Pequeña empresa . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>31|
+|3.3. D2: Control de contexto y confguración RAG . . . . . . . . . . . . . .|. . . . . . .<br>22|
+|<br>3.4. D3: Gestión de salida<br>. . . . . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>26|
+|3.5. D4: Monitoreo y trazabilidad<br>. . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>28|
+|3.6. D5: Gobernanza organizacional<br>. . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>30|
+|3.7. Distribución de controles . . . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>32|
+|**4. Perfles organizacionales**|**34**|
+|4.1. P1: Micro/Pequeña empresa . . . . . . . . . . . . . . . . . . . . . . .|. . . . . . .<br>35|
 
 
 
-I / 115 
+I / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
-|4.1.1.|Trayectoria recomendada. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>31|
+|4.1.1.|Trayectoria recomendada. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>35|
 |---|---|
-|4.1.2.|Controles prioritarios . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>31|
-|4.2. P2: Me|<br>diana/Grande. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>32|
-|4.2.1.|Trayectoria recomendada. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>32|
-|4.2.2.|Controles prioritarios . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>33|
-|4.3. P3: Crí|tica regulada . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>34|
-|4.3.1.|Trayectoria recomendada. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>34|
-|4.3.2.|Obligaciones regulatorias aplicables<br>. . . . . . . . . . . . . . . . . . . . .<br>34|
-|4.3.3.|Controles prioritarios . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>34|
-|**5. Métricas de**|**evaluación**<br>**36**|
-|5.1. Tasa d|e Filtrado de Ataques (TFA) . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>36|
-|5.1.1.|Fuentes de_ground truth_por vector<br>. . . . . . . . . . . . . . . . . . . . . .<br>37|
-|5.1.2.|<br> Prueba estadística<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>37|
-|5.1.3.|Tasa de falsos positivos<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>37|
-|5.1.4.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>38|
-|5.2. Latenc|ia Agregada de Seguridad (LAS) . . . . . . . . . . . . . . . . . . . . . . . .<br>38|
-|5.2.1.|Prueba estadística<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>38|
-|5.2.2.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>38|
-|5.3. Porcen<br>|taje de Controles Cumplidos (PCC)<br>. . . . . . . . . . . . . . . . . . . . . .<br>38<br>|
-|5.3.1.|Defnición del universo . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>39|
-|5.3.2.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>40|
-|5.4. Nivel d|e Consistencia de Protección (NCP) . . . . . . . . . . . . . . . . . . . . . .<br>40|
-|5.4.1.|Criterios de validez<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>40|
-|5.4.2.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>41|
-|**6. Guía de eva**|**luación**<br>**42**|
-|6.1. Flujo d<br>|e evaluación<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>42<br>|
-|6.2. Criteri<br>|os de verifcación por fuente de evidencia . . . . . . . . . . . . . . . . . . .<br>42<br>|
-|6.2.1.|Confguración<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>43|
-|6.2.2.|Experimental . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>43|
-|6.2.3.|Declarativo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>43|
-|6.3. Matriz|RACI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>43|
-|6.4. Ciclo d|e mejora<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>44|
-|**A. Resumen d**|**e controles por nivel**<br>**45**|
-|**B. Mapeo nor**|**mativo**<br>**50**|
-|**C. Fichas técn**|**icas de control**<br>**53**|
-|C.1. Contro|les transversales . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>53|
-|C.1.1.|C06: Delimitación explícita del contenido recuperado . . . . . . . . . . . .<br>53|
-|C.1.2. <br>|C13: Límite de volumen de contexto inyectado. . . . . . . . . . . . . . . .<br>54<br>|
-|C.1.3.|C15: Defnición del rol y las restricciones del modelo . . . . . . . . . . . .<br>55|
-|C.1.4.|<br> C16: Proxy de seguridad independiente del generador<br>. . . . . . . . . . .<br>56|
-|C.1.5. <br>|C17: Fundamentación de la respuesta en el contexto recuperado . . . . .<br>57<br>|
-|C.1.6.|C21: Externalización de la confguración de tiempo de ejecución<br>. . . . .<br>58|
-|C.1.7.|<br> C30: Verifcación de procedencia e integridad del modelo<br>. . . . . . . . .<br>59|
-|C.2. D1: Pr|<br>otección de entrada<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>59|
-|C.2.1.|C01: Límite de longitud del prompt de entrada . . . . . . . . . . . . . . . .<br>60|
-|C.2.2.|C02: Sanitización de caracteres de control en la entrada . . . . . . . . . .<br>60|
-|C.2.3.|C03: Bloqueo de intentos de inyección de instrucciones<br>. . . . . . . . . .<br>61|
+|4.1.2.|Controles prioritarios . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>35|
+|4.2. P2: Me|<br>diana/Grande. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>36|
+|4.2.1.|Trayectoria recomendada. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>36|
+|4.2.2.|Controles prioritarios . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>37|
+|4.3. P3: Crí|tica regulada . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>38|
+|4.3.1.|Trayectoria recomendada. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>38|
+|4.3.2.|Obligaciones regulatorias aplicables<br>. . . . . . . . . . . . . . . . . . . . .<br>38|
+|4.3.3.|Controles prioritarios . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>38|
+|**5. Métricas de**|**evaluación**<br>**40**|
+|5.1. Tasa d|e Filtrado de Ataques (TFA) . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>40|
+|5.1.1.|Fuentes de_ground truth_por vector<br>. . . . . . . . . . . . . . . . . . . . . .<br>41|
+|5.1.2.|<br> Prueba estadística<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>41|
+|5.1.3.|Tasa de falsos positivos<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>41|
+|5.1.4.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>42|
+|5.2. Latenc|ia Agregada de Seguridad (LAS) . . . . . . . . . . . . . . . . . . . . . . . .<br>42|
+|5.2.1.|Prueba estadística<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>42|
+|5.2.2.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>42|
+|5.3. Porcen<br>|taje de Controles Cumplidos (PCC)<br>. . . . . . . . . . . . . . . . . . . . . .<br>42<br>|
+|5.3.1.|Defnición del universo . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>43|
+|5.3.2.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>44|
+|5.4. Nivel d|e Consistencia de Protección (NCP) . . . . . . . . . . . . . . . . . . . . . .<br>44|
+|5.4.1.|Criterios de validez<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>44|
+|5.4.2.|Correspondencia con ISO/IEC 25010:2023 . . . . . . . . . . . . . . . . . .<br>45|
+|**6. Guía de eva**|**luación**<br>**46**|
+|6.1. Flujo d<br>|e evaluación<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>46<br>|
+|6.2. Criteri<br>|os de verifcación por fuente de evidencia . . . . . . . . . . . . . . . . . . .<br>46<br>|
+|6.2.1.|Confguración<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>47|
+|6.2.2.|Experimental . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>47|
+|6.2.3.|Declarativo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>47|
+|6.3. Matriz|RACI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>47|
+|6.4. Ciclo d|e mejora<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>48|
+|**A. Resumen d**|**e controles por nivel**<br>**49**|
+|**B. Mapeo nor**|**mativo**<br>**54**|
+|**C. Fichas técn**|**icas de control**<br>**57**|
+|C.1. Contro|les transversales . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>57|
+|C.1.1.|C06: Delimitación explícita del contenido recuperado . . . . . . . . . . . .<br>57|
+|C.1.2. <br>|C13: Límite de volumen de contexto inyectado. . . . . . . . . . . . . . . .<br>58<br>|
+|C.1.3.|C15: Defnición del rol y las restricciones del modelo . . . . . . . . . . . .<br>59|
+|C.1.4.|<br> C16: Proxy de seguridad independiente del generador<br>. . . . . . . . . . .<br>60|
+|C.1.5. <br>|C17: Fundamentación de la respuesta en el contexto recuperado . . . . .<br>61<br>|
+|C.1.6.|C21: Externalización de la confguración de tiempo de ejecución<br>. . . . .<br>62|
+|C.1.7.|<br> C30: Verifcación de procedencia e integridad del modelo<br>. . . . . . . . .<br>63|
+|C.2. D1: Pr|<br>otección de entrada<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .<br>63|
+|C.2.1.|C01: Límite de longitud del prompt de entrada . . . . . . . . . . . . . . . .<br>64|
+|C.2.2.|C02: Sanitización de caracteres de control en la entrada . . . . . . . . . .<br>64|
+|C.2.3.|C03: Bloqueo de intentos de inyección de instrucciones<br>. . . . . . . . . .<br>65|
 
 
 
-II / 115 
+II / 119 
 
 ÍNDICE GENERAL 
 
-|C.2.4. C04:|Restricción de la consulta al dominio autorizado<br>. . . . . . . . .|. .<br>62|
+|C.2.4. C04:|Restricción de la consulta al dominio autorizado<br>. . . . . . . . .|. .<br>66|
 |---|---|---|
-|C25C05:|No inclusión del prompt del sistema en la respuesta<br>|63|
-|...  <br>C.2.6. C31:<br>|<br>. . . . . . . <br>Registro estructurado del motivo de bloqueo . . . . . . . . . . . . <br>|. .<br><br> . .<br>64<br>|
-|C.2.7. C32:|Verifcación de integridad del prompt del sistema . . . . . . . . .|. .<br>65|
-|<br>C.2.8. C33:|<br>Ajuste dinámico de los umbrales de detección . . . . . . . . . . .|. .<br>66|
-|C.2.9. C34:|Medición de la tasa de rechazo por categoría de ataque . . . . .|. .<br>67|
-|C.2.10.C35:|Actualización de los patrones de detección<br>. . . . . . . . . . . .|. .<br>67|
-|C.2.11.C36:<br>|Revisión del prompt del sistema ante cambios del modelo . . . . <br>|. .<br>68<br>|
-|C.3. D2: Control|de contexto y confguración RAG . . . . . . . . . . . . . . . . . . .|. .<br>69|
-|C.3.1. C07:|Restricción al uso exclusivo del contexto recuperado . . . . . . .|. .<br>69|
-|C.3.2. C10:<br>|Control de la cantidad de fragmentos recuperados<br>. . . . . . . . <br>|. .<br>70<br>|
-|C.3.3. C08:<br>|Clasifcación y fltrado del corpus por sensibilidad . . . . . . . . . <br>|. .<br>71<br>|
-|C.3.4. C09:|Verifcación de integridad de los fragmentos recuperados . . . .|. .<br>72|
-|C.3.5. C11:|Validación de coherencia de la consulta<br>. . . . . . . . . . . . . .|. .<br>73|
-|C.3.6. C14:|Exclusión de metadatos en la recuperación<br>. . . . . . . . . . . .|. .<br>74|
-|C.3.7. C22:|Control de acceso por sesión al vector store . . . . . . . . . . . .|. .<br>75|
-|C.3.8. C12:|Detección de reconocimiento sistemático del corpus . . . . . . .|. .<br>76|
-|C.3.9. C62:|Registro versionado del corpus indexado . . . . . . . . . . . . . .|. .<br>77|
-|C.3.10.C37:|Medición de la tasa de recuperación de fragmentos sensibles . .|. .<br>78|
-|C.3.11.C38:<br>|Ajuste de los parámetros de recuperación . . . . . . . . . . . . . <br>|. .<br>78<br>|
-|C.3.12.C39:|Actualización del particionamiento ante reclasifcación. . . . . .|. .<br>79|
-|C.3.13.C40:|Revisión proactiva del corpus ante nuevas amenazas . . . . . . .|. .<br>80|
-|C.4. D3: Gestión|de salida<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .|. .<br>81|
-|C.4.1. C18:|Sanitización de caracteres de control en la salida . . . . . . . . .|. .<br>81|
-|C.4.2. C19:|Bloqueo de contenido sensible por patrones deterministas<br>. . .|. .<br>82|
-|C.4.3. C20:|Detección semántica de contenido sensible en la salida . . . . .|. .<br>83|
-|C.4.4. C41:<br>|Ajuste dinámico de los umbrales de sanitización<br>. . . . . . . . . <br>|. .<br>84<br>|
-|C.4.5. C42:|Medición de la tasa de supresión de contenido confdencial . . .|. .<br>85|
-|C.4.6. C43:|Actualización de los patrones de detección en la salida. . . . . .|. .<br>86|
-|C.4.7. C44:|Incorporación de retroalimentación de incidentes a los patrones|. .<br>86|
-|C.5. D4: Monitor|eo y trazabilidad<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . .|. .<br>87|
-|C.5.1. C26:<br>|Política documentada de umbrales de detección y bloqueo<br>. . . <br>|. .<br>87<br>|
-|C.5.2. C27:|Procedimiento de notifcación de incidentes ante la autoridad . .|. .<br>88|
-|C.5.3. C28:|Política de retención y eliminación de datos de sesión<br>. . . . . .|. .<br>89|
-|C.5.4. C23:|Registro de las decisiones de bloqueo<br>. . . . . . . . . . . . . . .|. .<br>90|
-|C.5.5. C25:|Registro de latencia y metadatos de las solicitudes . . . . . . . .|. .<br>91|
-|C.5.6. C29:|Plan de pruebas de seguridad ofensiva previo al despliegue . . .|. .<br>92|
-|C.5.7. C24:|Monitoreo de patrones de consulta anómalos . . . . . . . . . . .|. .<br>93|
-|C.5.8. C45:|Actualización de los patrones de detección de anomalías<br>. . . .|. .<br>94|
-|C.5.9. C46:|Incorporación de retroalimentación de incidentes al sistema de ale|rtas 95|
-|C.6. D5: Goberna|nza organizacional<br>. . . . . . . . . . . . . . . . . . . . . . . . . .|. .<br>96|
-|C.6.1. C47:|Designación del responsable de la seguridad del sistema<br>. . . .|. .<br>96|
-|C.6.2. C48:|Declaración del sistema RAG como activo de información . . . .|. .<br>97|
-|C.6.3. C49:|Política de uso aceptable del sistema . . . . . . . . . . . . . . . .|. .<br>98|
-|<br>C.6.4. C61:|<br>Inventario de activos del sistema RAG<br>. . . . . . . . . . . . . . .|. .<br>99|
-|C.6.5. C50:|Instanciación de la matriz RACI<br>. . . . . . . . . . . . . . . . . . .|. .<br>99|
-|C.6.6. C51:|Procedimiento de gestión de accesos. . . . . . . . . . . . . . . .|. . 100|
-|C.6.7. C52:|Inventario de datos personales procesados<br>. . . . . . . . . . . .|. . 101|
-|C.6.8. C53:|Programa de capacitación en seguridad de sistemas LLM . . . .|. . 102|
-|C.6.9. C54:|Ciclo de revisión periódica del marco . . . . . . . . . . . . . . . .|. . 103|
-|C.6.10.C55:|Comunicación de los riesgos residuales a la dirección . . . . . .|. . 104|
+|C25C05:|No inclusión del prompt del sistema en la respuesta<br>|67|
+|...  <br>C.2.6. C31:<br>|<br>. . . . . . . <br>Registro estructurado del motivo de bloqueo . . . . . . . . . . . . <br>|. .<br><br> . .<br>68<br>|
+|C.2.7. C32:|Verifcación de integridad del prompt del sistema . . . . . . . . .|. .<br>69|
+|<br>C.2.8. C33:|<br>Ajuste dinámico de los umbrales de detección . . . . . . . . . . .|. .<br>70|
+|C.2.9. C34:|Medición de la tasa de rechazo por categoría de ataque . . . . .|. .<br>71|
+|C.2.10.C35:|Actualización de los patrones de detección<br>. . . . . . . . . . . .|. .<br>71|
+|C.2.11.C36:<br>|Revisión del prompt del sistema ante cambios del modelo . . . . <br>|. .<br>72<br>|
+|C.3. D2: Control|de contexto y confguración RAG . . . . . . . . . . . . . . . . . . .|. .<br>73|
+|C.3.1. C07:|Restricción al uso exclusivo del contexto recuperado . . . . . . .|. .<br>73|
+|C.3.2. C10:<br>|Control de la cantidad de fragmentos recuperados<br>. . . . . . . . <br>|. .<br>74<br>|
+|C.3.3. C08:<br>|Clasifcación y fltrado del corpus por sensibilidad . . . . . . . . . <br>|. .<br>75<br>|
+|C.3.4. C09:|Verifcación de integridad de los fragmentos recuperados . . . .|. .<br>76|
+|C.3.5. C11:|Validación de coherencia de la consulta<br>. . . . . . . . . . . . . .|. .<br>77|
+|C.3.6. C14:|Exclusión de metadatos en la recuperación<br>. . . . . . . . . . . .|. .<br>78|
+|C.3.7. C22:|Control de acceso por sesión al vector store . . . . . . . . . . . .|. .<br>79|
+|C.3.8. C12:|Detección de reconocimiento sistemático del corpus . . . . . . .|. .<br>80|
+|C.3.9. C62:|Registro versionado del corpus indexado . . . . . . . . . . . . . .|. .<br>81|
+|C.3.10.C37:|Medición de la tasa de recuperación de fragmentos sensibles . .|. .<br>82|
+|C.3.11.C38:<br>|Ajuste de los parámetros de recuperación . . . . . . . . . . . . . <br>|. .<br>82<br>|
+|C.3.12.C39:<br>|Actualización del particionamiento ante reclasifcación. . . . . . <br>|. .<br>83<br>|
+|C.3.13.C40:|Revisión proactiva del corpus ante nuevas amenazas . . . . . . .|. .<br>84|
+|C.4. D3: Gestión|de salida<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .|. .<br>85|
+|C.4.1. C18:|Sanitización de caracteres de control en la salida . . . . . . . . .|. .<br>85|
+|C.4.2. C19:|Bloqueo de contenido sensible por patrones deterministas<br>. . .|. .<br>86|
+|C.4.3. C20:|Detección semántica de contenido sensible en la salida . . . . .|. .<br>87|
+|C.4.4. C41:<br>|Ajuste dinámico de los umbrales de sanitización<br>. . . . . . . . . <br>|. .<br>88<br>|
+|C.4.5. C42:|Medición de la tasa de supresión de contenido confdencial . . .|. .<br>89|
+|C.4.6. C43:|Actualización de los patrones de detección en la salida. . . . . .|. .<br>90|
+|C.4.7. C44:|Incorporación de retroalimentación de incidentes a los patrones|. .<br>90|
+|C.5. D4: Monitor|eo y trazabilidad<br>. . . . . . . . . . . . . . . . . . . . . . . . . . . .|. .<br>91|
+|C.5.1. C26:<br>|Política documentada de umbrales de detección y bloqueo<br>. . . <br>|. .<br>91<br>|
+|C.5.2. C27:|Procedimiento de notifcación de incidentes ante la autoridad . .|. .<br>92|
+|C.5.3. C28:|Política de retención y eliminación de datos de sesión<br>. . . . . .|. .<br>93|
+|C.5.4. C23:|Registro de las decisiones de bloqueo<br>. . . . . . . . . . . . . . .|. .<br>94|
+|C.5.5. C25:|Registro de latencia y metadatos de las solicitudes . . . . . . . .|. .<br>95|
+|C.5.6. C29:|Plan de pruebas de seguridad ofensiva previo al despliegue . . .|. .<br>96|
+|C.5.7. C24:|Monitoreo de patrones de consulta anómalos . . . . . . . . . . .|. .<br>97|
+|C.5.8. C45:|Actualización de los patrones de detección de anomalías<br>. . . .|. .<br>98|
+|C.5.9. C46:|Incorporación de retroalimentación de incidentes al sistema de ale|rtas 99|
+|C.6. D5: Goberna|nza organizacional<br>. . . . . . . . . . . . . . . . . . . . . . . . . .|. . 100|
+|C.6.1. C47:|Designación del responsable de la seguridad del sistema<br>. . . .|. . 100|
+|C.6.2. C48:|Declaración del sistema RAG como activo de información . . . .|. . 101|
+|C.6.3. C49:|Política de uso aceptable del sistema . . . . . . . . . . . . . . . .|. . 102|
+|<br>C.6.4. C61:|<br>Inventario de activos del sistema RAG<br>. . . . . . . . . . . . . . .|. . 103|
+|C.6.5. C50:|Instanciación de la matriz RACI<br>. . . . . . . . . . . . . . . . . . .|. . 103|
+|C.6.6. C51:|Procedimiento de gestión de accesos. . . . . . . . . . . . . . . .|. . 104|
+|C.6.7. C52:|Inventario de datos personales procesados<br>. . . . . . . . . . . .|. . 105|
+|C.6.8. C53:|Programa de capacitación en seguridad de sistemas LLM . . . .|. . 106|
+|C.6.9. C54:|Ciclo de revisión periódica del marco . . . . . . . . . . . . . . . .|. . 107|
+|C.6.10.C55:|Comunicación de los riesgos residuales a la dirección . . . . . .|. . 108|
 
 
 
-III / 115 
+III / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
-|C.6.11.C60: Evaluación formal de riesgos del sistema<br>. . . . . . . . . . . . .|. . 105|
+|C.6.11.C60: Evaluación formal de riesgos del sistema<br>. . . . . . . . . . . . .|. . 109|
 |---|---|
-|C.6.12.C56: Métricas de desempeño de la gobernanza de seguridad . . . . . <br>|. . 105<br>|
-|C.6.13.C57: Clasifcación del sistema por nivel de criticidad . . . . . . . . . .|. . 106|
-|C.6.14.C58: Revisión proactiva del marco ante cambios del entorno<br>. . . . .|. . 107|
-|C.6.15.C59: Incorporación de lecciones aprendidas al ciclo de gobernanza. .|. . 108|
-|**D. Glosario**|**110**|
-|**Referencias**|**113**|
+|C.6.12.C56: Métricas de desempeño de la gobernanza de seguridad . . . . . <br>|. . 109<br>|
+|C.6.13.C57: Clasifcación del sistema por nivel de criticidad . . . . . . . . . .|. . 110|
+|C.6.14.C58: Revisión proactiva del marco ante cambios del entorno<br>. . . . .|. . 111|
+|C.6.15.C59: Incorporación de lecciones aprendidas al ciclo de gobernanza. .|. . 112|
+|**D. Glosario**|**114**|
+|**Referencias**|**117**|
 
 
 
-IV / 115 
+IV / 119 
 
 ### **Capítulo 1** 
 
@@ -218,7 +218,7 @@ Adicionalmente, el marco asume como precondición que la capa de presentación w
 
 El marco cubre cuatro categorías de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG: LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM07 (System Prompt Leakage) y LLM08 (Vector and Embedding Weaknesses). 
 
-1 / 115 
+1 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -248,7 +248,7 @@ A lo largo de este documento se utilizan las siguientes convenciones visuales:
 
 Los términos técnicos empleados en este documento se definen en el Apéndice D. 
 
-2 / 115 
+2 / 119 
 
 ### **Capítulo 2** 
 
@@ -262,7 +262,7 @@ Toda evaluación de seguridad requiere, como paso previo a la definición de con
 
 A diferencia de un LLM aislado, los sistemas RAG exponen una superficie de ataque distribuida en múltiples componentes encadenados, cada uno de los cuales constituye un activo susceptible de ser comprometido de forma independiente. La Tabla 2.1 presenta los cinco activos identificados, su descripción funcional dentro del flujo RAG y el riesgo principal asociado a cada uno. 
 
-3 / 115 
+3 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -298,7 +298,7 @@ Este mapeo justifica la existencia de exactamente cinco subdimensiones y no un n
 
 Una vez identificados los activos de información, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663 [6], 
 
-4 / 115 
+4 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
@@ -336,7 +336,7 @@ Tabla 2.4: Matriz de valoración de riesgo por activo del sistema RAG.
 
 La Figura 2.1 ubica cada activo en la matriz probabilidad _×_ impacto, evidenciando la concentración del riesgo en la zona superior derecha. 
 
-5 / 115 
+5 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -357,7 +357,7 @@ La valoración revela tres hallazgos que condicionan el diseño del modelo de ma
 
 3. **Los mecanismos de acceso y sesión presentan riesgo medio.** Su probabilidad de explotación es baja porque su compromiso exige condiciones poco frecuentes: la posesión de credenciales privilegiadas válidas, sea por compromiso externo o por posición interna, o 
 
-6 / 115 
+6 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
@@ -387,7 +387,7 @@ Esta trazabilidad garantiza que la distribución de controles del marco no es ar
 
 A partir de los activos de información identificados y su valoración de riesgo (secciones 2.1 y 2.2), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG, conforme a los conceptos de evaluación de procesos de ISO/IEC 33001 [3]. La progresión es acumulativa: alcanzar un nivel _Nk_ requiere satisfacer todos los criterios de los niveles _N_ 1 a _Nk_ . Las distancias entre niveles 
 
-7 / 115 
+7 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -417,13 +417,15 @@ Controles formalmente definidos, documentados y aplicados de forma consistente. 
 
 Seguridad gestionada cuantitativamente. Métricas de desempeño definidas (TFA, LAS, PCC, NCP) y controles ajustados según resultados medidos. La consistencia de la protección entre categorías de amenaza se evalúa periódicamente mediante el indicador NCP. 
 
-8 / 115 
+8 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
 ###### **N5: Optimizado** 
 
 Mejora continua. Controles actualizados proactivamente ante nuevas amenazas documentadas. Marco revisado periódicamente e integrado al ciclo de gestión de riesgos organizacional. 
+
+La estructura del modelo se alinea con los modelos de madurez consolidados en la industria. Al igual que CMMI [18] e ISO/IEC 33020 [19], LLM-Sec emplea una escala ordinal de niveles cualitativos con progresión acumulativa, donde cada nivel presupone la satisfacción de los anteriores. El nivel N0 cumple la función del nivel 0 ( _Incomplete_ ) de ISO/IEC 33020: un estado fuera de la escala de madurez propiamente tal, que señala la ausencia de las condiciones mínimas de evaluación. La correspondencia más directa se da en N4: su definición por gestión cuantitativa mediante métricas coincide con el nivel _Quantitatively Managed_ de CMMI, definido por el control estadístico y cuantitativo de los procesos. No se presenta un mapeo exhaustivo nivel a nivel porque los dominios de definición difieren: los niveles de CMMI se articulan sobre áreas de proceso del desarrollo de software, mientras que los de LLM-Sec se articulan sobre controles de ciberseguridad específicos del flujo RAG, de modo que la equivalencia entre ambos modelos es estructural y no semántica. 
 
 #### **2.5 Subdimensiones** 
 
@@ -441,7 +443,7 @@ Tabla 2.6: Subdimensiones del modelo LLM-Sec.
 
 
 
-9 / 115 
+9 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -474,7 +476,7 @@ Tabla 2.7: Entradas y salidas del proceso D1: Protección de entrada.
 
 
 
-10 / 115 
+10 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
@@ -507,7 +509,7 @@ Tabla 2.8: Entradas y salidas del proceso D2: Control de contexto y configuraci�
 
 
 
-11 / 115 
+11 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -540,7 +542,7 @@ Tabla 2.9: Entradas y salidas del proceso D3: Gestión de salida.
 
 
 
-12 / 115 
+12 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
@@ -560,7 +562,7 @@ Las salidas de D4 incluyen, además de los artefactos de auditoría, informes de
 
 D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva. Un sistema en esa condición se clasifica como no conforme en esta subdimensión. 
 
-13 / 115 
+13 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -587,7 +589,7 @@ Figura 2.6: Flujo de entradas y salidas del proceso D4: Monitoreo y trazabilidad
 
 La subdimensión D5 opera de forma transversal sobre la organización completa, no sobre una etapa técnica específica del flujo RAG. Captura las obligaciones institucionales de gestión de la seguridad: definición de roles y responsabilidades, políticas de uso, cumplimiento normativo y 
 
-14 / 115 
+14 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
@@ -597,11 +599,9 @@ D5 provee insumos normativos e institucionales a las demás subdimensiones, actu
 
 La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura 2.7 representa gráficamente el mismo flujo. 
 
-###### **Ficha del proceso D5: Gobernanza organizacional** 
-
-|**Propósito**|Establecer y mantener el marco institucional de gobernanza<br>que sustenta la operación segura del sistema RAG, defniendo<br>roles, políticas y mecanismos de mejora continua.|
+|**Ficha del proceso D5: Gob**<br>|**ernanza organizacional**<br>|
 |---|---|
-|**Activos que protege**|Sistema RAG completo (a nivel organizacional)|
+|**Propósito**<br>**Activos que protege**|Establecer y mantener el marco institucional de gobernanza<br>que sustenta la operación segura del sistema RAG, defniendo<br>roles, políticas y mecanismos de mejora continua.<br>Sistema RAG completo (a nivel organizacional)|
 |**Vector OWASP asociado**|LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025|
 
 
@@ -618,7 +618,7 @@ Tabla 2.11: Entradas y salidas del proceso D5: Gobernanza organizacional.
 
 
 
-15 / 115 
+15 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -644,15 +644,15 @@ El nivel global _L_ del sistema se determina como:
 
 donde _di_ es el nivel alcanzado por la subdimensión _i_ : el nivel verificado para D1 a D4, cuyas fuentes de evidencia son experimentales o de configuración, y el nivel declarado para D5, cuya evidencia es exclusivamente declarativa (sección 2.6). En consecuencia, el nivel global integra 
 
-16 / 115 
+16 / 119 
 
 CAPÍTULO 2. MODELO DE MADUREZ 
 
 necesariamente una componente declarada, condición que debe hacerse explícita al reportar el resultado de la evaluación. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4, D5 declara nivel 3 y D4 alcanza nivel 2, el nivel global es 2. 
 
-En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión se justifica porque la ausencia de literatura previa comparable impide anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable. 
+En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión es consistente con la práctica de los modelos de madurez de la industria: OWASP SAMM [20] puntúa cada práctica de seguridad agregando las respuestas de evaluación sin pesos diferenciales entre actividades, y CMMI [18] no pondera prácticas individuales, sino que condiciona la consecución de un nivel a la satisfacción de la totalidad de las prácticas que lo componen, criterio análogo a la regla de progresión acumulativa y piso mínimo de LLM-Sec. La ausencia de literatura previa comparable sobre seguridad en arquitecturas RAG impide, adicionalmente, anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable que los modelos de referencia tampoco asumen. 
 
-17 / 115 
+17 / 119 
 
 ### **Capítulo 3** 
 
@@ -680,11 +680,13 @@ Todos los controles de un mismo nivel tienen peso equivalente dentro de su subdi
 
 Un control transversal pertenece a más de una subdimensión y conserva una única fuente canónica, que comprende todos los vectores que el control aborda a lo largo del flujo. El proxy de seguridad (C16) ilustra el caso: detecta intentos de inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07), por lo que su fuente comprende los tres vectores en todas sus apariciones. Los vectores principales que cada subdimensión aborda se declaran en su ficha de proceso (Capítulo 2, sección 2.5); la fuente de un control puede ser más amplia que esos vectores principales. Los controles transversales, pertenecientes a más de una 
 
-18 / 115 
+18 / 119 
 
 CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
 
 subdimensión, incluyen adicionalmente el campo Subdimensiones, que declara la totalidad de su pertenencia; estos controles se listan en cada subdimensión a la que pertenecen y su ficha canónica se presenta en el Apéndice C. 
+
+Un segundo criterio de clasificación corresponde a la distinción entre los controles de medición de las subdimensiones técnicas y los controles de D4. Los controles de gestión cuantitativa de nivel N4 (C34 en D1, C37 en D2, C42 en D3) se clasifican en la subdimensión cuyo desempeño miden, no en D4, porque el modelo trata la medición como la expresión madura del proceso de protección correspondiente: cada subdimensión técnica progresa desde la implementación de salvaguardas (N1 y N2) hacia su documentación (N3), su gestión cuantitativa (N4) y su mejora continua (N5). D4, en cambio, agrupa los controles cuyo objeto es la infraestructura transversal de observación del sistema (registro, alertamiento, detección de anomalías), sobre la cual las mediciones de las demás subdimensiones se sustentan. Bajo este criterio, un control pertenece a D4 cuando su objeto es la capacidad de observar, y a una subdimensión técnica cuando su objeto es el desempeño de la protección que esa subdimensión provee, aun cuando su naturaleza sea de medición. 
 
 El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión. 
 
@@ -692,11 +694,35 @@ El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones
 
 La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez: 8 en N1, 3 en N2, 2 en N3, 2 en N4 y 2 en N5. El predominio de controles preventivos refleja la naturaleza de esta subdimensión: interceptar la amenaza antes de que alcance la capa de inferencia. 
 
-**C01 N1** Limitar la longitud máxima del prompt de entrada, medida en la misma unidad que el modelo emplea para su ventana de contexto. 
+La Tabla 3.1 sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel. 
+
+Tabla 3.1: Controles de D1 por nivel de madurez. 
+
+|**N1**|**N2**|**N3**|**N4**|**N5**|
+|---|---|---|---|---|
+|C01, C02, C06,|C03, C04, C05|C31, C32|C33, C34|C35, C36|
+|C13, C15, C16,|||||
+|C21, C30|||||
+
+
+
+19 / 119 
+
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+
+###### **Nivel N1: Inicial** 
+
+###### **C01** 
+
+**N1** 
+
+Limitar la longitud máxima del prompt de entrada, medida en la misma unidad que el modelo emplea para su ventana de contexto. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025 
 
-**C02 N1** 
+###### **C02** 
+
+**N1** 
 
 Eliminar de la entrada los tokens especiales del modelo, los bytes nulos y los caracteres de control Unicode, antes de que el texto alcance cualquier componente de análisis. 
 
@@ -720,53 +746,47 @@ Restringir el rol, las capacidades y las limitaciones del modelo mediante instru
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025 **Subdimensiones:** D1, D2 
 
-19 / 115 
-
-**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
-
-###### **C16 N1** 
+**C16 N1** 
 
 Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025, LLM07:2025 **Subdimensiones:** D1, D2, D3 
 
-###### **C21** 
+20 / 119 
 
-**N1** 
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+**C21 N1** 
 
 Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025 **Subdimensiones:** D1, D2 
 
-###### **C30** 
+**C30 N1** 
 
-**N1** 
+Verificar la procedencia e integridad del modelo mediante _checksums_ antes del despliegue. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663, LLM08:2025 **Subdimensiones:** D1, D2 
 
-Verificar la procedencia e integridad del modelo mediante _checksums_ antes del despliegue. 
-
-**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663, LLM08:2025 **Subdimensiones:** D1, D2 
+###### **Nivel N2: Reactivo** 
 
 **C03 N2** 
 
-Bloquear las entradas clasificadas como intento de inyección de instrucciones por un escáner que asigne una puntuación de riesgo contrastada contra un umbral configurado. 
+Bloquear las entradas clasificadas como intento de inyección de instrucciones por un escáner que asigne una puntuación de riesgo contrastada contra un umbral configurado. **Tipo:** Preventivo **Evidencia:** Experimental **Fuente:** LLM01:2025 
 
-**Tipo:** Preventivo **Evidencia:** Experimental **Fuente:** LLM01:2025 
+**C04 N2** 
 
-###### **C04** 
+Bloquear las consultas cuya distancia semántica mínima al corpus supere el umbral configurado, rechazando aquellas ajenas al dominio autorizado. **Tipo:** Preventivo **Evidencia:** Experimental **Fuente:** LLM01:2025 
 
-**N2** 
-
-Bloquear las consultas cuya distancia semántica mínima al corpus supere el umbral configurado, rechazando aquellas ajenas al dominio autorizado. 
-
-**Tipo:** Preventivo **Evidencia:** Experimental **Fuente:** LLM01:2025 
-
-###### **C05** 
-
-**N2** 
+**C05 N2** 
 
 Extraer de la respuesta del modelo únicamente el texto generado, sin incorporar el prompt del sistema ni sus restricciones al contenido retornado al usuario. 
 
 **Tipo:** Detectivo **Evidencia:** Experimental **Fuente:** LLM01:2025, LLM07:2025 
+
+21 / 119 
+
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+
+###### **Nivel N3: Definido** 
 
 ###### **C31** 
 
@@ -776,17 +796,13 @@ Registrar un motivo de bloqueo estructurado para cada solicitud rechazada, ident
 
 **Tipo:** Detectivo **Evidencia:** Experimental **Fuente:** LLM01:2025 
 
-20 / 115 
-
-CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
-
 ###### **C32** 
 
 **N3** 
 
-Verificar mediante función de resumen criptográfico que el prompt del sistema y sus restricciones no han sido modificados desde el arranque. 
+Verificar mediante función de resumen criptográfico que el prompt del sistema y sus restricciones no han sido modificados desde el arranque. **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM07:2025 
 
-**Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM07:2025 
+###### **Nivel N4: Gestionado** 
 
 **C33 N4** 
 
@@ -800,17 +816,49 @@ Medir y reportar periódicamente la tasa de prompts rechazados por categoría de
 
 **Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM01:2025 
 
-**C35 N5** 
+###### **Nivel N5: Optimizado** 
+
+
+
+<!-- Start of picture text -->
+C35 N5<br><!-- End of picture text -->
 
 Actualizar los patrones de detección ante nuevas técnicas de inyección documentadas. 
 
 **Tipo:** Preventivo **Evidencia:** Declarativo **Fuente:** LLM01:2025 
 
-**C36 N5** Revisar y ajustar el prompt del sistema ante cambios en el modelo base. **Tipo:** Preventivo **Evidencia:** Declarativo **Fuente:** LLM01:2025 
+
+
+<!-- Start of picture text -->
+C36 N5<br><!-- End of picture text -->
+
+Revisar y ajustar el prompt del sistema ante cambios en el modelo base. 
+
+**Tipo:** Preventivo **Evidencia:** Declarativo **Fuente:** LLM01:2025 
 
 #### **3.3 D2: Control de contexto y configuración RAG** 
 
-La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5). 
+La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel 
+
+22 / 119 
+
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5). 
+
+La Tabla 3.2 sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel. 
+
+Tabla 3.2: Controles de D2 por nivel de madurez. 
+
+|**N1**|**N2**|**N3**|**N4**|**N5**|
+|---|---|---|---|---|
+|C06, C07, C10,|C08, C09, C11,|C12, C62|C37, C38|C39, C40|
+|C13, C15, C16,|C14, C17, C22||||
+|C21, C30|||||
+
+
+
+###### **Nivel N1: Inicial** 
 
 
 
@@ -821,17 +869,11 @@ Segregar e identificar el contenido recuperado del corpus mediante delimitadores
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025 **Subdimensiones:** D1, D2 
 
-###### **C07** 
-
-**N1** 
+**C07 N1** 
 
 Restringir el modelo al uso exclusivo del contexto recuperado, prohibiendo mediante instrucción de sistema la generación de información no fundamentada en él. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM02:2025 
-
-21 / 115 
-
-**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
 **C10 N1** 
 
@@ -845,45 +887,55 @@ Limitar el volumen total de contexto inyectado al LLM restringiendo la cantidad 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025 **Subdimensiones:** D1, D2 
 
-###### **C15 N1** 
+**C15 N1** 
 
 Restringir el rol, las capacidades y las limitaciones del modelo mediante instrucciones de sistema declaradas externamente al código. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025 **Subdimensiones:** D1, D2 
 
-**C16 N1** 
+23 / 119 
+
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+
+###### **C16 N1** 
 
 Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025, LLM07:2025 **Subdimensiones:** D1, D2, D3 
 
-**C21 N1** 
+###### **C21** 
+
+###### **N1** 
 
 Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025 **Subdimensiones:** D1, D2 
 
-###### **C30 N1** 
+###### **C30** 
+
+**N1** 
 
 Verificar la procedencia e integridad del modelo mediante _checksums_ antes del despliegue. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663, LLM08:2025 **Subdimensiones:** D1, D2 
 
-**C08 N2** 
+###### **Nivel N2: Reactivo** 
+
+###### **C08** 
+
+**N2** 
 
 Clasificar cada fragmento del corpus según su nivel de sensibilidad al momento de la indexación, y restringir la recuperación a los niveles autorizados. 
 
 **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM02:2025, LLM08:2025 
 
-22 / 115 
-
-CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
-
 ###### **C09** 
 
 **N2** 
 
-Verificar la integridad de los fragmentos recuperados contra una línea base establecida, antes de inyectarlos al contexto de inferencia. **Tipo:** Preventivo/Detectivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM08:2025 
+Verificar la integridad de los fragmentos recuperados contra una línea base establecida, antes de inyectarlos al contexto de inferencia. 
+
+**Tipo:** Preventivo/Detectivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM08:2025 
 
 **C11 N2** 
 
@@ -891,13 +943,21 @@ Bloquear las consultas cuya distancia semántica mínima a los fragmentos del co
 
 **Tipo:** Preventivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM08:2025 
 
-**C14 N2** 
+###### **C14** 
+
+**N2** 
 
 Excluir los metadatos de los documentos en la etapa de recuperación, de modo que solo el texto de los fragmentos alcance el contexto de inferencia. 
 
 **Tipo:** Preventivo **Evidencia:** Experimental **Fuente:** LLM02:2025 
 
-**C17 N2** 
+24 / 119 
+
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+###### **C17** 
+
+**N2** 
 
 Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado. 
 
@@ -911,39 +971,50 @@ Controlar y auditar el acceso por sesión a los documentos del _vector store_ .
 
 **Tipo:** Preventivo/Detectivo **Evidencia:** Declarativo **Fuente:** LLM02:2025 
 
-###### **C12** 
+###### **Nivel N3: Definido** 
 
-**N3** 
+**C12 N3** 
 
 Detectar y bloquear las consultas indicativas de reconocimiento o enumeración sistemática del corpus. 
 
 **Tipo:** Detectivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM08:2025 
 
-###### **C62** 
-
-**N3** 
+**C62 N3** 
 
 Mantener un registro versionado y persistente de cada evento de indexación del corpus, que permita identificar qué documentos estaban activos en cada sesión y rastrear los cambios entre versiones. 
 
 **Tipo:** Detectivo **Evidencia:** Configuración **Fuente:** LLM02:2025, LLM08:2025 
 
-23 / 115 
+###### **Nivel N4: Gestionado** 
 
-**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+###### **C37** 
 
-**C37 N4** 
+**N4** 
 
 Medir y reportar periódicamente la tasa de recuperación de fragmentos sensibles ante consultas de prueba. 
 
 **Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM02:2025 
 
-**C38 N4** 
+###### **C38** 
+
+**N4** 
 
 Ajustar los parámetros de _retrieval_ según las métricas de exposición observadas. 
 
 **Tipo:** Preventivo **Evidencia:** Declarativo **Fuente:** LLM02:2025 
 
-**C39 N5** 
+25 / 119 
+
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+
+###### **Nivel N5: Optimizado** 
+
+###### **C39** 
+
+
+
+<!-- Start of picture text -->
+N5<br><!-- End of picture text -->
 
 Actualizar el particionamiento del _vector store_ ante cambios en la clasificación de sensibilidad del corpus. 
 
@@ -959,28 +1030,35 @@ Revisar proactivamente los fragmentos indexados ante nuevas amenazas de exfiltra
 
 La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema. 
 
+La Tabla 3.3 sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel. 
+
+Tabla 3.3: Controles de D3 por nivel de madurez. 
+
+|**N1**|**N2**|**N3**|**N4**|**N5**|
+|---|---|---|---|---|
+|C16|C17, C18, C19|C20|C41, C42|C43, C44|
 
 
-<!-- Start of picture text -->
-C16 N1<br><!-- End of picture text -->
 
-Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia. 
+###### **Nivel N1: Inicial** 
 
-**Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025, LLM07:2025 **Subdimensiones:** D1, D2, D3 
+**C16 N1** Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia. **Tipo:** Preventivo **Evidencia:** Configuración **Fuente:** LLM01:2025, LLM02:2025, LLM07:2025 **Subdimensiones:** D1, D2, D3 
 
-**C17 N2** 
+26 / 119 
+
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+###### **Nivel N2: Reactivo** 
+
+###### **C17** 
+
+**N2** 
 
 Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado. 
 
 **Tipo:** Preventivo/Detectivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM07:2025 **Subdimensiones:** D2, D3 
 
-24 / 115 
-
-CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
-
-###### **C18** 
-
-**N2** 
+**C18 N2** 
 
 Eliminar de la salida del modelo los caracteres de control y los tokens especiales, antes de someterla a los escáneres de contenido y de retornarla al usuario. 
 
@@ -994,35 +1072,42 @@ Bloquear las respuestas que coincidan con patrones deterministas de contenido se
 
 **Tipo:** Detectivo/Correctivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM07:2025 
 
-###### **C20** 
+###### **Nivel N3: Definido** 
 
-**N3** 
+**C20 N3** 
 
 Detectar y puntuar mediante análisis semántico las respuestas que contengan información sensible no capturada por los patrones deterministas. 
 
 **Tipo:** Detectivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM07:2025 
 
-**C41 N4** 
+###### **Nivel N4: Gestionado** 
+
+###### **C41** 
+
+**N4** 
 
 Ajustar dinámicamente los umbrales de sanitización según las métricas de falsos positivos observadas en la salida. 
 
 **Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM02:2025, LLM07:2025 
 
-###### **C42** 
-
-**N4** 
+**C42 N4** 
 
 Medir y reportar la tasa de supresión de fragmentos confidenciales por tipo de ataque. 
 
 **Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM02:2025, LLM07:2025 
 
-**C43 N5** 
+27 / 119 
 
-Revisar y actualizar los patrones de detección de contenido sensible en la salida ante nuevas técnicas de exfiltración. 
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
-**Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM02:2025, LLM07:2025 
+###### **Nivel N5: Optimizado** 
 
-**C44 N5** 
+**C43 N5** Revisar y actualizar los patrones de detección de contenido sensible en la salida ante nuevas técnicas de exfiltración. **Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM02:2025, LLM07:2025 
+
+
+
+<!-- Start of picture text -->
+C44 N5<br><!-- End of picture text -->
 
 Incorporar retroalimentación de incidentes reales al conjunto de patrones de sanitización. 
 
@@ -1032,29 +1117,33 @@ Incorporar retroalimentación de incidentes reales al conjunto de patrones de sa
 
 La subdimensión D4 agrupa 9 controles de naturaleza observacional, distribuidos a partir de N2. D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva. 
 
-25 / 115 
+La Tabla 3.4 sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel. 
 
-**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+Tabla 3.4: Controles de D4 por nivel de madurez. 
 
-**C26 N2** 
+|**N1**|**N2**|**N3**|**N4**|**N5**|
+|---|---|---|---|---|
+|—|C26, C27, C28|C23, C25, C29|C24|C45, C46|
 
-Definir y documentar la política de umbrales de detección y bloqueo con anterioridad a la operación. 
 
-**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
 
-###### **C27** 
+###### **Nivel N2: Reactivo** 
+
+**C26 N2** Definir y documentar la política de umbrales de detección y bloqueo con anterioridad a la operación. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 **C27 N2** Establecer un procedimiento formal de notificación de incidentes de seguridad ante las autoridades competentes. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
+
+28 / 119 
+
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+###### **C28** 
 
 **N2** 
-
-Establecer un procedimiento formal de notificación de incidentes de seguridad ante las autoridades competentes. 
-
-**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
-
-**C28 N2** 
 
 Definir la política de retención y eliminación de datos de sesión conforme a la normativa aplicable. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.719 
+
+###### **Nivel N3: Definido** 
 
 **C23 N3** 
 
@@ -1062,7 +1151,7 @@ Registrar cada decisión de bloqueo en la entrada y en la salida, identificando 
 
 **Tipo:** Detectivo **Evidencia:** Experimental **Fuente:** LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025 
 
-**C25 N3** 
+###### **C25 N3** 
 
 Registrar la latencia y los metadatos de cada solicitud en un formato que permita el análisis posterior del comportamiento del flujo de inferencia. 
 
@@ -1074,25 +1163,29 @@ Documentar y ejecutar un plan de pruebas de seguridad ofensiva con anterioridad 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
 
+###### **Nivel N4: Gestionado** 
+
 ###### **C24** 
 
-**N4** 
+###### **N4** 
 
 Monitorear los patrones de consulta anómalos que sugieran reconocimiento sistemático del corpus a lo largo de múltiples sesiones. 
 
 **Tipo:** Detectivo **Evidencia:** Experimental **Fuente:** LLM02:2025, LLM08:2025 
 
-26 / 115 
-
-CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+###### **Nivel N5: Optimizado** 
 
 ###### **C45** 
 
-###### **N5** 
+**N5** 
 
 Revisar y actualizar los patrones de detección de anomalías ante nuevas amenazas documentadas. 
 
 **Tipo:** Detectivo **Evidencia:** Declarativo **Fuente:** LLM01:2025, LLM02:2025, LLM07:2025, LLM08:2025 
+
+29 / 119 
+
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
 **C46 N5** 
 
@@ -1104,53 +1197,54 @@ Incorporar retroalimentación de incidentes al sistema de alertas de forma siste
 
 La subdimensión D5 agrupa 15 controles de tipo exclusivamente Gobernanza con fuente de evidencia Declarativa. Estos controles capturan las obligaciones institucionales derivadas de la Ley 21.663, la Ley 21.719, el NIST AI RMF y el Proyecto de Ley de IA. 
 
-**C47 N1** Designar formalmente un responsable de la seguridad del sistema RAG con atribuciones documentadas. 
+La Tabla 3.5 sintetiza la distribución de los controles de la subdimensión por nivel de madurez; el listado extenso que sigue los presenta agrupados por nivel. 
+
+Tabla 3.5: Controles de D5 por nivel de madurez. 
+
+|**N1**|**N2**|**N3**|**N4**|**N5**|
+|---|---|---|---|---|
+|C47, C48, C49,|C50, C51, C52|C53, C54, C55,|C56, C57|C58, C59|
+|C61||C60|||
+
+
+
+###### **Nivel N1: Inicial** 
+
+**C47 N1** Designar formalmente un responsable de la seguridad del sistema RAG con atribuciones documentadas. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 **C48 N1** Declarar el sistema RAG como activo de información sujeto a las obligaciones de la normativa vigente. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 **C49 N1** Establecer una política de uso aceptable del sistema RAG accesible a todos los usuarios. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.719 
+
+30 / 119 
+
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+###### **C61** 
+
+**N1** 
+
+Mantener un inventario actualizado de los activos del sistema RAG, incluyendo modelo, corpus, base vectorial y componentes de seguridad, conforme a lo definido en la sección 2.1. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
 
-**C48 N1** 
+###### **Nivel N2: Reactivo** 
 
-Declarar el sistema RAG como activo de información sujeto a las obligaciones de la normativa vigente. 
-
-**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
-
-**C49 N1** 
-
-Establecer una política de uso aceptable del sistema RAG accesible a todos los usuarios. 
-
-**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.719 
-
-**C61 N1** 
-
-Mantener un inventario actualizado de los activos del sistema RAG, incluyendo modelo, corpus, base vectorial y componentes de seguridad, conforme a lo definido en la sección 2.1. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
-
-27 / 115 
-
-**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
-
-###### **C50** 
-
-**N2** 
+**C50 N2** 
 
 Adoptar y adaptar la matriz RACI del marco LLM-Sec, asignando los roles genéricos definidos a personas o cargos concretos de la organización. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.663 
 
-###### **C51** 
-
-**N2** 
+**C51 N2** 
 
 Establecer un procedimiento formal de gestión de accesos que regule altas, bajas y modificaciones de permisos sobre el sistema. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.719 
 
-###### **C52** 
-
-**N2** 
+**C52 N2** 
 
 Documentar el inventario de datos personales procesados por el sistema RAG conforme a las obligaciones del responsable de tratamiento. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Ley 21.719 
+
+###### **Nivel N3: Definido** 
 
 **C53 N3** 
 
@@ -1164,50 +1258,50 @@ Definir y ejecutar un ciclo de revisión periódica del marco LLM-Sec con frecue
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** NIST AI RMF 
 
-**C55 N3** 
+###### **C55** 
+
+**N3** 
 
 Documentar y comunicar formalmente los riesgos residuales del sistema RAG a la dirección de la organización. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** NIST AI RMF 
 
+31 / 119 
+
+**LLM-Sec** — Marco de Evaluación de Ciberseguridad 
+
 ###### **C60** 
 
 **N3** 
 
-Realizar y documentar una evaluación formal de riesgos del sistema RAG con frecuencia mínima anual o ante cambios significativos en el modelo o el corpus. 
+Realizar y documentar una evaluación formal de riesgos del sistema RAG con frecuencia mínima anual o ante cambios significativos en el modelo o el corpus. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** NIST AI RMF 
 
-**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** NIST AI RMF 
+###### **Nivel N4: Gestionado** 
 
-###### **C56** 
-
-|**N4**|
-|---|
-
-
+**C56 N4** 
 
 Establecer métricas de desempeño de la gobernanza de seguridad y reportarlas periódicamente a la dirección. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Proyecto Ley IA 
 
-28 / 115 
-
-CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
-
-
-
-<!-- Start of picture text -->
-C57 N4<br><!-- End of picture text -->
+**C57 N4** 
 
 Implementar un proceso formal de gestión de riesgos de IA que clasifique el sistema RAG según su nivel de criticidad. 
+
+**Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Proyecto Ley IA 
+
+###### **Nivel N5: Optimizado** 
+
+**C58 N5** 
+
+Revisar y actualizar proactivamente el marco LLM-Sec ante cambios normativos, nuevas amenazas o modificaciones del modelo base. 
 
 **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Proyecto Ley IA 
 
 
 
 <!-- Start of picture text -->
-C58 N5<br><!-- End of picture text -->
-
-Revisar y actualizar proactivamente el marco LLM-Sec ante cambios normativos, nuevas amenazas o modificaciones del modelo base. **Tipo:** Gobernanza **Evidencia:** Declarativo **Fuente:** Proyecto Ley IA **C59 N5** 
+C59 N5<br><!-- End of picture text -->
 
 Incorporar lecciones aprendidas de incidentes de seguridad al ciclo de mejora continua del marco de gobernanza. 
 
@@ -1217,9 +1311,15 @@ Incorporar lecciones aprendidas de incidentes de seguridad al ciclo de mejora co
 
 El marco define 62 controles con identificador único (C01 a C62). Dado que un control puede proteger activos correspondientes a más de una subdimensión, un mismo identificador aparece en cada una de las subdimensiones donde su función protectora es aplicable. El control C16 (proxy de seguridad), por ejemplo, opera simultáneamente sobre la entrada, el contexto recuperado y la salida, por lo que se lista en D1, D2 y D3. 
 
-La Tabla 3.1 contabiliza aplicaciones de control por subdimensión y nivel de madurez, no controles únicos. La suma total es por tanto superior a 62: los 62 controles únicos generan 70 aplicaciones, diferencia que corresponde a los siete controles transversales del marco (C06, C13, C15, C16, C17, C21 y C30). 
+La Tabla 3.6 contabiliza aplicaciones de control por subdimensión y nivel de madurez, no controles únicos. La suma total es por tanto superior a 62: los 62 controles únicos generan 70 
 
-Tabla 3.1: Distribución de controles por subdimensión y nivel. 
+32 / 119 
+
+CAPÍTULO 3. TAXONOMÍA DE CONTROLES 
+
+aplicaciones, diferencia que corresponde a los siete controles transversales del marco (C06, C13, C15, C16, C17, C21 y C30). 
+
+Tabla 3.6: Distribución de controles por subdimensión y nivel. 
 
 |**Subdim.**|**N1**|**N2**|**N3**|**N4**|**N5**|**Aplicaciones**|
 |---|---|---|---|---|---|---|
@@ -1232,7 +1332,7 @@ Tabla 3.1: Distribución de controles por subdimensión y nivel.
 
 
 
-29 / 115 
+33 / 119 
 
 ### **Capítulo 4** 
 
@@ -1242,7 +1342,7 @@ Los perfiles organizacionales orientan la interpretación del nivel de madurez a
 
 Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia **Configuración** se priorizan sobre los de tipo **Experimental** y **Declarativo** , dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado de implementación se expresa en horas-hombre (HH), unidad estándar de estimación de esfuerzo en ingeniería de software [14]. Los cortes entre categorías se anclan a unidades de jornada laboral convencionales: **Bajo** corresponde a un esfuerzo de hasta 8 HH (una jornada diaria), asociado a la parametrización de componentes existentes sin desarrollo adicional; **Medio** corresponde a un esfuerzo de entre 8 y 40 HH (hasta una semana laboral), asociado al despliegue o configuración de un componente nuevo; **Alto** corresponde a un esfuerzo superior a 40 HH, asociado a desarrollos o integraciones a medida. Estos valores constituyen estimaciones referenciales fundadas en el juicio experto y en el contexto técnico descrito para cada perfil, no mediciones empíricas; cada organización debe calibrarlos según su capacidad instalada y la complejidad de su despliegue. 
 
-30 / 115 
+34 / 119 
 
 CAPÍTULO 4. PERFILES ORGANIZACIONALES 
 
@@ -1274,7 +1374,7 @@ Los perfiles del marco LLM-Sec clasifican a las organizaciones según su capacid
 
 El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configuración, dado que su implementación no requiere desarrollo adicional sino parametrización de componentes existentes. La Tabla 4.2 los ordena por subdimensión y costo estimado de implementación. 
 
-31 / 115 
+35 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1316,7 +1416,7 @@ Una organización bajo este perfil puede quedar comprendida entre los prestadore
 
 2. **N4 (Gestionado):** Métricas de desempeño definidas (TFA, LAS). Controles ajustados según resultados cuantitativos. Monitoreo de patrones de consulta anómalos. 
 
-32 / 115 
+36 / 119 
 
 CAPÍTULO 4. PERFILES ORGANIZACIONALES 
 
@@ -1356,7 +1456,7 @@ Tabla 4.3: Controles prioritarios para el perfil P2 (Mediana/Grande).
 
 Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio del capítulo, bajo el supuesto de una organización con equipo de seguridad dedicado e infraestructura formal: los controles de costo Alto corresponden a capacidades analíticas o desarrollos cuyo esfuerzo excede la semana laboral, aun contando con ese equipo. 
 
-33 / 115 
+37 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1384,7 +1484,7 @@ Para organizaciones bajo el perfil P3 con operaciones o usuarios en jurisdiccion
 
 El perfil P3 parte de N4 como nivel mínimo y apunta a N5. Los controles prioritarios enfatizan la gestión cuantitativa, la mejora continua y el cumplimiento normativo de la Ley 21.663, la Ley 21.719 y el Proyecto de Ley de IA. Se asume que los controles de N1 a N3 ya están implementados y que la organización cuenta con los recursos para sostener un ciclo de mejora continua. 
 
-34 / 115 
+38 / 119 
 
 CAPÍTULO 4. PERFILES ORGANIZACIONALES 
 
@@ -1418,7 +1518,7 @@ Tabla 4.4: Controles prioritarios para el perfil P3 (Crítica regulada).
 
 Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio del capítulo, bajo el supuesto de una organización con obligaciones regulatorias formales y personal dedicado a seguridad: la concentración de controles de costo Alto en el tránsito a N5 refleja que la mejora continua exige procesos sostenidos en el tiempo, no implementaciones puntuales. Las organizaciones bajo este perfil deben considerar especialmente los controles anclados a la Ley 21.663 (notificación de incidentes, inventario de activos de información), la Ley 21.719 (inventario de datos personales, gestión de accesos) y el Proyecto de Ley de IA (clasificación por criticidad, métricas de gobernanza). 
 
-35 / 115 
+39 / 119 
 
 ### **Capítulo 5** 
 
@@ -1440,7 +1540,7 @@ donde _TP_ corresponde a los ataques bloqueados correctamente y _FN_ a los ataqu
 
 El diferencial ∆TFA = TFA _B −_ TFA _A_ constituye la medida del efecto neto de la capa defensiva: TFA _A_ establece la línea base de resistencia del sistema sin protección activa, mientras que TFA _B_ incorpora el efecto de los controles implementados. 
 
-36 / 115 
+40 / 119 
 
 CAPÍTULO 5. MÉTRICAS DE EVALUACIÓN 
 
@@ -1467,7 +1567,7 @@ Para determinar si la diferencia entre escenarios es estadísticamente significa
 
 El evaluador debe reportar adicionalmente la tasa de falsos positivos _FPFP_ + _TN_<sup>, calculada sobre</sup> un conjunto de consultas legítimas de control ejecutadas bajo las mismas condiciones experimentales. Esta medida caracteriza el comportamiento de la capa defensiva ante uso normal del sistema y permite detectar configuraciones que afecten la usabilidad. 
 
-37 / 115 
+41 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1512,7 +1612,7 @@ Tabla 5.3: Caracterización de la métrica LAS.
 
 El Porcentaje de Controles Cumplidos cuantifica la proporción de controles implementados sobre un universo de controles que el evaluador define. Su fórmula es: 
 
-38 / 115 
+42 / 119 
 
 CAPÍTULO 5. MÉTRICAS DE EVALUACIÓN 
 
@@ -1540,7 +1640,7 @@ La elección del universo determina qué significa el valor obtenido. Un PCC cal
 
 PCC opera como validador de coherencia interna: un nivel de madurez alto acompañado de un PCC bajo sobre los controles de ese mismo nivel señala una discrepancia entre el nivel asignado y los controles realmente operativos, lo que indica una sobreestimación del nivel. Al ser una proporción descriptiva, no requiere prueba estadística de contraste. 
 
-39 / 115 
+43 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1577,7 +1677,7 @@ El marco considera que los resultados son coherentes con el modelo de madurez si
 
 El incumplimiento de cualquiera de estas condiciones no invalida el marco, pero requiere que el evaluador documente la discrepancia y analice sus causas antes de reportar el nivel asignado. 
 
-40 / 115 
+44 / 119 
 
 CAPÍTULO 5. MÉTRICAS DE EVALUACIÓN 
 
@@ -1592,7 +1692,7 @@ Tabla 5.5: Caracterización de la métrica NCP.
 
 
 
-41 / 115 
+45 / 119 
 
 ### **Capítulo 6** 
 
@@ -1620,7 +1720,7 @@ El proceso de evaluación del marco LLM-Sec sigue seis pasos secuenciales:
 
 #### **6.2 Criterios de verificación por fuente de evidencia** 
 
-42 / 115 
+46 / 119 
 
 CAPÍTULO 6. GUÍA DE EVALUACIÓN 
 
@@ -1646,7 +1746,7 @@ Los roles definidos son genéricos por diseño: no corresponden a personas espec
 
 La Tabla 6.1 presenta las actividades principales del marco y la asignación de roles según los criterios R (Responsable), A ( _Accountable_ ), C (Consultado) e I (Informado). 
 
-43 / 115 
+47 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1685,7 +1785,7 @@ Ante brechas identificadas entre el nivel verificado y el nivel objetivo, el eva
 
 Este ciclo es iterativo y se repite hasta alcanzar el nivel objetivo del perfil organizacional o hasta que los riesgos residuales sean formalmente aceptados y documentados por la dirección. 
 
-44 / 115 
+48 / 119 
 
 ### **Apéndice A** 
 
@@ -1715,7 +1815,7 @@ Los controles transversales (aquellos que aparecen en más de una subdimensión)
 
 _Continúa en la página siguiente…_ 
 
-45 / 115 
+49 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1751,7 +1851,7 @@ _Continúa en la página siguiente…_
 
 _Continúa en la página siguiente…_ 
 
-46 / 115 
+50 / 119 
 
 APÉNDICE A. RESUMEN DE CONTROLES POR NIVEL 
 
@@ -1786,7 +1886,7 @@ APÉNDICE A. RESUMEN DE CONTROLES POR NIVEL
 
 _Continúa en la página siguiente…_ 
 
-47 / 115 
+51 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1827,7 +1927,7 @@ _Continúa en la página siguiente…_
 
 _Continúa en la página siguiente…_ 
 
-48 / 115 
+52 / 119 
 
 APÉNDICE A. RESUMEN DE CONTROLES POR NIVEL 
 
@@ -1846,7 +1946,7 @@ APÉNDICE A. RESUMEN DE CONTROLES POR NIVEL
 
 
 
-49 / 115 
+53 / 119 
 
 ### **Apéndice B** 
 
@@ -1880,7 +1980,7 @@ Los controles transversales aparecen una sola vez, con todas sus fuentes consoli
 
 _Continúa en la página siguiente…_ 
 
-50 / 115 
+54 / 119 
 
 APÉNDICE B. MAPEO NORMATIVO 
 
@@ -1918,7 +2018,7 @@ APÉNDICE B. MAPEO NORMATIVO
 
 _Continúa en la página siguiente…_ 
 
-51 / 115 
+55 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -1952,7 +2052,7 @@ _Continúa en la página siguiente…_
 
 
 
-52 / 115 
+56 / 119 
 
 ### **Apéndice C** 
 
@@ -1983,7 +2083,7 @@ Los siete controles de esta sección protegen activos correspondientes a más de
 
 Estructurar el prompt aumentado de modo que el contenido recuperado del corpus y la consulta del usuario ocupen secciones explícitamente delimitadas y distinguibles entre sí. 
 
-53 / 115 
+57 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2015,7 +2115,7 @@ Acotar el volumen total de contenido recuperado que se incorpora al prompt de in
 
 El contexto recuperado es contenido no confiable: proviene del corpus, cuya integridad el sistema verifica pero no garantiza en origen, y su selección la determina la consulta del usuario. Cada fragmento adicional que ingresa al prompt amplía la superficie disponible para que una instrucción inyectada en el corpus alcance la inferencia, y amplía también el volumen de corpus que una sola consulta puede exponer en la respuesta. 
 
-54 / 115 
+58 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2049,7 +2149,7 @@ La eficacia de este control es parcial por naturaleza. Las instrucciones del sis
 
 Las instrucciones deben declararse en configuración y no incrustarse en el código, de modo 
 
-55 / 115 
+59 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2086,7 +2186,7 @@ Esta es la razón por la que C16 es el único control de nivel N1 en D3: sin un 
 
 El componente debe interponerse en la ruta de red entre el cliente y el generador, de modo que ninguna solicitud pueda alcanzar el modelo sin atravesarlo. Una implementación en la que el generador invoque al componente de seguridad como biblioteca no satisface el control: si el generador es comprometido, la invocación puede omitirse. 
 
-56 / 115 
+60 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2127,7 +2227,7 @@ La métrica de solapamiento admite distintas implementaciones. El marco no presc
 
 C07 (instrucción de uso exclusivo del contexto recuperado), que declara al modelo la restricción 
 
-57 / 115 
+61 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2157,7 +2257,7 @@ Las credenciales exigen un tratamiento distinto del resto de la configuración. 
 
 C26 (documentación de la política de umbrales), que exige que los valores declarados por este control estén además justificados; C32 (verificación de integridad del prompt del sistema), que es un caso particular de verificación sobre configuración externalizada. 
 
-58 / 115 
+62 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2189,7 +2289,7 @@ C61 (inventario de activos del sistema RAG), que registra el modelo cuya procede
 
 Los controles de esta sección operan sobre el prompt del usuario antes de que alcance la etapa de recuperación o la capa de inferencia. Los controles transversales C06, C13, C15, C16, C21 y C30, que también pertenecen a D1, se desarrollan en la sección C.1. 
 
-59 / 115 
+63 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2221,7 +2321,7 @@ C13 (límite de volumen de contexto por sesión), que opera sobre el mismo eje d
 
 **Evidencia** Experimental **Fuente** LLM01:2025 
 
-60 / 115 
+64 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2255,7 +2355,7 @@ C06 (delimitación del contenido recuperado), cuyos marcadores este control prot
 
 Someter la entrada del usuario a un escáner que asigne una puntuación de riesgo de inyección, y bloquear la transacción cuando esa puntuación supere el umbral configurado. 
 
-61 / 115 
+65 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2289,7 +2389,7 @@ Bloquear las consultas cuya distancia semántica mínima al corpus supere el umb
 
 Un sistema RAG responde a partir de un corpus acotado. Una consulta cuyo contenido no guarda proximidad semántica con ningún fragmento del corpus es, por definición, una consulta que 
 
-62 / 115 
+66 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2323,7 +2423,7 @@ El prompt del sistema contiene las restricciones de comportamiento, el alcance d
 
 La distinción importante es que este control opera sobre la arquitectura de la respuesta, no sobre la obediencia del modelo. Una instrucción que ordena al modelo no revelar sus directivas 
 
-63 / 115 
+67 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2357,7 +2457,7 @@ Un sistema que bloquea sin registrar por qué bloqueó produce una defensa opaca
 
 La exigencia de estructura, y no solo de registro, es lo que eleva este control a nivel N3. Un mensaje de error en texto libre acredita que hubo un bloqueo; un motivo estructurado que identifica el componente permite agregar los eventos por categoría, medir la tasa de rechazo de cada control por separado y establecer la trazabilidad que las métricas de nivel N4 requieren. Sin este control, las métricas de desempeño no tienen sobre qué calcularse. 
 
-64 / 115 
+68 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2393,7 +2493,7 @@ El sistema debe calcular el resumen del prompt del sistema y sus restricciones a
 
 El valor de referencia no debe residir en el mismo artefacto que el prompt del sistema. Un atacante que puede modificar el prompt puede modificar también el resumen almacenado junto a él, con lo que la verificación se satisface trivialmente sobre el contenido alterado. 
 
-65 / 115 
+69 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2427,7 +2527,7 @@ Cada modificación de umbral debe documentarse indicando el valor anterior, el n
 
 C03 (bloqueo de intentos de inyección), cuyo umbral este control ajusta; C34 (medición de la tasa de rechazo por categoría), que provee la evidencia sobre la que este control opera; C26 
 
-66 / 115 
+70 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2461,7 +2561,7 @@ C31 (registro estructurado del motivo de bloqueo), cuyos eventos este control ag
 
 **Nivel** N5 **Evidencia** Declarativo **Tipo** Preventivo **Fuente** LLM01:2025 
 
-67 / 115 
+71 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2497,7 +2597,7 @@ Revisar y ajustar las instrucciones del prompt del sistema cada vez que el model
 
 La eficacia de una instrucción del sistema depende del modelo que la interpreta. Una formulación que un modelo respeta de forma consistente puede ser ignorada por otro, o interpretada de una manera que no fue la prevista. La sustitución del modelo base, aunque sea por una versión más reciente de la misma familia, altera la relación entre la instrucción y el comportamiento observado. 
 
-68 / 115 
+72 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2529,7 +2629,7 @@ Declarar en el prompt del sistema la prohibición de generar información que no
 
 Un modelo de lenguaje no distingue por sí mismo entre lo que sabe por su entrenamiento y lo que acaba de leer en el contexto. Ante una consulta que el contexto recuperado no responde por completo, la conducta por defecto es completar el vacío con conocimiento paramétrico, y hacerlo con la misma apariencia de fundamentación que el contenido efectivamente recuperado. 
 
-69 / 115 
+73 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2561,7 +2661,7 @@ La exfiltración de un corpus mediante consultas sucesivas es un ataque de acumu
 
 Un sistema que devuelve veinte fragmentos por consulta expone su corpus en un orden de magnitud menos de solicitudes que uno que devuelve tres. El control no impide la exfiltración, dado que un atacante persistente puede realizar el número de consultas que sean necesarias, pero eleva el costo del ataque y prolonga la ventana durante la cual los controles de detección de reconocimiento sistemático pueden identificarlo. 
 
-70 / 115 
+74 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2595,7 +2695,7 @@ La clasificación debe realizarse durante la indexación y almacenarse como meta
 
 El filtro debe aplicarse en la propia consulta a la base vectorial, y no como descarte posterior de los resultados. Un sistema que recupera todos los fragmentos y luego descarta los no au- 
 
-71 / 115 
+75 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2631,7 +2731,7 @@ El resumen de cada fragmento debe calcularse durante la indexación y conservars
 
 La verificación debe ejecutarse sobre los fragmentos recuperados y antes de la construcción del prompt aumentado. Ante una discrepancia, el comportamiento esperado es el rechazo de la solicitud y el registro del evento, no la exclusión silenciosa del fragmento y la continuación 
 
-72 / 115 
+76 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2663,7 +2763,7 @@ El umbral de coherencia debe ser más permisivo que el de dominio: una consulta 
 
 La distancia debe calcularse contra el corpus completo, y el valor obtenido debe registrarse para cada solicitud, de modo que la distribución de distancias de las consultas legítimas sea 
 
-73 / 115 
+77 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2695,7 +2795,7 @@ La consulta a la base vectorial debe solicitar explícitamente el texto de los f
 
 Los identificadores de fragmento constituyen la excepción: el sistema los requiere para la trazabilidad y para la verificación de integridad, y su exposición no revela información sobre la estructura del corpus siempre que sean opacos, es decir, que no codifiquen el nombre del documento de origen ni su ruta. 
 
-74 / 115 
+78 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2731,7 +2831,7 @@ El registro de accesos debe consignar la identidad de la sesión, los identifica
 
 C08 (clasificación y filtrado por sensibilidad), con cuyo filtro este control se compone; C51 (procedimiento de gestión de accesos), que establece el marco organizacional que este control 
 
-75 / 115 
+79 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2763,7 +2863,7 @@ El evento de detección debe registrarse aunque la consulta no llegue a bloquear
 
 C24 (monitoreo de patrones de consulta anómalos), que opera sobre la dimensión temporal que este control no cubre; C10 (control de la cantidad de fragmentos recuperados), que ralentiza la fase de extracción que este control busca prevenir; C31 y C23 (registro de decisiones de bloqueo). 
 
-76 / 115 
+80 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2795,7 +2895,7 @@ La correlación entre una sesión y la versión del corpus vigente exige que los
 
 C09 (verificación de integridad de los fragmentos), cuya línea base este control versiona; C25 (registro de latencia y metadatos de cada solicitud), que debe consignar la versión activa; C61 (inventario de activos), del que este registro es la componente correspondiente al corpus. 
 
-77 / 115 
+81 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2833,7 +2933,7 @@ C08 (clasificación y filtrado por sensibilidad), cuya eficacia este control mid
 
 Ajustar los parámetros de la etapa de recuperación, incluidos el número de fragmentos devuel- 
 
-78 / 115 
+82 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2867,7 +2967,7 @@ Actualizar la clasificación de sensibilidad de los fragmentos indexados y el fi
 
 La sensibilidad de un documento no es una propiedad permanente. Un contenido que era público puede pasar a ser reservado ante un cambio normativo; uno que era confidencial puede desclasificarse. La política de clasificación de la organización evoluciona, y un corpus indexado bajo una política anterior conserva una clasificación que ya no corresponde a la vigente. 
 
-79 / 115 
+83 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2903,7 +3003,7 @@ El caso más claro es el de la exfiltración por agregación: fragmentos que ais
 
 La revisión debe dispararse ante la documentación de nuevas técnicas de exfiltración en la literatura del área o en los catálogos públicos de amenazas, y debe evaluar el corpus en su 
 
-80 / 115 
+84 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -2939,7 +3039,7 @@ La segunda razón es la misma que sostiene C02: los escáneres que evalúan la s
 
 La sanitización debe ejecutarse antes que los escáneres de contenido de la salida, por la misma razón que C02 debe ejecutarse antes que los de la entrada: un escáner que analiza texto sin sanitizar es evadible por construcción. 
 
-81 / 115 
+85 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -2971,7 +3071,7 @@ El conjunto de patrones debe declararse en la configuración y cubrir, como mín
 
 El marcador de confidencialidad merece una consideración particular. Su presencia en la salida significa que un fragmento clasificado como confidencial alcanzó el contexto de inferencia y el modelo lo reprodujo, lo que constituye una falla de los controles de D2 y no solo de D3. El evento debe registrarse como tal, dado que su ocurrencia indica que el filtro de sensibilidad no operó. 
 
-82 / 115 
+86 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3003,7 +3103,7 @@ El umbral debe declararse en la configuración antes de la operación y calibrar
 
 La puntuación asignada a cada respuesta debe registrarse, y no solo la decisión de bloqueo. Sin ese registro, la distribución de puntuaciones de las respuestas legítimas no es observable, y la tasa de falsos positivos que C41 debe ajustar no es medible. 
 
-83 / 115 
+87 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3037,7 +3137,7 @@ La asimetría de costos entre las dos clases de error debe declararse explícita
 
 C19 y C20 (escáneres de salida), cuyos umbrales este control ajusta; C42 (medición de la tasa 
 
-84 / 115 
+88 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3045,7 +3145,9 @@ de supresión), que provee la evidencia; C33 (ajuste dinámico de los umbrales d
 
 ##### **C.4.5 C42: Medición de la tasa de supresión de contenido confidencial** 
 
-**Nivel** N4 **Evidencia** Declarativo **Tipo** Detectivo **Fuente** LLM02:2025, LLM07:2025 
+**Nivel** N4 **Tipo** Detectivo 
+
+**Evidencia** Declarativo **Fuente** LLM02:2025, LLM07:2025 
 
 ###### **Propósito** 
 
@@ -3069,7 +3171,7 @@ Debe incluirse la tasa de falsos positivos, medida sobre el conjunto de consulta
 
 C23 (registro de decisiones de bloqueo), cuyos eventos este control agrega; C41 (ajuste dinámico de los umbrales de sanitización), que consume las tasas que este control produce; C34 (medición de la tasa de rechazo en la entrada), del que este control es la contraparte en D3. 
 
-85 / 115 
+89 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3107,7 +3209,7 @@ C35 (actualización de los patrones de detección en la entrada), del que este c
 
 Incorporar al conjunto de patrones de detección de la salida las construcciones que produjeron fugas efectivas en incidentes reales. 
 
-86 / 115 
+90 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3139,7 +3241,7 @@ Los controles de esta sección registran, alertan y auditan los eventos de segur
 
 **Nivel** N2 **Evidencia** Declarativo **Tipo** Gobernanza **Fuente** Ley 21.663 
 
-87 / 115 
+91 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3173,7 +3275,7 @@ C03, C11, C17, C19 y C20 (escáneres con umbral configurable), cuyos valores est
 
 Establecer el procedimiento formal mediante el cual la organización notifica a las autoridades competentes los incidentes de seguridad que afecten al sistema RAG. 
 
-88 / 115 
+92 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3211,7 +3313,7 @@ Definir el plazo durante el cual los registros de sesión se conservan, el crite
 
 Los controles de registro que este marco exige producen un artefacto que la organización no siempre reconoce como tal: un repositorio de las consultas que los usuarios formularon. Ese 
 
-89 / 115 
+93 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3245,7 +3347,7 @@ Registrar cada decisión de bloqueo producida en la entrada o en la salida, iden
 
 Este control es la contraparte de C31 en D4, y su alcance es más amplio: mientras aquel cubre los rechazos de la etapa de entrada, este cubre la totalidad de las decisiones de bloqueo del flujo, incluidas las de salida. 
 
-90 / 115 
+94 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3277,7 +3379,7 @@ Registrar la latencia y los metadatos de cada solicitud procesada, en un formato
 
 La latencia es un canal de información que la seguridad tiende a ignorar. Un flujo cuyo tiempo de respuesta se aparta sistemáticamente de su distribución habitual está procesando algo distinto de lo habitual: entradas de longitud anómala, consultas que activan escáneres que normalmente no se activan, o volúmenes de recuperación superiores a los previstos. 
 
-91 / 115 
+95 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3311,7 +3413,7 @@ Los controles de fuente de evidencia experimental no se acreditan por inspecció
 
 La auditoría ofensiva es el único mecanismo que convierte la implementación declarada en efectividad medida. Es, además, lo que distingue este marco de un cuestionario de cumplimiento: la exigencia de que los controles se prueben contra ataques reales y no se den por implementados porque el código los contiene. 
 
-92 / 115 
+96 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3345,7 +3447,7 @@ Los controles de las subdimensiones anteriores evalúan cada solicitud de forma 
 
 Ninguna de esas consultas activa un escáner. Todas son coherentes, todas pertenecen al dominio, todas obtienen respuestas fundamentadas en el contexto recuperado. El ataque es invisible en el eje de la solicitud individual y evidente en el eje temporal: una sesión que barre sistemáticamente el espacio semántico del corpus exhibe un comportamiento que ninguna consulta legítima produce. 
 
-93 / 115 
+97 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3377,7 +3479,7 @@ Los patrones de comportamiento anómalo que un sistema reconoce son los que se d
 
 La línea base de comportamiento normal, además, se desplaza. El tráfico legítimo de un sistema cambia a medida que cambian sus usuarios y sus casos de uso, y un criterio de anomalía 
 
-94 / 115 
+98 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3411,7 +3513,7 @@ Este control cierra el ciclo del nivel N5 en D4. C45 actualiza los criterios de 
 
 El control es correctivo y no detectivo, a diferencia de los demás de su subdimensión, porque su objeto no es detectar sino reparar la capacidad de detección que el incidente demostró insuficiente. 
 
-95 / 115 
+99 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3445,7 +3547,7 @@ Un sistema sin responsable designado es un sistema cuya seguridad es responsabil
 
 La Ley 21.663 exige la designación como condición del régimen de deberes que impone. La obligación de notificar un incidente presupone un sujeto obligado a hacerlo; la de mantener un inventario de activos presupone un sujeto que responda por su vigencia. 
 
-96 / 115 
+100 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3481,7 +3583,7 @@ La declaración es el acto que incorpora el sistema al marco de gestión. Sin el
 
 La declaración debe consignar la finalidad del sistema, el corpus que indexa, la clasificación de sensibilidad de ese corpus y las obligaciones normativas que le resultan aplicables. 
 
-97 / 115 
+101 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3517,7 +3619,7 @@ La accesibilidad es parte del control y no un accesorio. Una política que exist
 
 C28 (política de retención de datos de sesión), cuyo contenido esta política debe comunicar; C52 (inventario de datos personales); C51 (procedimiento de gestión de accesos). 
 
-98 / 115 
+102 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3553,7 +3655,7 @@ C48 (declaración del sistema como activo), que este inventario materializa; C30
 
 **Nivel** N2 **Evidencia** Declarativo **Tipo** Gobernanza **Fuente** Ley 21.663 
 
-99 / 115 
+103 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3591,7 +3693,7 @@ Establecer el procedimiento formal que regula las altas, bajas y modificaciones 
 
 El control técnico de acceso por sesión, que C22 establece, determina qué puede consultar cada sesión según las autorizaciones que se le atribuyen. De dónde provienen esas autorizaciones, quién las otorga y cuándo se revocan es lo que este control gobierna. 
 
-100 / 115 
+104 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3625,7 +3727,7 @@ El segundo canal es el que se omite. La organización que inventaría el conteni
 
 El inventario es la condición previa de la totalidad de las obligaciones que la Ley 21.719 impone. No es posible aplicar el principio de finalidad, ni el de limitación temporal, ni atender un derecho de acceso, sobre datos cuya existencia no está documentada. 
 
-101 / 115 
+105 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3661,7 +3763,7 @@ La capacitación es lo que convierte la implementación en competencia. Es, adem
 
 El programa debe diferenciarse por rol. El operador técnico requiere formación en la calibración de umbrales y en la interpretación de los registros; el propietario del corpus, en la clasificación de sensibilidad y en los vectores de intoxicación; la dirección, en la interpretación de las métricas que el marco produce. 
 
-102 / 115 
+106 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3695,7 +3797,7 @@ Debe disparse además ante los eventos que alteran la eficacia de los controles 
 
 El resultado debe documentarse y comunicarse conforme a C55, incluso cuando la revisión no arroje cambios: la constatación de que el nivel se mantiene es un resultado tan reportable como su variación. 
 
-103 / 115 
+107 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3731,7 +3833,7 @@ La aceptación del riesgo residual debe constar formalmente. Un informe entregad
 
 C60 (evaluación formal de riesgos), que produce el análisis que este control comunica; C56 (métricas de desempeño de la gobernanza), que acompaña el informe; C54 (ciclo de revisión periódica), cuya cadencia este control sigue. 
 
-104 / 115 
+108 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3771,7 +3873,7 @@ C48 (declaración del sistema como activo), que es su presupuesto; C55 (comunica
 
 **Evidencia** Declarativo **Fuente** Proyecto Ley IA 
 
-105 / 115 
+109 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3811,7 +3913,7 @@ Implementar un proceso formal de gestión de riesgos de inteligencia artificial 
 
 El proyecto de ley de inteligencia artificial en tramitación establece un régimen de obligaciones diferenciado según el nivel de riesgo del sistema. La clasificación determina qué deberes le resultan aplicables, y es en consecuencia el acto que define el alcance del cumplimiento. 
 
-106 / 115 
+110 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3845,7 +3947,7 @@ La distinción entre este control y C54 es la de la iniciativa. C54 establece un
 
 El nivel N5 se define por la anticipación. Una organización que solo revisa cuando le toca revisar reacciona; una que revisa cuando el entorno cambia se adelanta. 
 
-107 / 115 
+111 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -3881,7 +3983,7 @@ El análisis retrospectivo debe alcanzar la cadena de decisiones que precedió a
 
 El resultado debe traducirse en modificaciones de los procedimientos, de las periodicidades declaradas o de la asignación de responsabilidades, y no únicamente en la corrección técnica del control que falló. 
 
-108 / 115 
+112 / 119 
 
 APÉNDICE C. FICHAS TÉCNICAS DE CONTROL 
 
@@ -3891,7 +3993,7 @@ El registro del análisis y de las modificaciones aplicadas constituye el artefa
 
 C44 y C46 (incorporación de retroalimentación en D3 y D4), de los que este control es el correlato organizacional; C27 (procedimiento de notificación), cuya ejecución el análisis retrospectivo evalúa; C58 (revisión proactiva del marco), con el que comparte el ciclo de mejora. 
 
-109 / 115 
+113 / 119 
 
 ### **Apéndice D** 
 
@@ -3935,7 +4037,7 @@ Configuración de seguridad bajo la cual se evalúa el sistema. El marco disting
 
 Extracción no autorizada de información sensible desde el corpus indexado o desde el prompt del sistema, mediante consultas diseñadas para inducir su reproducción en la salida del modelo. 
 
-110 / 115 
+114 / 119 
 
 APÉNDICE D. GLOSARIO 
 
@@ -3995,7 +4097,7 @@ Generación aumentada por recuperación ( _Retrieval-Augmented Generation_ ). Ar
 
 Criterio de agregación del nivel global del sistema, definido como el mínimo entre los niveles alcanzados por cada subdimensión (sección 2.6). 
 
-111 / 115 
+115 / 119 
 
 **LLM-Sec** — Marco de Evaluación de Ciberseguridad 
 
@@ -4027,11 +4129,11 @@ Nivel de madurez tecnológica ( _Technology Readiness Level_ ). Escala que carac
 
 Categoría de ataque definida en el OWASP LLM Top 10:2025. El marco cubre cuatro: LLM01, LLM02, LLM07 y LLM08. 
 
-112 / 115 
+116 / 119 
 
 ## **Referencias** 
 
-113 / 115 
+117 / 119 
 
 ## **Bibliografía** 
 
@@ -4067,7 +4169,7 @@ Categoría de ataque definida en el OWASP LLM Top 10:2025. El marco cubre cuatro
 
 - [14] B. Boehm et al. _Software Cost Estimation with COCOMO II_ . Prentice Hall, 2000. 
 
-114 / 115 
+118 / 119 
 
 BIBLIOGRAFÍA 
 
@@ -4077,5 +4179,11 @@ BIBLIOGRAFÍA
 
 - [17] Verizon. _2025 Data Breach Investigations Report_ . Verizon Business, 2025. https://www. verizon.com/business/resources/reports/dbir/ 
 
-115 / 115 
+- [18] ISACA. _CMMI Model V3.0_ . CMMI Institute, 2023. 
+
+- [19] International Organization for Standardization. _ISO/IEC 33020:2019 — Information technology — Process assessment — Process measurement framework for assessment of process capability_ . ISO, Geneva, 2019. 
+
+- [20] OWASP Foundation. _OWASP Software Assurance Maturity Model (SAMM), Version 2.0_ . 2020. https://owaspsamm.org/ 
+
+119 / 119 
 
