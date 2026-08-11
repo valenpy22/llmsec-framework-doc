@@ -172,9 +172,9 @@ La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\
 La valoración revela tres hallazgos que condicionan el diseño del modelo de madurez y la distribución de controles:
 
 \begin{enumerate}[leftmargin=2em]
-  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones D1 (Protección de entrada), D2 (Control de contexto RAG) y D3 (Gestión de salida) concentren el mayor volumen de controles en la taxonomía: 17, 18 y 10 respectivamente, frente a 9 de D4 y 15 de D5.
+  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones que interceptan directamente esos vectores concentren la mayor densidad de controles técnicos de la taxonomía: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles como última línea de defensa sobre un único canal, el de respuesta, de modo que su menor volumen refleja la acotación de su superficie de operación y no una menor prioridad del riesgo que cubre.
 
-  \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (18), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
+  \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (20), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
 
   \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja porque requiere acceso privilegiado o condiciones poco frecuentes, pero el impacto de su compromiso sigue siendo alto. Esto justifica que el control de acceso por sesión (C22) se clasifique con fuente de evidencia declarativa: su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG y por tanto no evaluable mediante auditoría ofensiva contra el sistema. Su implementación sigue siendo imprescindible en todo despliegue productivo.
 \end{enumerate}
@@ -196,10 +196,10 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
     \toprule
     \textbf{Activo} & \textbf{Riesgo} & \textbf{Subdimensión} & \textbf{Controles} & \textbf{Prioridad} \\
     \midrule
-    A4 (Canales E/S)     & Alto (9) & D1, D3 & 17 + 10 & Máxima \\
-    A1 (LLM)             & Alto (9) & D1, D3 & 17 + 10 & Máxima \\
-    A3 (Corpus)           & Alto (9) & D2     & 18      & Máxima \\
-    A2 (Base vectorial)   & Alto (6) & D2     & 18      & Alta \\
+    A4 (Canales E/S)     & Alto (9) & D1, D3 & 17 + 9 & Máxima \\
+    A1 (LLM)             & Alto (9) & D1, D3 & 17 + 9 & Máxima \\
+    A3 (Corpus)           & Alto (9) & D2     & 20      & Máxima \\
+    A2 (Base vectorial)   & Alto (6) & D2     & 20      & Alta \\
     A5 (Acceso y sesión)  & Medio (3) & D4, D5 & 9 + 15 & Media \\
     \bottomrule
   \end{tabularx}
@@ -207,7 +207,7 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
 
 \vspace{6pt}
 
-Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria, sino proporcional al riesgo valorado de cada activo. Las subdimensiones (sección \ref{sec:subdimensiones}) con mayor densidad de controles (D1, D2, D3) corresponden a los activos con mayor nivel de riesgo, mientras que D4 y D5, asociadas a activos de riesgo medio, priorizan la observación y la gobernanza sobre la intervención directa.
+Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria: en las subdimensiones técnicas, la densidad de controles es proporcional al riesgo valorado de los activos que protegen, con D1 y D2 concentrando los mayores volúmenes. D4, de naturaleza observacional, y D5, cuya densidad responde a las obligaciones normativas ancladas en la Ley 21.663 y la Ley 21.719 más que al riesgo técnico de un activo específico, completan la cobertura priorizando la observación y la gobernanza sobre la intervención directa. Los controles transversales se contabilizan en cada subdimensión a la que pertenecen, por lo que la suma de aplicaciones (70) excede el total de controles únicos del marco (62), conforme al criterio declarado en el Capítulo~\ref{ch:controles}.
 
 \section{Estructura del modelo}
 
