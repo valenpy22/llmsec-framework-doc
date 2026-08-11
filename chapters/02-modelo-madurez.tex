@@ -211,26 +211,25 @@ Esta trazabilidad garantiza que la distribución de controles del marco no es ar
 
 \section{Estructura del modelo}
 
-A partir de los activos de información identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG, conforme a los conceptos de evaluación de procesos de ISO/IEC 33001 \cite{iso33001}. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_0$ a $N_{k-1}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
+A partir de los activos de información identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG, conforme a los conceptos de evaluación de procesos de ISO/IEC 33001 \cite{iso33001}. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_1$ a $N_{k}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
 
-El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez estandarizado para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
+El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez con progresión acumulativa para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
 
 \section{Niveles de madurez}
 
-\begin{levelbox}[title=N0: Inexistente]{level-n0}
-  Sin consciencia de seguridad. No existen controles, políticas ni identificación de riesgos asociados al sistema RAG. Estado previo al despliegue del sistema; no genera artefactos de evaluación.
+\begin{levelbox}[title=N0: No conforme]{level-n0}
+  El sistema incumple al menos un control de nivel N1 en alguna subdimensión aplicable, operando sin las salvaguardas mínimas exigibles. Corresponde a un sistema RAG desplegado sin capa defensiva o con controles básicos ausentes. No constituye un nivel de madurez, sino el estado de no conformidad con el marco.
 \end{levelbox}
-
 \vspace{8pt}
 
 \begin{levelbox}[title=N1: Inicial]{level-n1}
-  Los riesgos son reconocidos pero no se han implementado controles para abordarlos. El sistema opera sin mecanismos de protección activos, asumiendo implícitamente los riesgos existentes. Corresponde a un sistema RAG desplegado sin capa defensiva.
+  Controles preventivos básicos de nivel N1 implementados en todas las subdimensiones aplicables: restricciones de entrada, delimitación del contexto inyectado y prompt del sistema con instrucciones de seguridad, con la capa defensiva activa en configuración por defecto. La protección es estática: no existe calibración de umbrales, monitoreo ni respuesta ante incidentes.
 \end{levelbox}
 
 \vspace{8pt}
 
 \begin{levelbox}[title=N2: Reactivo]{level-n2}
-  Controles básicos implementados de forma parcial o no sistemática. Respuesta ante incidentes conocidos, no preventiva. Se evidencia mediante la activación de una capa defensiva con configuración por defecto; la tasa de filtrado de ataques es positiva pero variable entre categorías.
+  Umbrales de detección configurados y logging básico habilitado. La organización responde ante incidentes conocidos, pero la operación de seguridad no es preventiva ni está formalmente documentada. La tasa de filtrado de ataques es positiva pero variable entre categorías de amenaza.
 \end{levelbox}
 
 \vspace{8pt}
@@ -242,13 +241,13 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
 \vspace{8pt}
 
 \begin{levelbox}[title=N4: Gestionado]{level-n4}
-  Seguridad gestionada cuantitativamente. Métricas de desempeño definidas y controles ajustados según resultados medidos. El nivel de correlación entre la puntuación del checklist y la resistencia experimental es estadísticamente significativo.
+  Seguridad gestionada cuantitativamente. Métricas de desempeño definidas (TFA, LAS, PCC, NCP) y controles ajustados según resultados medidos. La consistencia de la protección entre categorías de amenaza se evalúa periódicamente mediante el indicador NCP.
 \end{levelbox}
 
 \vspace{8pt}
 
 \begin{levelbox}[title=N5: Optimizado]{level-n5}
-  Mejora continua. Controles actualizados proactivamente ante nuevas amenazas documentadas. Marco revisado periódicamente e integrado al ciclo de gestión de riesgos organizacional. Requiere validación longitudinal y en múltiples dominios.
+  Mejora continua. Controles actualizados proactivamente ante nuevas amenazas documentadas. Marco revisado periódicamente e integrado al ciclo de gestión de riesgos organizacional.
 \end{levelbox}
 
 
@@ -587,7 +586,7 @@ El nivel global $L$ del sistema se determina como:
 \[
   L = \min(d_1, d_2, d_3, d_4, d_5)
 \]
-donde $d_i$ es el nivel verificado de la subdimensión $i$. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4 pero D4 alcanza nivel 2, el nivel global verificado es 2.
+donde $d_i$ es el nivel alcanzado por la subdimensión $i$: el nivel verificado para D1 a D4, cuyas fuentes de evidencia son experimentales o de configuración, y el nivel declarado para D5, cuya evidencia es exclusivamente declarativa (sección~\ref{sec:verificado-declarado}). En consecuencia, el nivel global integra necesariamente una componente declarada, condición que debe hacerse explícita al reportar el resultado de la evaluación. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4, D5 declara nivel 3 y D4 alcanza nivel 2, el nivel global es 2.
 
 Dado que D5 opera exclusivamente con fuente de evidencia declarativa (sección~\ref{sec:verificado-declarado}), el nivel global resultante de la regla de piso mínimo integra necesariamente una componente declarada.
 

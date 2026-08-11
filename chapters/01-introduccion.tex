@@ -18,6 +18,7 @@ El marco LLM-Sec está diseñado para evaluar sistemas RAG que cumplan las sigui
 
 Esta última condición delimita la arquitectura evaluable a un flujo RAG conversacional y excluye las arquitecturas agénticas, en que el modelo dispone de herramientas que le permiten actuar sobre su entorno. Tales sistemas introducen vectores de amenaza adicionales, como la ejecución de acciones no autorizadas derivadas de una instrucción inyectada, que requieren controles de aislamiento y validación de invocación no contemplados en la taxonomía de este marco.
 
+Adicionalmente, el marco asume como precondición que la capa de presentación web de la plataforma evaluada cumple con los CIS Benchmarks aplicables \cite{cisbenchmarks}, por lo que los vectores de ataque propios de esa capa (XSS, inyección HTML, inyección SQL) quedan fuera del alcance de evaluación de LLM-Sec, cuyo objeto son los vectores de amenaza específicos del flujo RAG.
 
 El marco cubre cuatro categorías de amenaza del OWASP LLM Top 10:2025 pertinentes al flujo RAG: LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM07 (System Prompt Leakage) y LLM08 (Vector and Embedding Weaknesses).
 
