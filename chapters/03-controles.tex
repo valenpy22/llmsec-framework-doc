@@ -20,7 +20,7 @@ Un control puede satisfacer más de un tipo funcional simultáneamente, consiste
 
 Todos los controles de un mismo nivel tienen peso equivalente dentro de su subdimensión.
 
-Un control transversal, aplicable a más de una subdimensión, puede citar fuentes normativas distintas en cada una de ellas. Esto responde a que su función protectora se articula contra vectores de amenaza diferentes según la etapa del flujo RAG en que actúa: el proxy de seguridad (C16) intercepta inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07). El identificador y la descripción del control permanecen invariantes; solo el conjunto de fuentes normativas se acota a los vectores pertinentes a cada subdimensión.
+Un control transversal pertenece a más de una subdimensión y conserva una única fuente canónica, que comprende todos los vectores que el control aborda a lo largo del flujo. El proxy de seguridad (C16) ilustra el caso: detecta intentos de inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07), por lo que su fuente comprende los tres vectores en todas sus apariciones. Los vectores principales que cada subdimensión aborda se declaran en su ficha de proceso (Capítulo~\ref{ch:modelo-madurez}, sección~\ref{sec:subdimensiones}); la fuente de un control puede ser más amplia que esos vectores principales.
 
 El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión.
 
@@ -54,7 +54,7 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 \control{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
-  {LLM01:2025, LLM02:2025}
+  {LLM01:2025, LLM02:2025, LLM07:2025}
 
 \control{C21}{1}{Preventivo}{Configuración}
   {Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente.}
@@ -122,7 +122,7 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
 
 \control{C13}{1}{Preventivo}{Configuración}
   {Limitar el volumen total de contexto inyectado al LLM restringiendo la cantidad de fragmentos recuperados por consulta.}
-  {LLM02:2025}
+  {LLM01:2025, LLM02:2025}
 
 \control{C15}{1}{Preventivo}{Configuración}
   {Restringir el rol, las capacidades y las limitaciones del modelo mediante instrucciones de sistema declaradas externamente al código.}
@@ -130,7 +130,7 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
 
 \control{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
-  {LLM01:2025, LLM02:2025}
+  {LLM01:2025, LLM02:2025, LLM07:2025}
 
 \control{C21}{1}{Preventivo}{Configuración}
   {Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente.}
