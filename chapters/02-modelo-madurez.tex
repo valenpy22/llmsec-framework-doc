@@ -65,48 +65,79 @@ Este mapeo justifica la existencia de exactamente cinco subdimensiones y no un n
 \section{Valoración de riesgo por activo}
 \label{sec:valoracion-riesgo}
 
-Una vez identificados los activos de información, el paso siguiente consiste en valorar el riesgo asociado a cada uno. El marco LLM-Sec adopta la definición de riesgo de la Ley 21.663 \cite{ley21663}, que lo formula en términos de \textbf{probabilidad de ocurrencia} de un incidente y el \textbf{impacto de sus consecuencias}. Esta formulación exige que la valoración no sea cualitativa sino cuantificable, lo que justifica el uso de una matriz de riesgo como instrumento de priorización.
+La valoración emplea la matriz de riesgo de cinco por cinco descrita en la sección anterior, sobre la cual se definen cuatro zonas de clasificación (Bajo, Medio, Alto y Crítico) a partir del producto de probabilidad e impacto. La distribución resultante de los cinco activos revela una polarización característica de las arquitecturas RAG, que condiciona el diseño del modelo de madurez y la distribución de controles:
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{El LLM y los canales de entrada/salida presentan riesgo crítico.} Ambos activos combinan la máxima probabilidad de explotación con el mayor impacto, porque los vectores LLM01 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado. La evidencia empírica respalda esta valoración: una revisión sistemática de 128 estudios reporta tasas de éxito de inyección superiores al 90\% contra sistemas sin protección \cite{promptinjsurvey}. El compromiso del LLM implica además la pérdida de control sobre el comportamiento del modelo, el impacto de mayor severidad del sistema. Esta condición explica que las subdimensiones que interceptan estos vectores concentren la mayor densidad de controles técnicos: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto y configuración RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles sobre un único canal, el de respuesta.
+  \item \textbf{El corpus y la base vectorial presentan riesgo alto.} El corpus es exfiltrable mediante consultas diseñadas (LLM02), mientras que la base vectorial exige condiciones que un atacante externo no posee por defecto: capacidad de escritura sobre la base de conocimiento y conocimiento específico de la infraestructura de recuperación. No obstante, su impacto es muy alto: se ha demostrado que la inyección de apenas cinco textos maliciosos por pregunta objetivo alcanza un 90\% de éxito en corromper las respuestas de un sistema RAG, incluso sobre bases con millones de fragmentos \cite{poisonedrag}. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (20).
+  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo bajo.} Su probabilidad de explotación es la mínima de la escala porque su compromiso exige condiciones poco frecuentes: la posesión de credenciales privilegiadas válidas, sea por compromiso externo o por posición interna, o una falla de configuración en la capa de identidad. El informe de brechas de Verizon, sobre más de 12.000 brechas confirmadas, muestra que los actores internos originan una fracción minoritaria de ellas, con un 5\% en Norteamérica y un máximo regional de 29\% en EMEA, del cual solo un 8\% corresponde a uso indebido de privilegios \cite{dbir2025}. Su impacto, en cambio, permanece alto. Esto justifica que el control de acceso por sesión (C22) se clasifique con fuente de evidencia declarativa: su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG y por tanto no evaluable mediante auditoría ofensiva contra el sistema. Su implementación sigue siendo imprescindible en todo despliegue productivo.
+\end{enumerate}
+
+La zona de riesgo Medio no contiene activos. Lejos de ser una deficiencia de la valoración, esta ausencia refleja la naturaleza polarizada de la superficie de ataque de un sistema RAG: sus activos son atacables con herramientas de acceso público, y por tanto de riesgo alto o crítico, o bien exigen condiciones de acceso privilegiado que reducen su probabilidad a la mínima de la escala, situándolos en riesgo bajo pese a su impacto elevado. El instrumento discrimina así entre dos regímenes de amenaza cualitativamente distintos, que demandan estrategias de control diferenciadas.
 
 \subsection{Escala de valoración}
 
-La valoración emplea dos ejes, cada uno con tres niveles:
+La valoración emplea dos ejes de cinco niveles cada uno: probabilidad de explotación e impacto de compromiso. La Tabla~\ref{tab:escala-prob} describe la escala de probabilidad de explotación.
 
 \begin{table}[H]
   \centering
-  \caption{Escalas de valoración de probabilidad e impacto.}
-  \label{tab:escalas-riesgo}
-  \begin{tabularx}{\textwidth}{@{} c l >{\raggedright\arraybackslash}X @{\hspace{1.5em}} c l >{\raggedright\arraybackslash}X @{}}
+  \caption{Escala de valoración de probabilidad de explotación.}
+  \label{tab:escala-prob}
+  \begin{tabularx}{\textwidth}{@{} c l >{\raggedright\arraybackslash}X @{}}
     \toprule
-    \multicolumn{3}{@{}l}{\textbf{Probabilidad de explotación}} &
-    \multicolumn{3}{l@{}}{\textbf{Impacto de compromiso}} \\
+    \textbf{Nivel} & \textbf{Etiqueta} & \textbf{Descripción} \\
     \midrule
-    3 & Alta  & Explotable con herramientas automatizadas de acceso público. &
-    3 & Alto  & Exfiltración de datos sensibles o pérdida de control del modelo. \\
-    2 & Media & Requiere conocimiento técnico específico del sistema. &
-    2 & Medio & Degradación del servicio o exposición parcial de información. \\
-    1 & Baja  & Requiere acceso privilegiado o condiciones poco frecuentes. &
-    1 & Bajo  & Impacto operacional contenido, sin exposición de datos. \\
+    5 & Muy alta & Explotable con herramientas automatizadas de acceso público, sin conocimiento del sistema ni acceso privilegiado; éxito demostrado superior al 90\% contra sistemas sin protección. \\
+    4 & Alta     & Explotable con herramientas de acceso público que requieren configuración o adaptación menor al objetivo. \\
+    3 & Media    & Requiere conocimiento técnico específico de la infraestructura del sistema, como el tipo de base vectorial o la estrategia de indexación. \\
+    2 & Baja     & Requiere capacidad de escritura sobre componentes internos o conocimiento no público de la configuración. \\
+    1 & Muy baja & Requiere la posesión de credenciales privilegiadas válidas o una condición de configuración poco frecuente. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+La Tabla~\ref{tab:escala-impacto} describe la escala de impacto de compromiso.
+
+\begin{table}[H]
+  \centering
+  \caption{Escala de valoración de impacto de compromiso.}
+  \label{tab:escala-impacto}
+  \begin{tabularx}{\textwidth}{@{} c l >{\raggedright\arraybackslash}X @{}}
+    \toprule
+    \textbf{Nivel} & \textbf{Etiqueta} & \textbf{Descripción} \\
+    \midrule
+    5 & Muy alto & Pérdida de control sobre el comportamiento del modelo o exfiltración masiva de datos sensibles del corpus. \\
+    4 & Alto     & Exfiltración puntual de información sensible o compromiso de la integridad del corpus recuperable. \\
+    3 & Medio    & Exposición parcial de información o degradación del servicio. \\
+    2 & Bajo     & Impacto operacional contenido, sin exposición de datos. \\
+    1 & Muy bajo & Efecto marginal, sin consecuencia sobre datos ni disponibilidad. \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
 \subsection{Matriz de riesgo}
 
-La Tabla~\ref{tab:matriz-riesgo} presenta la valoración de riesgo para cada activo identificado en la sección anterior. El nivel de riesgo se obtiene como el producto de probabilidad e impacto, clasificado en tres categorías: \textbf{Alto} ($\geq 6$), \textbf{Medio} ($3$--$4$) y \textbf{Bajo} ($\leq 2$).
+% Colores de las cuatro zonas de clasificación de riesgo
+\definecolor{riesgo-bajo}{HTML}{4CAF7D}
+\definecolor{riesgo-medio}{HTML}{E8B93D}
+\definecolor{riesgo-alto}{HTML}{E8792F}
+\definecolor{riesgo-critico}{HTML}{D64545}
+
+La Tabla~\ref{tab:matriz-riesgo} presenta la valoración de riesgo para cada activo identificado en la sección anterior. El nivel de riesgo se obtiene como el producto de probabilidad e impacto, clasificado en cuatro zonas conforme a la metodología de valoración de riesgo de NIST SP 800-30 \cite{nist80030}: \textbf{Bajo} ($1$--$4$), \textbf{Medio} ($5$--$9$), \textbf{Alto} ($10$--$16$) y \textbf{Crítico} ($17$--$25$).
 
 \begin{table}[H]
 \centering
 \caption{Matriz de valoración de riesgo por activo del sistema RAG.}
 \label{tab:matriz-riesgo}
-\begin{tabularx}{\textwidth}{@{} c l C{2.2cm} C{2.2cm} C{1.5cm} C{2cm} @{}}
+\begin{tabularx}{\textwidth}{@{} c l C{2.5cm} C{2.5cm} C{1.8cm} C{2cm} @{}}
   \toprule
-  \textbf{ID} & \textbf{Activo} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Riesgo} & \textbf{Clasificación} \\
+  \textbf{ID} & \textbf{Activo} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Producto} & \textbf{Zona} \\
   \midrule
-  A4 & Canales de E/S        & 3 (Alta)  & 3 (Alto)  & 9 & \badge{ctrl-preventivo}{Alto} \\[4pt]
-  A1 & LLM                   & 3 (Alta)  & 3 (Alto)  & 9 & \badge{ctrl-preventivo}{Alto} \\[4pt]
-  A3 & Corpus                & 3 (Alta)  & 3 (Alto)  & 9 & \badge{ctrl-preventivo}{Alto} \\[4pt]
-  A2 & Base vectorial        & 2 (Media) & 3 (Alto)  & 6 & \badge{ctrl-preventivo}{Alto} \\[4pt]
-  A5 & Acceso y sesión       & 1 (Baja)  & 3 (Alto)  & 3 & \badge{ctrl-detectivo}{Medio} \\
+  A1 & LLM                   & 5 (Muy alta) & 5 (Muy alto) & 25 & \badge{riesgo-critico}{Crítico} \\[4pt]
+  A4 & Canales de E/S        & 5 (Muy alta) & 4 (Alto)     & 20 & \badge{riesgo-critico}{Crítico} \\[4pt]
+  A3 & Corpus                & 4 (Alta)     & 4 (Alto)     & 16 & \badge{riesgo-alto}{Alto} \\[4pt]
+  A2 & Base vectorial        & 3 (Media)    & 5 (Muy alto) & 15 & \badge{riesgo-alto}{Alto} \\[4pt]
+  A5 & Acceso y sesión       & 1 (Muy baja) & 4 (Alto)     &  4 & \badge{riesgo-bajo}{Bajo} \\
   \bottomrule
 \end{tabularx}
 \end{table}
@@ -117,50 +148,83 @@ La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\
 \centering
 \begin{tikzpicture}[
   cell/.style={
-    minimum width=3.1cm, minimum height=1.9cm,
+    minimum width=2.3cm, minimum height=1.75cm,
     draw=white, line width=1.5pt,
-    align=center, font=\small\bfseries
+    align=center, font=\scriptsize\bfseries
   },
   axislabel/.style={font=\small\bfseries, text=llmsec-dark},
-  ticklabel/.style={font=\scriptsize, text=llmsec-dark}
+  ticklabel/.style={font=\scriptsize, text=llmsec-dark},
+  legendlabel/.style={font=\scriptsize, text=llmsec-dark},
+  activo/.style={font=\scriptsize\bfseries, text=white}
 ]
 
-% Zonas de riesgo
-\definecolor{riesgo-alto}{HTML}{E5534B}
-\definecolor{riesgo-medio}{HTML}{E8A33D}
-\definecolor{riesgo-bajo}{HTML}{4CAF7D}
+% Fila Impacto = 5 (Muy alto)
+\node[cell, fill=riesgo-medio,   text=white] at (0,7.6)   {5\\[-2pt]\tiny Medio};
+\node[cell, fill=riesgo-alto,    text=white] at (2.4,7.6) {10\\[-2pt]\tiny Alto};
+\node[cell, fill=riesgo-alto,    text=white] at (4.8,7.6) {15\\[-2pt]\tiny Alto};
+\node[cell, fill=riesgo-critico, text=white] at (7.2,7.6) {20\\[-2pt]\tiny Crítico};
+\node[cell, fill=riesgo-critico, text=white] at (9.6,7.6) {25\\[-2pt]\tiny Crítico};
 
-% Fila Impacto = 3 (Alto)
-\node[cell, fill=riesgo-medio, text=white] at (0,0)   {3\\[-2pt]\scriptsize Medio};
-\node[cell, fill=riesgo-alto,  text=white] at (3.2,0) {6\\[-2pt]\scriptsize Alto};
-\node[cell, fill=riesgo-alto,  text=white] at (6.4,0) {9\\[-2pt]\scriptsize Alto};
+% Fila Impacto = 4 (Alto)
+\node[cell, fill=riesgo-bajo,    text=white] at (0,5.7)   {4\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-medio,   text=white] at (2.4,5.7) {8\\[-2pt]\tiny Medio};
+\node[cell, fill=riesgo-alto,    text=white] at (4.8,5.7) {12\\[-2pt]\tiny Alto};
+\node[cell, fill=riesgo-alto,    text=white] at (7.2,5.7) {16\\[-2pt]\tiny Alto};
+\node[cell, fill=riesgo-critico, text=white] at (9.6,5.7) {20\\[-2pt]\tiny Crítico};
 
-% Fila Impacto = 2 (Medio)
-\node[cell, fill=riesgo-bajo,  text=white] at (0,-2)   {2\\[-2pt]\scriptsize Bajo};
-\node[cell, fill=riesgo-medio, text=white] at (3.2,-2) {4\\[-2pt]\scriptsize Medio};
-\node[cell, fill=riesgo-alto,  text=white] at (6.4,-2) {6\\[-2pt]\scriptsize Alto};
+% Fila Impacto = 3 (Medio)
+\node[cell, fill=riesgo-bajo,    text=white] at (0,3.8)   {3\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-medio,   text=white] at (2.4,3.8) {6\\[-2pt]\tiny Medio};
+\node[cell, fill=riesgo-medio,   text=white] at (4.8,3.8) {9\\[-2pt]\tiny Medio};
+\node[cell, fill=riesgo-alto,    text=white] at (7.2,3.8) {12\\[-2pt]\tiny Alto};
+\node[cell, fill=riesgo-alto,    text=white] at (9.6,3.8) {15\\[-2pt]\tiny Alto};
 
-% Fila Impacto = 1 (Bajo)
-\node[cell, fill=riesgo-bajo, text=white] at (0,-4)   {1\\[-2pt]\scriptsize Bajo};
-\node[cell, fill=riesgo-bajo, text=white] at (3.2,-4) {2\\[-2pt]\scriptsize Bajo};
-\node[cell, fill=riesgo-medio,text=white] at (6.4,-4) {3\\[-2pt]\scriptsize Medio};
+% Fila Impacto = 2 (Bajo)
+\node[cell, fill=riesgo-bajo,    text=white] at (0,1.9)   {2\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-bajo,    text=white] at (2.4,1.9) {4\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-medio,   text=white] at (4.8,1.9) {6\\[-2pt]\tiny Medio};
+\node[cell, fill=riesgo-medio,   text=white] at (7.2,1.9) {8\\[-2pt]\tiny Medio};
+\node[cell, fill=riesgo-alto,    text=white] at (9.6,1.9) {10\\[-2pt]\tiny Alto};
 
-% Activos ubicados
-\node[font=\footnotesize\bfseries, text=white] at (0,0.55) {A5};
-\node[font=\footnotesize\bfseries, text=white] at (3.2,0.55) {A2};
-\node[font=\footnotesize\bfseries, text=white] at (6.4,0.55) {A1 \ A3 \ A4};
+% Fila Impacto = 1 (Muy bajo)
+\node[cell, fill=riesgo-bajo,    text=white] at (0,0)     {1\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-bajo,    text=white] at (2.4,0)   {2\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-bajo,    text=white] at (4.8,0)   {3\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-bajo,    text=white] at (7.2,0)   {4\\[-2pt]\tiny Bajo};
+\node[cell, fill=riesgo-medio,   text=white] at (9.6,0)   {5\\[-2pt]\tiny Medio};
+
+% Activos ubicados (probabilidad, impacto)
+\node[activo] at (9.6,8.15) {A1};
+\node[activo] at (9.6,6.25) {A4};
+\node[activo] at (7.2,6.25) {A3};
+\node[activo] at (4.8,8.15) {A2};
+\node[activo] at (0,6.25)   {A5};
 
 % Etiquetas de eje X (probabilidad)
-\node[ticklabel] at (0,-5.2)   {1 (Baja)};
-\node[ticklabel] at (3.2,-5.2) {2 (Media)};
-\node[ticklabel] at (6.4,-5.2) {3 (Alta)};
-\node[axislabel] at (3.2,-5.8) {Probabilidad de explotación};
+\node[ticklabel] at (0,-1.2)   {1 (Muy baja)};
+\node[ticklabel] at (2.4,-1.2) {2 (Baja)};
+\node[ticklabel] at (4.8,-1.2) {3 (Media)};
+\node[ticklabel] at (7.2,-1.2) {4 (Alta)};
+\node[ticklabel] at (9.6,-1.2) {5 (Muy alta)};
+\node[axislabel] at (4.8,-1.8) {Probabilidad de explotación};
 
 % Etiquetas de eje Y (impacto)
-\node[ticklabel, rotate=90] at (-2.0,0)  {3 (Alto)};
-\node[ticklabel, rotate=90] at (-2.0,-2) {2 (Medio)};
-\node[ticklabel, rotate=90] at (-2.0,-4) {1 (Bajo)};
-\node[axislabel, rotate=90] at (-2.6,-2) {Impacto de compromiso};
+\node[ticklabel, rotate=90] at (-2.0,7.6) {5 (Muy alto)};
+\node[ticklabel, rotate=90] at (-2.0,5.7) {4 (Alto)};
+\node[ticklabel, rotate=90] at (-2.0,3.8) {3 (Medio)};
+\node[ticklabel, rotate=90] at (-2.0,1.9) {2 (Bajo)};
+\node[ticklabel, rotate=90] at (-2.0,0)   {1 (Muy bajo)};
+\node[axislabel, rotate=90] at (-2.6,3.8) {Impacto de compromiso};
+
+% Leyenda de zonas
+\node[fill=riesgo-bajo,    minimum width=0.35cm, minimum height=0.35cm, draw=none] at (0,-2.8)   {};
+\node[legendlabel, anchor=west] at (0.25,-2.8)   {Bajo};
+\node[fill=riesgo-medio,   minimum width=0.35cm, minimum height=0.35cm, draw=none] at (2.7,-2.8) {};
+\node[legendlabel, anchor=west] at (2.95,-2.8)   {Medio};
+\node[fill=riesgo-alto,    minimum width=0.35cm, minimum height=0.35cm, draw=none] at (5.4,-2.8) {};
+\node[legendlabel, anchor=west] at (5.65,-2.8)   {Alto};
+\node[fill=riesgo-critico, minimum width=0.35cm, minimum height=0.35cm, draw=none] at (8.0,-2.8) {};
+\node[legendlabel, anchor=west] at (8.25,-2.8)   {Crítico};
 
 \end{tikzpicture}
 \caption{Matriz de riesgo probabilidad $\times$ impacto con la ubicación de los activos del sistema RAG.}
@@ -172,11 +236,11 @@ La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\
 La valoración revela tres hallazgos que condicionan el diseño del modelo de madurez y la distribución de controles:
 
 \begin{enumerate}[leftmargin=2em]
-  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones que interceptan directamente esos vectores concentren la mayor densidad de controles técnicos de la taxonomía: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto y configuración RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles como última línea de defensa sobre un único canal, el de respuesta, de modo que su menor volumen refleja la acotación de su superficie de operación y no una menor prioridad del riesgo que cubre.
+  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. La evidencia empírica sostiene esta valoración: una revisión sistemática de 128 estudios reporta tasas de éxito de inyección superiores al 90\% contra sistemas sin protección \cite{promptinjsurvey}. Esta condición explica que las subdimensiones que interceptan directamente esos vectores concentren la mayor densidad de controles técnicos de la taxonomía: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto y configuración RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles como última línea de defensa sobre un único canal, el de respuesta, de modo que su menor volumen refleja la acotación de su superficie de operación y no una menor prioridad del riesgo que cubre.
 
-  \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (20), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
-
-  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja porque requiere acceso privilegiado o condiciones poco frecuentes, pero el impacto de su compromiso sigue siendo alto. Esto justifica que el control de acceso por sesión (C22) se clasifique con fuente de evidencia declarativa: su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG y por tanto no evaluable mediante auditoría ofensiva contra el sistema. Su implementación sigue siendo imprescindible en todo despliegue productivo.
+  \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 exige dos condiciones que un atacante externo no posee por defecto: capacidad de escritura sobre la base de conocimiento y conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto: se ha demostrado que la inyección de apenas cinco textos maliciosos por pregunta objetivo alcanza un 90\% de éxito en corromper las respuestas de un sistema RAG, incluso sobre bases de conocimiento con millones de fragmentos \cite{poisonedrag}. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (20), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
+  
+  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja porque su compromiso exige condiciones poco frecuentes: la posesión de credenciales privilegiadas válidas, sea por compromiso externo o por posición interna, o una falla de configuración en la capa de identidad de la organización. La evidencia de incidentes reales respalda esta caracterización: el informe de brechas de Verizon, sobre más de 12.000 brechas confirmadas, muestra que los actores internos originan una fracción minoritaria de ellas, con un 5\% en Norteamérica y un máximo regional de 29\% en EMEA, del cual solo un 8\% corresponde a uso indebido de privilegios \cite{dbir2025}. El impacto de su compromiso, en cambio, sigue siendo alto. Esto justifica que el control de acceso por sesión (C22) se clasifique con fuente de evidencia declarativa: su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG y por tanto no evaluable mediante auditoría ofensiva contra el sistema. Su implementación sigue siendo imprescindible en todo despliegue productivo.
 \end{enumerate}
 
 \begin{infobox}
@@ -207,7 +271,7 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
 
 \vspace{6pt}
 
-Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria: en las subdimensiones técnicas, la densidad de controles es proporcional al riesgo valorado de los activos que protegen, con D1 y D2 concentrando los mayores volúmenes. D4, de naturaleza observacional, y D5, cuya densidad responde a las obligaciones normativas ancladas en la Ley 21.663 y la Ley 21.719 más que al riesgo técnico de un activo específico, completan la cobertura priorizando la observación y la gobernanza sobre la intervención directa. Los controles transversales se contabilizan en cada subdimensión a la que pertenecen, por lo que la suma de aplicaciones (70) excede el total de controles únicos del marco (62), conforme al criterio declarado en el Capítulo~\ref{ch:controles}.
+Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria: en las subdimensiones técnicas, la densidad de controles es proporcional al riesgo valorado de los activos que protegen, con D1 y D2, asociadas a los activos de riesgo crítico y alto, concentrando los mayores volúmenes. D4, de naturaleza observacional, y D5, cuya densidad responde a las obligaciones normativas ancladas en la Ley 21.663 y la Ley 21.719 más que al riesgo técnico de un activo específico, completan la cobertura priorizando la observación y la gobernanza sobre la intervención directa. El activo de riesgo bajo (A5) se cubre mediante un control declarativo, coherente con su naturaleza externa al flujo de inferencia. Los controles transversales se contabilizan en cada subdimensión a la que pertenecen, por lo que la suma de aplicaciones (70) excede el total de controles únicos del marco (62), conforme al criterio declarado en el Capítulo~\ref{ch:controles}.
 
 \section{Estructura del modelo}
 
@@ -250,6 +314,7 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
   Mejora continua. Controles actualizados proactivamente ante nuevas amenazas documentadas. Marco revisado periódicamente e integrado al ciclo de gestión de riesgos organizacional.
 \end{levelbox}
 
+La estructura del modelo se alinea con los modelos de madurez consolidados en la industria. Al igual que CMMI \cite{cmmi} e ISO/IEC 33020 \cite{iso33020}, LLM-Sec emplea una escala ordinal de niveles cualitativos con progresión acumulativa, donde cada nivel presupone la satisfacción de los anteriores. El nivel N0 cumple la función del nivel 0 (\textit{Incomplete}) de ISO/IEC 33020: un estado fuera de la escala de madurez propiamente tal, que señala la ausencia de las condiciones mínimas de evaluación. La correspondencia más directa se da en N4: su definición por gestión cuantitativa mediante métricas coincide con el nivel \textit{Quantitatively Managed} de CMMI, definido por el control estadístico y cuantitativo de los procesos. No se presenta un mapeo exhaustivo nivel a nivel porque los dominios de definición difieren: los niveles de CMMI se articulan sobre áreas de proceso del desarrollo de software, mientras que los de LLM-Sec se articulan sobre controles de ciberseguridad específicos del flujo RAG, de modo que la equivalencia entre ambos modelos es estructural y no semántica.
 
 \section{Subdimensiones}
 \label{sec:subdimensiones}
@@ -595,4 +660,4 @@ El nivel global $L$ del sistema se determina como:
 \]
 donde $d_i$ es el nivel alcanzado por la subdimensión $i$: el nivel verificado para D1 a D4, cuyas fuentes de evidencia son experimentales o de configuración, y el nivel declarado para D5, cuya evidencia es exclusivamente declarativa (sección~\ref{sec:verificado-declarado}). En consecuencia, el nivel global integra necesariamente una componente declarada, condición que debe hacerse explícita al reportar el resultado de la evaluación. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4, D5 declara nivel 3 y D4 alcanza nivel 2, el nivel global es 2.
 
-En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión se justifica porque la ausencia de literatura previa comparable impide anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable.
+En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión es consistente con la práctica de los modelos de madurez de la industria: OWASP SAMM \cite{owaspsamm} puntúa cada práctica de seguridad agregando las respuestas de evaluación sin pesos diferenciales entre actividades, y CMMI \cite{cmmi} no pondera prácticas individuales, sino que condiciona la consecución de un nivel a la satisfacción de la totalidad de las prácticas que lo componen, criterio análogo a la regla de progresión acumulativa y piso mínimo de LLM-Sec. La ausencia de literatura previa comparable sobre seguridad en arquitecturas RAG impide, adicionalmente, anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable que los modelos de referencia tampoco asumen.
