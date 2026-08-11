@@ -172,7 +172,7 @@ La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\
 La valoración revela tres hallazgos que condicionan el diseño del modelo de madurez y la distribución de controles:
 
 \begin{enumerate}[leftmargin=2em]
-  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones que interceptan directamente esos vectores concentren la mayor densidad de controles técnicos de la taxonomía: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles como última línea de defensa sobre un único canal, el de respuesta, de modo que su menor volumen refleja la acotación de su superficie de operación y no una menor prioridad del riesgo que cubre.
+  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. Esta condición explica que las subdimensiones que interceptan directamente esos vectores concentren la mayor densidad de controles técnicos de la taxonomía: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto y configuración RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles como última línea de defensa sobre un único canal, el de respuesta, de modo que su menor volumen refleja la acotación de su superficie de operación y no una menor prioridad del riesgo que cubre.
 
   \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 requiere conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto porque afecta la integridad de todo el corpus recuperable. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (20), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
 
@@ -254,7 +254,7 @@ El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top
 \section{Subdimensiones}
 \label{sec:subdimensiones}
 
-El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura.
+El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. Los vectores OWASP asociados a cada subdimensión corresponden a los que sus controles abordan de forma principal; controles individuales, en particular los transversales, pueden referenciar adicionalmente otros vectores en su fuente, lo que se detalla en la taxonomía del Capítulo~\ref{ch:controles}. La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura. 
 
 \begin{table}[H]
   \centering
@@ -265,7 +265,7 @@ El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de 
     \textbf{ID} & \textbf{Nombre} & \textbf{OWASP} & \textbf{Captura} \\
     \midrule
     D1 & Protección de entrada    & LLM01, LLM02     & Validación y sanitización de prompts \\
-    D2 & Control de contexto RAG  & LLM02, LLM08 & Acceso y exposición de la base vectorial \\
+    D2 & Control de contexto y configuración RAG  & LLM02, LLM08 & Acceso y exposición de la base vectorial \\
     D3 & Gestión de salida        & LLM02, LLM07 & Filtrado y control de respuestas \\
     D4 & Monitoreo y trazabilidad & Todos         & Logging, alertas y auditoría \\
     D5 & Gobernanza organizacional & ---           & Roles, políticas y cultura de seguridad \\
@@ -295,7 +295,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
     \textbf{Activos que protege} &
       Canales de entrada y LLM. \\[4pt]
     \textbf{Vector OWASP asociado} &
-      LLM01:2025 \\
+      LLM01:2025, LLM02:2025 \\
   \end{tabularx}
 \end{fichabox}
 
@@ -338,13 +338,13 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
     \label{fig:diagrama-d1}
 \end{figure}
 
-\subsection{D2: Control de contexto RAG}
+\subsection{D2: Control de contexto y configuración RAG}
 
 La subdimensión D2 abarca los controles que regulan el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. Opera sobre la etapa de recuperación del flujo RAG, donde los fragmentos de contexto son seleccionados y entregados al modelo como parte del prompt aumentado.
 
 La ficha del proceso y su especificación de entradas y salidas se presentan a continuación; la Figura~\ref{fig:diagrama-d2} representa gráficamente el mismo flujo.
 
-\begin{fichabox}{Ficha del proceso D2: Control de contexto RAG}
+\begin{fichabox}{Ficha del proceso D2: Control de contexto y configuración RAG}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
       Controlar el acceso y la exposición del corpus indexado, limitando qué fragmentos pueden ser recuperados e incorporados al contexto de inferencia del LLM. \\[4pt]
@@ -357,7 +357,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
 
 \begin{table}[H]
   \centering
-  \caption{Entradas y salidas del proceso D2: Control de contexto RAG.}
+  \caption{Entradas y salidas del proceso D2: Control de contexto y configuración RAG.}
   \label{tab:es-d2}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} l >{\hsize=1.10\hsize\raggedright\arraybackslash}X >{\hsize=0.90\hsize\raggedright\arraybackslash}X l @{}}
@@ -389,7 +389,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{figures/diagrama_D2.png}
-    \caption{Flujo de entradas y salidas del proceso D2: Control de contexto RAG.}
+    \caption{Flujo de entradas y salidas del proceso D2: Control de contexto y configuración RAG.}
     \label{fig:diagrama-d2}
 \end{figure}
 
@@ -407,7 +407,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
     \textbf{Activos que protege} &
       Canales de salida y corpus de conocimiento. \\[4pt]
     \textbf{Vector OWASP asociado} &
-      LLM01:2025, LLM07:2025 \\
+      LLM02:2025, LLM07:2025 \\
   \end{tabularx}
 \end{fichabox}
 
@@ -434,8 +434,8 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       D4 \\
     D5 &
       Política de clasificación de sensibilidad &
-      --- &
-      --- \\
+      Registro de casos borde de clasificación no resueltos &
+      D4 \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -448,9 +448,16 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
     \caption{Flujo de entradas y salidas del proceso D3: Gestión de salida.}
     \label{fig:diagrama-d3}
 \end{figure}
+
+La política de clasificación de sensibilidad provista por D5 puede enfrentar casos borde: contenidos cuya clasificación no se resuelve de forma concluyente mediante los patrones y reglas definidos. Ante un caso borde, el proceso adopta un criterio conservador: el contenido se trata como sensible y se suprime de la respuesta. Adicionalmente, cada caso borde genera un registro específico hacia D4 para su monitoreo, de modo que la acumulación de casos no resueltos alimente la revisión de la política de clasificación en el ciclo de gobernanza, a través de la retroalimentación que D4 provee a D5.
+
 \subsection{D4: Monitoreo y trazabilidad}
 
-La subdimensión D4 opera de forma transversal sobre el sistema RAG completo. Su naturaleza es observacional: no interviene sobre el flujo sino que lo registra. Sus entradas son eventos generados por las tres subdimensiones anteriores y sus salidas son exclusivamente artefactos de auditoría.
+La subdimensión D4 opera de forma transversal sobre el sistema RAG completo. Su naturaleza es observacional: no interviene sobre el flujo sino que lo registra. Sus entradas son eventos generados por las tres subdimensiones anteriores y por el propio sistema, y sus salidas son artefactos de auditoría y de reporte.
+
+Las entradas de D4 constituyen la telemetría del sistema: el conjunto de logs, eventos y métricas que los componentes del flujo RAG emiten durante su operación, incluyendo los registros de prompts rechazados (D1), los eventos de recuperación sospechosa (D2), los registros de contenido suprimido (D3) y las métricas de latencia del flujo de inferencia. Las alertas no constituyen un insumo independiente sino una consecuencia directa de esta telemetría: se generan cuando el monitoreo detecta, sobre los registros recibidos, condiciones que superan los umbrales definidos en la configuración de la capa defensiva. En consecuencia, la capacidad de alertamiento de D4 está acotada por la calidad y granularidad de la telemetría disponible.
+
+Las salidas de D4 incluyen, además de los artefactos de auditoría, informes de desempeño y artefactos de visualización de métricas dirigidos a D5, donde se consolidan en los instrumentos de reporte hacia la dirección de la organización.
 
 D4 no define controles de nivel N1 porque el monitoreo mínimo viable requiere que el sistema disponga de algún mecanismo activo de registro, condición que no se cumple en un sistema sin capa defensiva. Un sistema en esa condición se clasifica como no conforme en esta subdimensión.
 
@@ -490,8 +497,8 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
       D5 \\
     Sistema &
       Métricas de latencia del flujo de inferencia &
-      --- &
-      --- \\
+      Informes de desempeño y artefactos de visualización de métricas &
+      D5 \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -516,7 +523,7 @@ La ficha del proceso y su especificación de entradas y salidas se presentan a c
 \begin{fichabox}{Ficha del proceso D5: Gobernanza organizacional}
   \begin{tabularx}{\textwidth}{@{} l X @{}}
     \textbf{Propósito} &
-      Establecer y mantener el marco institucional de gobernanza que sustenta la operación segura del sistema RAG, definiendo roles, políticas y mecanismos de mejora continia. \\[4pt]
+      Establecer y mantener el marco institucional de gobernanza que sustenta la operación segura del sistema RAG, definiendo roles, políticas y mecanismos de mejora continua. \\[4pt]
     \textbf{Activos que protege} &
       Sistema RAG completo (a nivel organizacional) \\[4pt]
     \textbf{Vector OWASP asociado} &
@@ -587,7 +594,5 @@ El nivel global $L$ del sistema se determina como:
   L = \min(d_1, d_2, d_3, d_4, d_5)
 \]
 donde $d_i$ es el nivel alcanzado por la subdimensión $i$: el nivel verificado para D1 a D4, cuyas fuentes de evidencia son experimentales o de configuración, y el nivel declarado para D5, cuya evidencia es exclusivamente declarativa (sección~\ref{sec:verificado-declarado}). En consecuencia, el nivel global integra necesariamente una componente declarada, condición que debe hacerse explícita al reportar el resultado de la evaluación. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4, D5 declara nivel 3 y D4 alcanza nivel 2, el nivel global es 2.
-
-Dado que D5 opera exclusivamente con fuente de evidencia declarativa (sección~\ref{sec:verificado-declarado}), el nivel global resultante de la regla de piso mínimo integra necesariamente una componente declarada.
 
 En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión se justifica porque la ausencia de literatura previa comparable impide anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable.

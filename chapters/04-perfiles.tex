@@ -3,7 +3,8 @@
 
 Los perfiles organizacionales orientan la interpretación del nivel de madurez asignado según el tipo de organización. No modifican los criterios de asignación ni la definición de los niveles; únicamente establecen el nivel mínimo recomendado y el nivel objetivo según las obligaciones regulatorias aplicables. El nivel mínimo recomendado corresponde al nivel verificado, por constituir un umbral de seguridad técnica demostrable mediante evidencia experimental o de configuración. El nivel objetivo corresponde al nivel declarado, incorporando los controles de gobernanza de D5 cuya verificación es declarativa y representa la madurez organizacional completa que la organización debería aspirar a alcanzar.
 
-Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia \textbf{Configuración} se priorizan sobre los de tipo \textbf{Experimental} y \textbf{Declarativo}, dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado es relativo al contexto de cada perfil y se define en la nota informativa de cada tabla.
+Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia \textbf{Configuración} se priorizan sobre los de tipo \textbf{Experimental} y \textbf{Declarativo}, dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado de implementación se expresa en horas-hombre (HH), unidad estándar de estimación de esfuerzo en ingeniería de software \cite{cocomo2}. Los cortes entre categorías se anclan a unidades de jornada laboral convencionales: \textbf{Bajo} corresponde a un esfuerzo de hasta 8 HH (una jornada diaria), asociado a la parametrización de componentes existentes sin desarrollo adicional; \textbf{Medio} corresponde a un esfuerzo de entre 8 y 40 HH (hasta una semana laboral), asociado al despliegue o configuración de un componente nuevo; \textbf{Alto} corresponde a un esfuerzo superior a 40 HH, asociado a desarrollos o integraciones a medida. Estos valores constituyen estimaciones referenciales fundadas en el juicio experto y en el contexto técnico descrito para cada perfil, no mediciones empíricas; cada organización debe calibrarlos según su capacidad instalada y la complejidad de su despliegue.
+
 
 \begin{table}[H]
   \centering
@@ -13,13 +14,12 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
     \toprule
     \textbf{Perfil} & \textbf{Tipo} & \textbf{Nivel mínimo} & \textbf{Nivel objetivo} & \textbf{Descripción} \\
     \midrule
-    P1 & Micro/Pequeña empresa & N2 & N3 & Organizaciones pequeñas y medianas \\
+    P1 & Micro/Pequeña empresa & N2 & N3 & Organizaciones micro y pequeñas \\
     P2 & Mediana/Grande     & N3 & N4 & Organizaciones con infraestructura formal \\
     P3 & Crítica regulada   & N4 & N5 & Infraestructura crítica, sector regulado \\
     \bottomrule
   \end{tabularx}
 \end{table}
-
 
 \section{P1: Micro/Pequeña empresa}
 \label{sec:perfil-p1}
@@ -92,11 +92,12 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 \end{table}
 
 \begin{infobox}
-  El costo estimado es relativo al contexto de micro y pequeña empresa. \textbf{Bajo} indica
-  parametrización sin componentes adicionales. \textbf{Medio} indica
-  despliegue o configuración de un componente nuevo (proxy, particiones).
-  Los controles de D5 (gobernanza) aplican transversalmente a todos
-  los perfiles y se listan en la sección~\ref{sec:controles-d5}.
+  Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio
+  del capítulo, bajo el supuesto de una micro o pequeña empresa sin personal de
+  seguridad dedicado: las estimaciones asumen que la implementación recae en el
+  equipo técnico general de la organización. Los controles de D5 (gobernanza)
+  aplican transversalmente a todos los perfiles y se listan en la
+  sección~\ref{sec:controles-d5}.
 \end{infobox}
 
 \section{P2: Mediana/Grande}
@@ -181,12 +182,12 @@ El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles priorit
   \end{table}
   
   \begin{infobox}
-    El costo estimado es relativo al contexto de una organización mediana o grande con equipo de seguridad
-    dedicado. \textbf{Bajo} indica documentación o parametrización. \textbf{Medio} indica configuración
-    de componentes existentes o desarrollo de procedimientos. \textbf{Alto} indica desarrollo, integración
-    de componentes nuevos o capacidad analítica especializada.
+    Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio
+    del capítulo, bajo el supuesto de una organización con equipo de seguridad dedicado
+    e infraestructura formal: los controles de costo Alto corresponden a capacidades
+    analíticas o desarrollos cuyo esfuerzo excede la semana laboral, aun contando con
+    ese equipo.
   \end{infobox}
-  
 
 \section{P3: Crítica regulada}
 \label{sec:perfil-p3}
@@ -211,6 +212,8 @@ El perfil P3 aplica a organizaciones que operan infraestructura crítica o perte
     \item \textbf{Proyecto de Ley de IA:} clasificación del sistema según nivel de criticidad, métricas de desempeño de gobernanza.
   \end{itemize}
 \end{infobox}
+
+Para organizaciones bajo el perfil P3 con operaciones o usuarios en jurisdicciones extranjeras, resulta pertinente considerar adicionalmente la normativa internacional aplicable. El Reglamento General de Protección de Datos de la Unión Europea \cite{gdpr} establece obligaciones análogas a las de la Ley 21.719, en particular los principios de tratamiento (artículo 5), la protección de datos desde el diseño y por defecto (artículo 25) y la seguridad del tratamiento (artículo 32). Asimismo, el Reglamento de Inteligencia Artificial de la Unión Europea \cite{aiact} constituye el referente internacional del enfoque basado en riesgos que el Proyecto de Ley de IA chileno adopta, por lo que su clasificación de sistemas según nivel de riesgo puede orientar la evaluación de criticidad requerida por el perfil.
 
 \subsection{Controles prioritarios}
 
@@ -280,12 +283,13 @@ sostener un ciclo de mejora continua.
 \end{table}
 
 \begin{infobox}
-  El costo estimado es relativo al contexto de infraestructura crítica con obligaciones
-  regulatorias formales. \textbf{Bajo} indica documentación. \textbf{Medio} indica
-  procedimientos o configuración. \textbf{Alto} indica capacidad analítica especializada,
-  desarrollo de componentes o procesos de mejora continua que requieren personal dedicado.
-  Las organizaciones bajo este perfil deben considerar especialmente los controles anclados
-  a la Ley 21.663 (notificación de incidentes, inventario de activos), la Ley 21.719
-  (inventario de datos personales, gestión de accesos) y el Proyecto de Ley de IA
-  (clasificación por criticidad, métricas de gobernanza).
+  Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio
+  del capítulo, bajo el supuesto de una organización con obligaciones regulatorias
+  formales y personal dedicado a seguridad: la concentración de controles de costo
+  Alto en el tránsito a N5 refleja que la mejora continua exige procesos sostenidos
+  en el tiempo, no implementaciones puntuales. Las organizaciones bajo este perfil
+  deben considerar especialmente los controles anclados a la Ley 21.663 (notificación
+  de incidentes, inventario de activos de información), la Ley 21.719 (inventario de
+  datos personales, gestión de accesos) y el Proyecto de Ley de IA (clasificación por
+  criticidad, métricas de gobernanza).
 \end{infobox}
