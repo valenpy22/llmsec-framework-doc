@@ -20,7 +20,7 @@ Un control puede satisfacer más de un tipo funcional simultáneamente, consiste
 
 Todos los controles de un mismo nivel tienen peso equivalente dentro de su subdimensión.
 
-Un control transversal pertenece a más de una subdimensión y conserva una única fuente canónica, que comprende todos los vectores que el control aborda a lo largo del flujo. El proxy de seguridad (C16) ilustra el caso: detecta intentos de inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07), por lo que su fuente comprende los tres vectores en todas sus apariciones. Los vectores principales que cada subdimensión aborda se declaran en su ficha de proceso (Capítulo~\ref{ch:modelo-madurez}, sección~\ref{sec:subdimensiones}); la fuente de un control puede ser más amplia que esos vectores principales.
+Un control transversal pertenece a más de una subdimensión y conserva una única fuente canónica, que comprende todos los vectores que el control aborda a lo largo del flujo. El proxy de seguridad (C16) ilustra el caso: detecta intentos de inyección de instrucciones en la entrada (LLM01), limita la exposición del corpus en la recuperación (LLM02) y previene la fuga del prompt del sistema en la salida (LLM07), por lo que su fuente comprende los tres vectores en todas sus apariciones. Los vectores principales que cada subdimensión aborda se declaran en su ficha de proceso (Capítulo~\ref{ch:modelo-madurez}, sección~\ref{sec:subdimensiones}); la fuente de un control puede ser más amplia que esos vectores principales. Los controles transversales, pertenecientes a más de una subdimensión, incluyen adicionalmente el campo Subdimensiones, que declara la totalidad de su pertenencia; estos controles se listan en cada subdimensión a la que pertenecen y su ficha canónica se presenta en el Apéndice~\ref{app:fichas}.
 
 El conjunto completo comprende 62 controles distribuidos en cinco subdimensiones y cinco niveles de madurez. Las secciones siguientes presentan los controles organizados por subdimensión.
 
@@ -40,27 +40,27 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
   {Eliminar de la entrada los tokens especiales del modelo, los bytes nulos y los caracteres de control Unicode, antes de que el texto alcance cualquier componente de análisis.}
   {LLM01:2025}
 
-\control{C06}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C06}{1}{Preventivo}{Configuración}
   {Segregar e identificar el contenido recuperado del corpus mediante delimitadores explícitos que lo separen de la consulta del usuario en el prompt aumentado.}
   {LLM01:2025, LLM02:2025}
 
-\control{C13}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C13}{1}{Preventivo}{Configuración}
   {Limitar el volumen total de contexto inyectado al LLM restringiendo la cantidad de fragmentos recuperados por consulta.}
   {LLM01:2025, LLM02:2025}
 
-\control{C15}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C15}{1}{Preventivo}{Configuración}
   {Restringir el rol, las capacidades y las limitaciones del modelo mediante instrucciones de sistema declaradas externamente al código.}
   {LLM01:2025, LLM02:2025}
 
-\control{C16}{1}{Preventivo}{Configuración}
+\control[D1, D2, D3]{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025, LLM07:2025}
 
-\control{C21}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C21}{1}{Preventivo}{Configuración}
   {Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente.}
   {LLM01:2025, LLM02:2025}
 
-\control{C30}{1}{Gobernanza}{Declarativo}
+\control[D1, D2]{C30}{1}{Gobernanza}{Declarativo}
   {Verificar la procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
   {Ley 21.663, LLM08:2025}
 
@@ -108,7 +108,7 @@ La subdimensión D1 agrupa 17 controles distribuidos en cinco niveles de madurez
 
 La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la exposición y la integridad de la base de datos vectorial y el corpus de conocimiento. La distribución por nivel refleja una progresión desde controles básicos de particionamiento y sanitización (N1) hasta mecanismos de auditoría avanzada y mejora continua (N5).
 
-\control{C06}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C06}{1}{Preventivo}{Configuración}
   {Segregar e identificar el contenido recuperado del corpus mediante delimitadores explícitos que lo separen de la consulta del usuario en el prompt aumentado.}
   {LLM01:2025, LLM02:2025}
 
@@ -120,23 +120,23 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {Controlar la cantidad de fragmentos recuperados por consulta para limitar la exposición del corpus.}
   {LLM02:2025}
 
-\control{C13}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C13}{1}{Preventivo}{Configuración}
   {Limitar el volumen total de contexto inyectado al LLM restringiendo la cantidad de fragmentos recuperados por consulta.}
   {LLM01:2025, LLM02:2025}
 
-\control{C15}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C15}{1}{Preventivo}{Configuración}
   {Restringir el rol, las capacidades y las limitaciones del modelo mediante instrucciones de sistema declaradas externamente al código.}
   {LLM01:2025, LLM02:2025}
 
-\control{C16}{1}{Preventivo}{Configuración}
+\control[D1, D2, D3]{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025, LLM07:2025}
 
-\control{C21}{1}{Preventivo}{Configuración}
+\control[D1, D2]{C21}{1}{Preventivo}{Configuración}
   {Externalizar la configuración de tiempo de ejecución, incluidas las credenciales y los umbrales, como parámetros declarados fuera del código fuente.}
   {LLM01:2025, LLM02:2025}
 
-\control{C30}{1}{Gobernanza}{Declarativo}
+\control[D1, D2]{C30}{1}{Gobernanza}{Declarativo}
   {Verificar la procedencia e integridad del modelo mediante \textit{checksums} antes del despliegue.}
   {Ley 21.663, LLM08:2025}
 
@@ -156,7 +156,7 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
   {Excluir los metadatos de los documentos en la etapa de recuperación, de modo que solo el texto de los fragmentos alcance el contexto de inferencia.}
   {LLM02:2025}
 
-\control{C17}{2}{Preventivo/Detectivo}{Experimental}
+\control[D2, D3]{C17}{2}{Preventivo/Detectivo}{Experimental}
   {Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado.}
   {LLM02:2025, LLM07:2025}
 
@@ -196,11 +196,11 @@ La subdimensión D2 agrupa 20 controles orientados a regular el acceso, la expos
 
 La subdimensión D3 comprende 9 controles que filtran y regulan las respuestas generadas por el modelo antes de entregarlas al usuario, constituyendo la última línea de defensa contra la exfiltración de información sensible y la fuga del prompt del sistema.
 
-\control{C16}{1}{Preventivo}{Configuración}
+\control[D1, D2, D3]{C16}{1}{Preventivo}{Configuración}
   {Interponer un proxy de seguridad desplegado como componente independiente del generador, que intercepte la entrada y la salida del flujo de inferencia.}
   {LLM01:2025, LLM02:2025, LLM07:2025}
 
-\control{C17}{2}{Preventivo/Detectivo}{Experimental}
+\control[D2, D3]{C17}{2}{Preventivo/Detectivo}{Experimental}
   {Bloquear las respuestas cuyo solapamiento con el contexto recuperado caiga por debajo del umbral de fundamentación configurado.}
   {LLM02:2025, LLM07:2025}
 

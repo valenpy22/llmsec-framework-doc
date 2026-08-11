@@ -15,7 +15,7 @@ Los siete controles transversales, aplicables a más de una subdimensión, se de
 Los siete controles de esta sección protegen activos correspondientes a más de una subdimensión. Su función protectora opera sobre distintas etapas del flujo RAG, razón por la cual la fuente normativa que se les atribuye varía según la subdimensión en que se apliquen. La ficha desarrolla el control en su integridad, con independencia de la subdimensión desde la que se lo consulte.
 
 % ── C06 ──
-\fichacontrol{C06}{Delimitación explícita del contenido recuperado}
+\fichacontrol[D1, D2]{C06}{Delimitación explícita del contenido recuperado}
   {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
 \fichaseccion{Propósito}
@@ -34,7 +34,7 @@ Los marcadores elegidos no deben ser reproducibles desde la entrada del usuario.
 \ficharelacionados{C02 (sanitización de la entrada), que impide la falsificación de los delimitadores; C15 (definición del rol y las restricciones del modelo), cuyas instrucciones invocan la separación que este control establece.}
 
 % ── C13 ──
-\fichacontrol{C13}{Límite de volumen de contexto inyectado}
+\fichacontrol[D1, D2]{C13}{Límite de volumen de contexto inyectado}
   {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
 \fichaseccion{Propósito}
@@ -53,7 +53,7 @@ Este control es distinto de C01, que acota la entrada del usuario. C13 acota lo 
 \ficharelacionados{C01 (límite de longitud de la entrada del usuario), que acota el otro componente del prompt; C10 (control de la cantidad de fragmentos recuperados), con el que comparte el mecanismo de implementación.}
 
 % ── C15 ──
-\fichacontrol{C15}{Definición del rol y las restricciones del modelo}
+\fichacontrol[D1, D2]{C15}{Definición del rol y las restricciones del modelo}
   {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
 \fichaseccion{Propósito}
@@ -72,7 +72,7 @@ Las restricciones deben formularse en positivo cuando sea posible. Una instrucci
 \ficharelacionados{C05 (no inclusión del prompt del sistema en la respuesta) y C32 (verificación de integridad del prompt del sistema), que protegen el contenido que este control declara; C07 (restricción al uso exclusivo del contexto recuperado), que es una de las instrucciones que este control materializa.}
 
 % ── C16 ──
-\fichacontrol{C16}{Proxy de seguridad independiente del generador}
+\fichacontrol[D1, D2, D3]{C16}{Proxy de seguridad independiente del generador}
   {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025, LLM07:2025}
 
 \fichaseccion{Propósito}
@@ -93,7 +93,7 @@ El componente debe fallar de forma cerrada. Ante un error interno o la indisponi
 \ficharelacionados{Este control es condición previa para la totalidad de los controles experimentales de D1 y D3 (C02, C03, C18, C19, C20), que se implementan en el componente que C16 despliega.}
 
 % ── C17 ──
-\fichacontrol{C17}{Fundamentación de la respuesta en el contexto recuperado}
+\fichacontrol[D2, D3]{C17}{Fundamentación de la respuesta en el contexto recuperado}
   {N2}{Preventivo/Detectivo}{Experimental}{LLM02:2025, LLM07:2025}
 
 \fichaseccion{Propósito}
@@ -114,7 +114,7 @@ La métrica de solapamiento admite distintas implementaciones. El marco no presc
 \ficharelacionados{C07 (instrucción de uso exclusivo del contexto recuperado), que declara al modelo la restricción que este control verifica; C20 (detección semántica de contenido sensible en la salida), con el que comparte la etapa de intervención.}
 
 % ── C21 ──
-\fichacontrol{C21}{Externalización de la configuración de tiempo de ejecución}
+\fichacontrol[D1, D2]{C21}{Externalización de la configuración de tiempo de ejecución}
   {N1}{Preventivo}{Configuración}{LLM01:2025, LLM02:2025}
 
 \fichaseccion{Propósito}
@@ -133,7 +133,7 @@ Las credenciales exigen un tratamiento distinto del resto de la configuración. 
 \ficharelacionados{C26 (documentación de la política de umbrales), que exige que los valores declarados por este control estén además justificados; C32 (verificación de integridad del prompt del sistema), que es un caso particular de verificación sobre configuración externalizada.}
 
 % ── C30 ──
-\fichacontrol{C30}{Verificación de procedencia e integridad del modelo}
+\fichacontrol[D1, D2]{C30}{Verificación de procedencia e integridad del modelo}
   {N1}{Gobernanza}{Declarativo}{Ley 21.663, LLM08:2025}
 
 \fichaseccion{Propósito}

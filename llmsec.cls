@@ -202,10 +202,11 @@
 % Fichas técnicas extendidas de control (Apéndice C)
 % ═══════════════════════════════════════════════
 
-% Encabezado de ficha: \fichacontrol{ID}{Título}{Nivel}{Tipo}{Evidencia}{Fuente}
-\newcommand{\fichacontrol}[6]{%
-  \subsection{#1: #2}%
-  \label{ficha:#1}%
+% Encabezado de ficha: \fichacontrol[Subdimensiones]{ID}{Título}{Nivel}{Tipo}{Evidencia}{Fuente}
+% El argumento opcional solo se pasa para los controles transversales.
+\newcommand{\fichacontrol}[7][]{%
+  \subsection{#2: #3}%
+  \label{ficha:#2}%
   \nopagebreak
   \vspace{-0.4em}
   \begin{tcolorbox}[
@@ -219,8 +220,9 @@
   ]
     \small
     \begin{tabularx}{\linewidth}{@{} >{\bfseries}l X @{\hspace{1em}} >{\bfseries}l X @{}}
-      Nivel     & #3 & Evidencia & #5 \\
-      Tipo      & #4 & Fuente    & #6 \\
+      Nivel     & #4 & Evidencia & #6 \\
+      Tipo      & #5 & Fuente    & #7 \\
+      \ifstrempty{#1}{}{Subdimensiones & \multicolumn{3}{l}{#1} \\}
     \end{tabularx}
   \end{tcolorbox}
 }
@@ -262,16 +264,18 @@
 % ──────────────────────────────────────────────
 % Comando \control
 % ──────────────────────────────────────────────
-% Uso: \control{ID}{nivel}{Tipo}{Evidencia}{Descripción}{Fuente}
-\newcommand{\control}[6]{%
-  \begin{controlbox}{\texttt{#1} \hfill \badgeNivel{#2}}
-    #5
+% Uso: \control[Subdimensiones]{ID}{nivel}{Tipo}{Evidencia}{Descripción}{Fuente}
+% El argumento opcional solo se pasa para los controles transversales.
+\newcommand{\control}[7][]{%
+  \begin{controlbox}{\texttt{#2} \hfill \badgeNivel{#3}}
+    #6
 
     \vspace{4pt}
     {\small\color{llmsec-muted}%
-    \textbf{Tipo:} #3 \quad
-    \textbf{Evidencia:} #4 \quad
-    \textbf{Fuente:} #6}
+    \textbf{Tipo:} #4 \quad
+    \textbf{Evidencia:} #5 \quad
+    \textbf{Fuente:} #7%
+    \ifstrempty{#1}{}{\quad\textbf{Subdimensiones:} #1}}
   \end{controlbox}
   \vspace{4pt}
 }
