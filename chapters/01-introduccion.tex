@@ -47,6 +47,17 @@ El marco LLM-Sec se ancla a las siguientes referencias:
   \end{tabularx}
 \end{infobox}
 
+\subsection{Relación con OWASP AISVS}
+\label{sec:relacion-aisvs}
+
+Durante el desarrollo de este marco, la OWASP Foundation publicó, el 24 de junio de 2026, la versión 1.0 del Artificial Intelligence Security Verification Standard (AISVS) \cite{aisvs}, un catálogo de requisitos de seguridad verificables para sistemas basados en IA. Dado que su liberación estable es posterior al diseño de LLM-Sec, corresponde precisar la relación entre ambos.
+
+AISVS y LLM-Sec son instrumentos complementarios que operan en planos distintos. AISVS es un estándar de verificación: organiza 514 requisitos en 14 capítulos, cada uno formulado como una afirmación comprobable de tipo aprobado o reprobado, y establece tres niveles de aseguramiento (L1 a L3) que indican la exhaustividad de la verificación aplicada. LLM-Sec, en cambio, es un modelo de madurez: no verifica el cumplimiento binario de requisitos, sino que sitúa la postura de seguridad de un sistema RAG en una escala ordinal de procesos (N0 a N5) y la valida con evidencia experimental cuantitativa mediante cuatro métricas. La diferencia es de naturaleza: los niveles de AISVS responden a la pregunta de cuán exhaustivamente se verifica un sistema en un momento dado, mientras que los niveles de LLM-Sec responden a cuán maduro y gestionado es el proceso de seguridad que lo sostiene en el tiempo.
+
+Los puntos de convergencia son sustantivos. Los controles técnicos de LLM-Sec admiten correspondencia directa con requisitos AISVS de los capítulos de validación de entrada (C02), comportamiento del modelo y control de salida (C07), seguridad de la base vectorial (C08) y monitoreo y registro (C12); esta correspondencia se detalla en el Apéndice~\ref{ap:mapeo-aisvs}. Ambos instrumentos trazan además la misma frontera de alcance: AISVS delega explícitamente la seguridad de la aplicación web general al estándar ASVS y el endurecimiento de infraestructura a los CIS Controls, coincidiendo con el supuesto de alcance declarado en la sección~\ref{sec:alcance}.
+
+El valor diferencial de LLM-Sec respecto de AISVS se concentra en tres aspectos. Primero, la progresión de madurez con agregación por regla de piso mínimo, ausente en el esquema de niveles de aseguramiento de AISVS. Segundo, la validación experimental cuantitativa de la eficacia defensiva, que AISVS no prescribe al limitarse a la verificación de requisitos. Tercero, el anclaje al marco regulatorio chileno (Ley 21.663 y Ley 21.719), fuera del alcance de un estándar internacional. A la inversa, AISVS aporta cobertura de verificación que LLM-Sec no aborda, como la integridad de la atribución de fuentes en respuestas RAG (C7.4) o la seguridad de protocolos de orquestación de agentes (C09 y C10). En consecuencia, un uso combinado es posible y recomendable: AISVS como catálogo de verificación puntual y LLM-Sec como instrumento de evaluación y progresión de la madurez del proceso.
+
 \section{Convenciones del documento}
 
 A lo largo de este documento se utilizan las siguientes convenciones visuales:

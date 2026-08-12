@@ -1,0 +1,30 @@
+\chapter{Mapeo de controles LLM-Sec a OWASP AISVS}
+\label{ap:mapeo-aisvs}
+
+Este apéndice presenta la correspondencia entre los controles técnicos de LLM-Sec y los requisitos del OWASP AISVS 1.0 \cite{aisvs}. El mapeo sigue un criterio de subdimensión espejo: cada subdimensión técnica se asocia al capítulo de AISVS que aborda su mismo dominio de seguridad, y dentro de ese capítulo se identifican los requisitos con correspondencia directa. El mapeo es representativo, no exhaustivo: cubre los controles técnicos cuya correspondencia es verificable de forma inequívoca, y no fuerza asociaciones parciales. La subdimensión D5 (Gobernanza organizacional) se excluye deliberadamente, dado que AISVS declara de manera explícita no ser un marco de gobernanza y delega ese dominio a NIST AI RMF, ISO/IEC 42001 y las guías de cumplimiento del Reglamento de IA de la Unión Europea. La Tabla~\ref{tab:mapeo-aisvs} presenta la correspondencia.
+
+\begin{table}[H]
+  \centering
+  \caption{Correspondencia representativa entre controles LLM-Sec y requisitos OWASP AISVS 1.0.}
+  \label{tab:mapeo-aisvs}
+  \rowcolors{2}{llmsec-gray}{white}
+  \begin{tabularx}{\textwidth}{@{} c c l X @{}}
+    \toprule
+    \textbf{Control} & \textbf{Subdim.} & \textbf{AISVS} & \textbf{Correspondencia} \\
+    \midrule
+    C01 & D1 & C2.1.4 & Control de longitud de entrada con rechazo por exceso de tokens. \\
+    C02 & D1 & C2.1.2 & Mitigación de contrabando de codificación en la entrada. \\
+    C03 & D1 & C2.1.3 & Filtrado de entradas mediante clasificador de inyección. \\
+    C15 & D1 & C2.1.6 & Jerarquía de instrucciones del prompt del sistema. \\
+    D2 (conjunto) & D2 & C08 & Seguridad de la base vectorial y los embeddings frente a envenenamiento del corpus (mapeo a nivel de capítulo). \\
+    C18 & D3 & C7.1.1 & Validación de la salida contra un esquema definido. \\
+    C19 & D3 & C7.1.2 & Control de longitud y terminación de la salida. \\
+    C20 & D3 & C7.3.2 & Bloqueo de salidas que divulgan el prompt del sistema o datos internos. \\
+    C23 & D4 & C12.1.2 & Registro de decisiones de filtrado y política de seguridad. \\
+    C24 & D4 & C12.2.2 & Detección de anomalías conductuales y sondeo sistemático. \\
+    C31 & D4 & C12.2.1 & Detección y alerta de intentos de inyección. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Esta correspondencia permite a una organización que haya implementado LLM-Sec identificar los requisitos AISVS que sus controles ya satisfacen, y viceversa, facilitando la interoperabilidad entre ambos instrumentos.

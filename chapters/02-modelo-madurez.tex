@@ -231,23 +231,6 @@ La Figura~\ref{fig:matriz-visual} ubica cada activo en la matriz probabilidad $\
 \label{fig:matriz-visual}
 \end{figure}
 
-\subsection{Interpretación y priorización}
-
-La valoración revela tres hallazgos que condicionan el diseño del modelo de madurez y la distribución de controles:
-
-\begin{enumerate}[leftmargin=2em]
-  \item \textbf{Los canales de entrada/salida, el LLM y el corpus concentran el riesgo más alto.} Esto se debe a que los vectores LLM01, LLM02 y LLM07 son explotables con herramientas automatizadas de acceso público (como Garak \cite{garak}), sin requerir acceso privilegiado al sistema. La evidencia empírica sostiene esta valoración: una revisión sistemática de 128 estudios reporta tasas de éxito de inyección superiores al 90\% contra sistemas sin protección \cite{promptinjsurvey}. Esta condición explica que las subdimensiones que interceptan directamente esos vectores concentren la mayor densidad de controles técnicos de la taxonomía: D1 (Protección de entrada) agrupa 17 controles y D2 (Control de contexto y configuración RAG) agrupa 20, los dos volúmenes más altos del marco. D3 (Gestión de salida) los complementa con 9 controles como última línea de defensa sobre un único canal, el de respuesta, de modo que su menor volumen refleja la acotación de su superficie de operación y no una menor prioridad del riesgo que cubre.
-
-  \item \textbf{La base vectorial presenta riesgo alto con probabilidad media.} A diferencia de los canales de E/S, la explotación de LLM08 exige dos condiciones que un atacante externo no posee por defecto: capacidad de escritura sobre la base de conocimiento y conocimiento específico de la infraestructura de recuperación (tipo de base vectorial, estrategia de indexación, configuración de similitud). No obstante, el impacto de su compromiso es alto: se ha demostrado que la inyección de apenas cinco textos maliciosos por pregunta objetivo alcanza un 90\% de éxito en corromper las respuestas de un sistema RAG, incluso sobre bases de conocimiento con millones de fragmentos \cite{poisonedrag}. Esto justifica que D2 sea la subdimensión con mayor densidad de controles (20), cubriendo tanto los riesgos de alta probabilidad del corpus (LLM02) como los de probabilidad media de la infraestructura vectorial (LLM08).
-  
-  \item \textbf{Los mecanismos de acceso y sesión presentan riesgo medio.} Su probabilidad de explotación es baja porque su compromiso exige condiciones poco frecuentes: la posesión de credenciales privilegiadas válidas, sea por compromiso externo o por posición interna, o una falla de configuración en la capa de identidad de la organización. La evidencia de incidentes reales respalda esta caracterización: el informe de brechas de Verizon, sobre más de 12.000 brechas confirmadas, muestra que los actores internos originan una fracción minoritaria de ellas, con un 5\% en Norteamérica y un máximo regional de 29\% en EMEA, del cual solo un 8\% corresponde a uso indebido de privilegios \cite{dbir2025}. El impacto de su compromiso, en cambio, sigue siendo alto. Esto justifica que el control de acceso por sesión (C22) se clasifique con fuente de evidencia declarativa: su verificación depende de la capa de identidad y autenticación de la organización, componente externo al flujo de inferencia RAG y por tanto no evaluable mediante auditoría ofensiva contra el sistema. Su implementación sigue siendo imprescindible en todo despliegue productivo.
-\end{enumerate}
-
-\begin{infobox}
-  La valoración presentada corresponde a un sistema RAG genérico. Cada organización debe recalcular la probabilidad y el impacto según su contexto de despliegue específico, utilizando las escalas definidas. El perfil organizacional (P1, P2 o P3) orienta la interpretación del nivel de riesgo aceptable, pero no reemplaza esta valoración.
-\end{infobox}
-
-
 \subsection{Trazabilidad hacia las subdimensiones}
 
 La valoración de riesgo justifica la estructura del modelo de madurez de la siguiente forma:
@@ -260,11 +243,11 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
     \toprule
     \textbf{Activo} & \textbf{Riesgo} & \textbf{Subdimensión} & \textbf{Controles} & \textbf{Prioridad} \\
     \midrule
-    A4 (Canales E/S)     & Alto (9) & D1, D3 & 17 + 9 & Máxima \\
-    A1 (LLM)             & Alto (9) & D1, D3 & 17 + 9 & Máxima \\
-    A3 (Corpus)           & Alto (9) & D2     & 20      & Máxima \\
-    A2 (Base vectorial)   & Alto (6) & D2     & 20      & Alta \\
-    A5 (Acceso y sesión)  & Medio (3) & D4, D5 & 9 + 15 & Media \\
+    A1 (LLM)             & Crítico (25) & D1, D3 & 17 + 9 & Máxima \\
+    A4 (Canales E/S)     & Crítico (20) & D1, D3 & 17 + 9 & Máxima \\
+    A3 (Corpus)           & Alto (16) & D2     & 20      & Alta \\
+    A2 (Base vectorial)   & Alto (15) & D2     & 20      & Alta \\
+    A5 (Acceso y sesión)  & Bajo (4) & D4, D5 & 9 + 15 & Baja \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -273,11 +256,15 @@ La valoración de riesgo justifica la estructura del modelo de madurez de la sig
 
 Esta trazabilidad garantiza que la distribución de controles del marco no es arbitraria: en las subdimensiones técnicas, la densidad de controles es proporcional al riesgo valorado de los activos que protegen, con D1 y D2, asociadas a los activos de riesgo crítico y alto, concentrando los mayores volúmenes. D4, de naturaleza observacional, y D5, cuya densidad responde a las obligaciones normativas ancladas en la Ley 21.663 y la Ley 21.719 más que al riesgo técnico de un activo específico, completan la cobertura priorizando la observación y la gobernanza sobre la intervención directa. El activo de riesgo bajo (A5) se cubre mediante un control declarativo, coherente con su naturaleza externa al flujo de inferencia. Los controles transversales se contabilizan en cada subdimensión a la que pertenecen, por lo que la suma de aplicaciones (70) excede el total de controles únicos del marco (62), conforme al criterio declarado en el Capítulo~\ref{ch:controles}.
 
+\begin{infobox}
+  La valoración presentada corresponde a un sistema RAG genérico. Cada organización debe recalcular la probabilidad y el impacto según su contexto de despliegue específico, utilizando las escalas definidas en las Tablas~\ref{tab:escala-prob} y~\ref{tab:escala-impacto}. El perfil organizacional (P1, P2 o P3) orienta la interpretación del nivel de riesgo aceptable, pero no reemplaza esta valoración.
+\end{infobox}
+
 \section{Estructura del modelo}
 
 A partir de los activos de información identificados y su valoración de riesgo (secciones~\ref{sec:activos} y~\ref{sec:valoracion-riesgo}), el modelo de madurez LLM-Sec define seis niveles (N0 a N5) que representan una escala ordinal de la postura de ciberseguridad de un sistema RAG, conforme a los conceptos de evaluación de procesos de ISO/IEC 33001 \cite{iso33001}. La progresión es acumulativa: alcanzar un nivel $N_k$ requiere satisfacer todos los criterios de los niveles $N_1$ a $N_{k}$. Las distancias entre niveles no son uniformes; cada nivel refleja un salto cualitativo en la solidez de los procesos, no un incremento lineal.
 
-El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez con progresión acumulativa para arquitecturas RAG en la literatura actual, esta derivación constituye una contribución original del marco.
+El modelo evalúa cinco subdimensiones derivadas de los ítems del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG, cuya trazabilidad hacia los activos del sistema se estableció en la sección~\ref{sec:activos}. Dado que no existe un modelo de madurez ordinal con progresión acumulativa y validación experimental para arquitecturas RAG en la literatura ni en los estándares actuales, esta derivación constituye una contribución original del marco.
 
 \section{Niveles de madurez}
 
@@ -319,7 +306,11 @@ La estructura del modelo se alinea con los modelos de madurez consolidados en la
 \section{Subdimensiones}
 \label{sec:subdimensiones}
 
-El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. Los vectores OWASP asociados a cada subdimensión corresponden a los que sus controles abordan de forma principal; controles individuales, en particular los transversales, pueden referenciar adicionalmente otros vectores en su fuente, lo que se detalla en la taxonomía del Capítulo~\ref{ch:controles}. La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura. 
+El modelo organiza la evaluación en cinco subdimensiones, cada una derivada de los vectores de amenaza del OWASP LLM Top 10:2025 \cite{owasp2025} pertinentes al flujo RAG. Las tres primeras (D1, D2, D3) operan sobre etapas específicas del flujo de inferencia: entrada, recuperación y salida respectivamente. D4 opera de forma transversal registrando los eventos generados por las anteriores, y D5 captura las obligaciones organizacionales que sustentan la operación segura del sistema en su conjunto. Esta estructura garantiza que cada punto del flujo RAG identificado en la sección~\ref{sec:activos} sea cubierto por al menos una subdimensión, y que la densidad de controles de cada una sea proporcional al riesgo valorado en la sección~\ref{sec:valoracion-riesgo}. Los vectores OWASP asociados a cada subdimensión corresponden a los que sus controles abordan de forma principal; controles individuales, en particular los transversales, pueden referenciar adicionalmente otros vectores en su fuente, lo que se detalla en la taxonomía del Capítulo~\ref{ch:controles}. 
+
+El OWASP LLM Top 10:2025 cumple en este marco la función de catálogo de referencia de amenazas: enumera y caracteriza los vectores de ataque, pero no prescribe cómo verificar su mitigación ni cómo medir la madurez de los controles que los abordan. Estas funciones corresponden a otros instrumentos del mismo ecosistema OWASP. El AISVS \cite{aisvs} aporta la capa de verificación, especificando requisitos comprobables para cada familia de controles, y LLM-Sec aporta la capa de madurez, situando la postura de seguridad en una escala ordinal validada experimentalmente. Los tres instrumentos son complementarios y operan sobre planos distintos del mismo problema: el Top 10 describe qué puede fallar, AISVS qué debe verificarse y LLM-Sec cuán maduro es el proceso que lo gestiona. El marco LLM-Sec adopta el Top 10:2025 como fuente normativa de los vectores que sus subdimensiones cubren, y su relación con AISVS se detalla en la sección~\ref{sec:relacion-aisvs}.
+
+La Tabla~\ref{tab:subdimensiones} sintetiza las cinco subdimensiones, los vectores OWASP que cubre cada una y el aspecto del sistema que captura. 
 
 \begin{table}[H]
   \centering
