@@ -49,11 +49,11 @@ Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, 
     \toprule
     \textbf{Activo} & \textbf{Etapa del flujo} & \textbf{Subdimensión} & \textbf{Vectores} \\
     \midrule
-    A1 (LLM)                  & Inferencia          & D1, D3       & LLM01 \\
-    A2 (Base vectorial)       & Recuperación         & D2           & LLM08 \\
-    A3 (Corpus)               & Recuperación         & D2           & LLM02 \\
-    A4 (Canales E/S)          & Entrada y salida     & D1, D3       & LLM01, LLM07 \\
-    A5 (Acceso y sesión)      & Transversal          & D4, D5       & Transversal \\
+    A1 (LLM)             & Crítico (25) & D1, D3 & 17 + 9 & Máxima \\
+    A4 (Canales E/S)     & Crítico (20) & D1, D3 & 17 + 9 & Máxima \\
+    A3 (Corpus)           & Alto (16) & D2     & 20      & Alta \\
+    A2 (Base vectorial)   & Alto (15) & D2     & 20      & Alta \\
+    A5 (Acceso y sesión)  & Bajo (4) & D4, D5 & 9 + 15 & Baja \\
     \bottomrule
   \end{tabularx}
 \end{table}
