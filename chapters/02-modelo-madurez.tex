@@ -45,9 +45,9 @@ Cada activo ocupa una posición específica dentro del flujo de inferencia RAG, 
   \centering
   \caption{Mapeo de activos de información a subdimensiones y vectores de amenaza.}
   \label{tab:mapeo-activos-subdim}
-  \begin{tabularx}{\textwidth}{@{} c l l l @{}}
+  \begin{tabularx}{\textwidth}{@{} c l l l l @{}}  % 5 columnas, no 4
     \toprule
-    \textbf{Activo} & \textbf{Etapa del flujo} & \textbf{Subdimensión} & \textbf{Vectores} \\
+    \textbf{Activo} & \textbf{Criticidad} & \textbf{Subdimensión} & \textbf{Vectores} & \textbf{Nivel} \\
     \midrule
     A1 (LLM)             & Crítico (25) & D1, D3 & 17 + 9 & Máxima \\
     A4 (Canales E/S)     & Crítico (20) & D1, D3 & 17 + 9 & Máxima \\
