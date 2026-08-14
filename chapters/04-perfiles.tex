@@ -3,6 +3,8 @@
 
 Los perfiles organizacionales orientan la interpretación del nivel de madurez asignado según el tipo de organización. No modifican los criterios de asignación ni la definición de los niveles; únicamente establecen el nivel mínimo recomendado y el nivel objetivo según las obligaciones regulatorias aplicables. El nivel mínimo recomendado corresponde al nivel verificado, por constituir un umbral de seguridad técnica demostrable mediante evidencia experimental o de configuración. El nivel objetivo corresponde al nivel declarado, incorporando los controles de gobernanza de D5 cuya verificación es declarativa y representa la madurez organizacional completa que la organización debería aspirar a alcanzar.
 
+La pertenencia a cada perfil se determina por la situación de la organización frente a la Ley 21.663 y la Ley 21.719; la escala y la capacidad técnica son características típicas de cada perfil que orientan la priorización de controles, pero no constituyen el criterio de pertenencia.
+
 Los controles prioritarios listados en cada perfil se ordenan según tres criterios aplicados en cascada. El primero es la fuente de evidencia: los controles con fuente de evidencia \textbf{Configuración} se priorizan sobre los de tipo \textbf{Experimental} y \textbf{Declarativo}, dado que su implementación requiere únicamente parametrización de componentes existentes sin desarrollo adicional. El segundo es el costo estimado de implementación: dentro de una misma fuente de evidencia, los controles de costo Bajo preceden a los de costo Medio y Alto. El tercero es el nivel de madurez: ante igual fuente y costo, los controles de niveles inferiores preceden a los de niveles superiores, respetando la progresión acumulativa obligatoria del modelo. El costo estimado de implementación se expresa en horas-hombre (HH), unidad estándar de estimación de esfuerzo en ingeniería de software \cite{cocomo2}. Los cortes entre categorías se anclan a unidades de jornada laboral convencionales: \textbf{Bajo} corresponde a un esfuerzo de hasta 8 HH (una jornada diaria), asociado a la parametrización de componentes existentes sin desarrollo adicional; \textbf{Medio} corresponde a un esfuerzo de entre 8 y 40 HH (hasta una semana laboral), asociado al despliegue o configuración de un componente nuevo; \textbf{Alto} corresponde a un esfuerzo superior a 40 HH, asociado a desarrollos o integraciones a medida. Estos valores constituyen estimaciones referenciales fundadas en el juicio experto y en el contexto técnico descrito para cada perfil, no mediciones empíricas; cada organización debe calibrarlos según su capacidad instalada y la complejidad de su despliegue.
 
 
@@ -14,19 +16,19 @@ Los controles prioritarios listados en cada perfil se ordenan según tres criter
     \toprule
     \textbf{Perfil} & \textbf{Tipo} & \textbf{Nivel mínimo} & \textbf{Nivel objetivo} & \textbf{Descripción} \\
     \midrule
-    P1 & Micro/Pequeña empresa & N2 & N3 & Organizaciones micro y pequeñas \\
-    P2 & Mediana/Grande     & N3 & N4 & Organizaciones con infraestructura formal \\
-    P3 & Crítica regulada   & N4 & N5 & Infraestructura crítica, sector regulado \\
+    P1 & Régimen general & N2 & N3 & Organizaciones no comprendidas en los artículos 4 y 5 de la Ley 21.663. \\
+    P2 & Prestador de servicios esenciales     & N3 & N4 & Organizaciones comprendidas en el Artículo 4 de Ley 21.663. \\
+    P3 & Operador de importancia vital   & N4 & N5 & Organizaciones comprendidas en los artículos 5 y 6 de la Ley 21.663, o instituciones con tratamiento de datos sensibles a escala institucional bajo la Ley 21.719. \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
-\section{P1: Micro/Pequeña empresa}
+\section{P1: Régimen general}
 \label{sec:perfil-p1}
 
-El perfil P1 está diseñado para micro y pequeñas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
+El perfil P1 aplica a organizaciones no comprendidas en los artículos 4 y 5 de la Ley 21.663 \cite{ley21663}, es decir, que no prestan servicios calificados como esenciales ni han sido calificadas como operadores de importancia vital, quedando fuera del régimen reforzado de obligaciones de dicha ley. Esto no las exime de la Ley 21.719 \cite{ley21719} sobre protección de datos personales, cuyas obligaciones aplican con independencia de la situación de la organización frente a la Ley 21.663. El nivel mínimo recomendado es N2 y el nivel objetivo es N3.
 
-Los perfiles del marco LLM-Sec clasifican a las organizaciones según su capacidad de seguridad, no según su categoría legal. La Ley 21.663 \cite{ley21663} no establece un régimen específico para este perfil, de modo que una organización bajo P1 queda por lo general fuera de sus obligaciones reforzadas. Esto no la exime de la Ley 21.719 \cite{ley21719} sobre protección de datos personales, cuyas obligaciones aplican con independencia del tamaño de la organización.
+Típicamente corresponde a micro y pequeñas empresas que despliegan sistemas RAG con recursos limitados de ciberseguridad. Este contexto orienta la priorización de controles por costo, pero no define la pertenencia al perfil, que se determina exclusivamente por la situación regulatoria.
 
 \subsection{Trayectoria recomendada}
 
@@ -42,8 +44,7 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 
 \begin{table}[H]
   \centering
-  \caption{Controles prioritarios para el perfil P1 (Micro/Pequeña empresa).}
-  \label{tab:p1-prioridad}
+  \caption{Controles prioritarios para el perfil P1 (Régimen general).}  \label{tab:p1-prioridad}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} c c c l X @{}}
     \toprule
@@ -92,20 +93,15 @@ El perfil P1 debe priorizar los controles de N1 con fuente de evidencia Configur
 \end{table}
 
 \begin{infobox}
-  Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio
-  del capítulo, bajo el supuesto de una micro o pequeña empresa sin personal de
-  seguridad dedicado: las estimaciones asumen que la implementación recae en el
-  equipo técnico general de la organización. Los controles de D5 (gobernanza)
-  aplican transversalmente a todos los perfiles y se listan en la
-  sección~\ref{sec:controles-d5}.
+  Los costos de esta tabla se interpretan según los rangos de HH definidos al inicio del capítulo, bajo el supuesto de una micro o pequeña empresa sin personal de seguridad dedicado: las estimaciones asumen que la implementación recae en el equipo técnico general de la organización. Los controles de D5 (gobernanza) aplican transversalmente a todos los perfiles y se listan en la sección~\ref{sec:controles-d5}.
 \end{infobox}
 
-\section{P2: Mediana/Grande}
+\section{P2: Prestador de servicios esenciales}
 \label{sec:perfil-p2}
 
-El perfil P2 aplica a organizaciones medianas y grandes con infraestructura formal de seguridad de la información. El nivel mínimo recomendado es N3 y el nivel objetivo es N4.
+El perfil P2 aplica a organizaciones que prestan servicios calificados como esenciales según el artículo 4 de la Ley 21.663 y que no han sido calificadas como operadores de importancia vital. La pertenencia al perfil se determina por la actividad desarrollada y no por el tamaño de la organización: el artículo 4 enumera los sectores cuya provisión define la calidad de prestador de servicio esencial (generación, transmisión o distribución eléctrica; telecomunicaciones; infraestructura digital; banca y servicios financieros; prestación institucional de salud, entre otros), por lo que el evaluador debe verificar la aplicabilidad sectorial antes de asumir el régimen de obligaciones correspondiente. El nivel mínimo recomendado es N3 y el nivel objetivo es N4.
 
-Una organización bajo este perfil puede quedar comprendida entre los prestadores de servicios esenciales que define el artículo 4 de la Ley 21.663, según el sector económico en que opere. La pertenencia a la categoría no depende del tamaño de la organización sino de la actividad que desarrolla, por lo que el evaluador debe verificar la aplicabilidad sectorial antes de asumir el régimen de obligaciones correspondiente.
+En la práctica, estas organizaciones suelen ser medianas o grandes y contar con infraestructura formal de seguridad de la información, característica coherente con el punto de partida N3 del perfil. No obstante, una organización pequeña que preste un servicio esencial queda igualmente comprendida en P2.
 
 \subsection{Trayectoria recomendada}
 
@@ -120,7 +116,7 @@ El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles priorit
 
 \begin{table}[H]
   \centering
-  \caption{Controles prioritarios para el perfil P2 (Mediana/Grande).}
+  \caption{Controles prioritarios para el perfil P2 (Prestador de servicios esenciales).}  
   \label{tab:p2-prioridad}
   \rowcolors{2}{llmsec-gray}{white}
   \begin{tabularx}{\textwidth}{@{} c c c l X @{}}
@@ -189,10 +185,10 @@ El perfil P2 parte de N3 como nivel mínimo y apunta a N4. Los controles priorit
     ese equipo.
   \end{infobox}
 
-\section{P3: Crítica regulada}
+\section{P3: Operador de importancia vital}
 \label{sec:perfil-p3}
 
-El perfil P3 aplica a organizaciones que operan infraestructura crítica o pertenecen a sectores regulados, donde las obligaciones de la Ley 21.663 y la Ley 21.719 imponen requisitos formales de ciberseguridad y protección de datos. El nivel mínimo recomendado es N4 y el nivel objetivo es N5.
+El perfil P3 aplica a organizaciones calificadas como operadores de importancia vital conforme a los artículos 5 y 6 de la Ley 21.663, así como a instituciones que tratan datos sensibles a escala institucional bajo la Ley 21.719, contextos en los que ambas leyes imponen requisitos formales de ciberseguridad y protección de datos. El propio artículo 5 exige considerar el tamaño de la institución privada al efectuar la calificación, conforme a la ley 20.416, lo que confirma que el tamaño opera como factor de ponderación dentro de la categoría jurídica y no como criterio definitorio del perfil. El nivel mínimo recomendado es N4 y el nivel objetivo es N5.
 
 \subsection{Trayectoria recomendada}
 
@@ -225,7 +221,7 @@ sostener un ciclo de mejora continua.
 
 \begin{table}[H]
 \centering
-\caption{Controles prioritarios para el perfil P3 (Crítica regulada).}
+\caption{Controles prioritarios para el perfil P3 (Operador de importancia vital).}
 \label{tab:p3-prioridad}
 \rowcolors{2}{llmsec-gray}{white}
 \begin{tabularx}{\textwidth}{@{} c c c l X @{}}
