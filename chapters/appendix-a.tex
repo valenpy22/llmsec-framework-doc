@@ -32,11 +32,11 @@ Los controles transversales (aquellos que aparecen en más de una subdimensión)
   C21 & N1 & Preventivo    & Configuración & Restringir credenciales y tokens de API al entorno de código \\
   C30 & N1 & Gobernanza    & Declarativo   & Verificar procedencia e integridad del modelo mediante \textit{checksums} \\
   \rowcolor{llmsec-gray}
-  C03 & N2 & Detectivo     & Experimental  & Detectar patrones sintácticos de inyección en el prompt \\
+  C03 & N2 & Preventivo     & Experimental  & Detectar patrones sintácticos de inyección en el prompt \\
   \rowcolor{llmsec-gray}
   C04 & N2 & Preventivo    & Experimental  & Validar la relevancia semántica del prompt respecto al dominio autorizado \\
   \rowcolor{llmsec-gray}
-  C05 & N2 & Preventivo    & Experimental  & Ocultar el contenido del prompt del sistema al usuario \\
+  C05 & N2 & Detectivo    & Experimental  & Ocultar el contenido del prompt del sistema al usuario \\
   C31 & N3 & Detectivo     & Experimental  & Registrar y auditar todos los prompts rechazados con motivo del rechazo \\
   C32 & N3 & Preventivo    & Configuración & Validar que el prompt del sistema no ha sido modificado entre sesiones \\
   \rowcolor{llmsec-gray}
@@ -80,7 +80,7 @@ Los controles transversales (aquellos que aparecen en más de una subdimensión)
   \rowcolor{llmsec-gray}
   C11 & N2 & Preventivo         & Experimental  & Validar semánticamente la \textit{query} al \textit{vector store} antes del \textit{retrieval} \\
   \rowcolor{llmsec-gray}
-  C14 & N2 & Correctivo         & Experimental  & Suprimir o redactar metadatos de documentos en las respuestas \\
+  C14 & N2 & Preventivo         & Experimental  & Suprimir o redactar metadatos de documentos en las respuestas \\
   \rowcolor{llmsec-gray}
   C17 & N2 & Prev./Det.         & Experimental  & Restringir respuestas a información fundamentada en el contexto recuperado \\
   \rowcolor{llmsec-gray}
