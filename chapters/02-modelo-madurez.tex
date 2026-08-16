@@ -642,16 +642,33 @@ Las subdimensiones del modelo no admiten el mismo tipo de evidencia. D1 a D4 ope
 
 Esta distinción no establece una jerarquía entre ambos tipos de nivel: un control declarativo no es menos exigible que uno verificable, sino que su cumplimiento se constata por un medio distinto. La consecuencia práctica es que el nivel global de un sistema RAG no puede reportarse como un valor único sin especificar qué subdimensiones lo sustentan con evidencia técnica y cuáles con evidencia documental.
 
+La dicotomía entre nivel verificado y nivel declarado describe la fuente de evidencia con que se acredita el cumplimiento de los controles, y es ortogonal a los constructos de agregación definidos en la sección~\ref{mad:constructos-agregacion}: el nivel técnico verificado agrega exclusivamente cumplimiento verificado en D1 a D4, el nivel de gobernanza $g$ corresponde al nivel declarado de D5, y el nivel integral combina ambas fuentes de evidencia en las cinco subdimensiones.
+
 \section{Regla de piso mínimo}
 \label{sec:piso-minimo}
 
-El nivel global $L$ del sistema se determina como:
-\[
-  L = \min(d_1, d_2, d_3, d_4, d_5)
-\]
-donde $d_i$ es el nivel alcanzado por la subdimensión $i$: el nivel verificado para D1 a D4, cuyas fuentes de evidencia son experimentales o de configuración, y el nivel declarado para D5, cuya evidencia es exclusivamente declarativa (sección~\ref{sec:verificado-declarado}). En consecuencia, el nivel global integra necesariamente una componente declarada, condición que debe hacerse explícita al reportar el resultado de la evaluación. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4, D5 declara nivel 3 y D4 alcanza nivel 2, el nivel global es 2.
+El nivel global $L$ del sistema es el nivel integral definido en la sección~\ref{mad:constructos-agregacion}; en la notación introducida allí, $L = \min(d'_1, d'_2, d'_3, d'_4, g)$, donde $d'_i$ es el nivel de la subdimensión técnica $i$ sobre la totalidad de sus controles y $g$ es el nivel de gobernanza de D5, cuya fuente de evidencia es exclusivamente declarativa (sección~\ref{sec:verificado-declarado}). En consecuencia, el nivel global integra necesariamente una componente declarada, condición que debe hacerse explícita al reportar el resultado de la evaluación. La justificación subyacente es que la postura de seguridad de un sistema es tan sólida como su componente más débil. A modo de ejemplo, si D1, D2 y D3 alcanzan nivel 4, el nivel de gobernanza $g$ de D5 es 3 y D4 alcanza nivel 2, el nivel global es 2.
 
 En cuanto a la ponderación dentro de cada subdimensión, todos los controles de un mismo nivel tienen peso equivalente. Esta decisión es consistente con la práctica de los modelos de madurez de la industria: OWASP SAMM \cite{owaspsamm} puntúa cada práctica de seguridad agregando las respuestas de evaluación sin pesos diferenciales entre actividades, y CMMI \cite{cmmi} no pondera prácticas individuales, sino que condiciona la consecución de un nivel a la satisfacción de la totalidad de las prácticas que lo componen, criterio análogo a la regla de progresión acumulativa y piso mínimo de LLM-Sec. La ausencia de literatura previa comparable sobre seguridad en arquitecturas RAG impide, adicionalmente, anclar ponderaciones diferenciales a evidencia empírica; asignar pesos arbitrarios introduciría un sesgo no justificable que los modelos de referencia tampoco asumen.
+
+\subsection{Niveles de agregación: técnico verificado, de gobernanza e integral}
+\label{mad:constructos-agregacion}
+
+El marco distingue tres constructos de agregación según la fuente de evidencia que los sustenta, de modo que el alcance de cada afirmación de nivel quede acotado a la evidencia que efectivamente la respalda.
+
+El nivel técnico verificado agrega las subdimensiones D1 a D4 considerando exclusivamente los controles de fuente experimental o de configuración:
+\begin{equation}
+L_{\text{tec}} = \min(d_1, d_2, d_3, d_4)
+\end{equation}
+donde $d_i$ es el mayor nivel de la subdimensión $i$ cuyos controles verificables están completamente implementados, respetando la progresión acumulativa. Este constructo corresponde a la evidencia que un entorno de laboratorio controlado puede producir.
+
+El nivel de gobernanza $g$ corresponde al nivel alcanzado por la subdimensión D5, cuya fuente de evidencia es exclusivamente declarativa y se acredita mediante auditoría documental o entrevistas, conforme a la sección~\ref{sec:crit-declarativo}.
+
+El nivel integral agrega ambos constructos e incorpora los controles declarativos de las subdimensiones técnicas:
+\begin{equation}
+L = \min(d'_1, d'_2, d'_3, d'_4, g)
+\end{equation}
+donde $d'_i$ se calcula sobre la totalidad de los controles de la subdimensión $i$, incluidos los de fuente declarativa. El nivel integral solo es calculable cuando la organización ha realizado la auditoría declarativa correspondiente. En su ausencia, el marco reporta el nivel técnico verificado y declara el nivel integral como no evaluado. Un nivel integral no evaluado no debe asimilarse a N0: la no conformidad expresa incumplimiento constatado, mientras que la no evaluación expresa ausencia de medición.
 
 \subsection{Alcanzabilidad del nivel global N1}
 \label{mad:alcanzabilidad-n1}

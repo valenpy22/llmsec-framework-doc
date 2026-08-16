@@ -13,7 +13,13 @@ El proceso de evaluación del marco LLM-Sec sigue siete pasos secuenciales:
   \item \textbf{Evaluación de controles:} verificar cada control de las subdimensiones D1 a D5 utilizando la fuente de evidencia correspondiente (configuración, experimental o declarativa).
   \item \textbf{Cálculo de métricas:} ejecutar la auditoría ofensiva y calcular TFA, LAS, PCC y NCP conforme al capítulo~\ref{ch:metricas}. Estas métricas constituyen la evidencia experimental que sustenta la verificación de los controles del paso anterior.
   \item \textbf{Asignación de nivel por subdimensión:} el nivel de cada subdimensión es el mayor nivel cuyos controles están completamente implementados, respetando la progresión acumulativa.
-  \item \textbf{Cálculo del nivel global:} aplicar la regla de piso mínimo: $L = \min(d_1, d_2, d_3, d_4, d_5)$.
+  \item \textbf{Cálculo del nivel global:} aplicar la regla de piso mínimo
+  sobre las subdimensiones técnicas para obtener el nivel técnico
+  verificado, $L_{\text{tec}} = \min(d_1, d_2, d_3, d_4)$. Cuando la
+  organización dispone de auditoría declarativa, calcular además el nivel
+  integral $L = \min(d'_1, d'_2, d'_3, d'_4, g)$ conforme a la
+  sección~\ref{mad:constructos-agregacion}. En ausencia de dicha auditoría,
+  el nivel integral se reporta como no evaluado.
   \item \textbf{Análisis de brechas:} identificar la distancia entre el nivel verificado y el nivel objetivo del perfil seleccionado.
   \item \textbf{Plan de remediación:} priorizar la implementación de controles faltantes según el nivel objetivo, enfocándose primero en la subdimensión que actúa como piso.
 \end{enumerate}
@@ -32,6 +38,7 @@ El control se verifica inspeccionando la declaración explícita en los archivos
 El control se verifica mediante la ejecución de pruebas de auditoría ofensiva contra el sistema bajo evaluación. El resultado se expresa como una métrica cuantificable (tasa de filtrado, latencia, cobertura). Las pruebas ejecutadas deben cubrir los vectores OWASP declarados como fuente normativa del control: un control anclado a LLM02:2025 no puede verificarse con pruebas que solo ejerciten inyección de instrucciones.
 
 \subsection{Declarativo}
+\label{sec:crit-declarativo}
 
 El control se verifica mediante revisión documental o entrevista. El evaluador solicita evidencia de la existencia de la política, procedimiento o asignación de roles descrita por el control.
 

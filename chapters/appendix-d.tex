@@ -33,7 +33,11 @@ Este apéndice define los términos técnicos empleados a lo largo del documento
 
   \item[LLM] Modelo de lenguaje de gran escala (\emph{Large Language Model}). Componente de inferencia que genera respuestas en lenguaje natural a partir del prompt recibido.
 
-  \item[Nivel declarado] Nivel de madurez asignado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5.
+  \item[Nivel declarado] Nivel de madurez asignado mediante lista de chequeo sin evidencia técnica directa, basado en auditoría organizacional o revisión documental. Aplica a la subdimensión D5. Para la subdimensión D5, corresponde al nivel de gobernanza $g$.
+
+  \item[Nivel integral] Constructo de agregación que combina las subdimensiones técnicas D1 a D4, calculadas sobre la totalidad de sus controles (incluidos los declarativos), con el nivel de gobernanza $g$ de D5: $L = \min(d'_1, d'_2, d'_3, d'_4, g)$. Solo es calculable cuando la organización ha completado la auditoría declarativa; en su ausencia, se reporta como no evaluado (sección~\ref{mad:constructos-agregacion}).
+
+  \item[Nivel técnico verificado] Constructo de agregación que agrega exclusivamente los controles de fuente experimental o de configuración de las subdimensiones D1 a D4: $L_{\text{tec}} = \min(d_1, d_2, d_3, d_4)$. Es calculable sin auditoría declarativa y constituye el umbral de seguridad técnica demostrable en entorno de laboratorio (sección~\ref{mad:constructos-agregacion}).
 
   \item[Nivel verificado] Nivel de madurez asignado mediante evidencia experimental o de configuración. Aplica a las subdimensiones D1 a D4.
 
@@ -49,7 +53,7 @@ Este apéndice define los términos técnicos empleados a lo largo del documento
 
   \item[RAG] Generación aumentada por recuperación (\emph{Retrieval-Augmented Generation}). Arquitectura en que el modelo genera respuestas a partir de fragmentos recuperados desde una base de conocimiento externa, incorporados al prompt en tiempo de inferencia.
 
-  \item[Regla de piso mínimo] Criterio de agregación del nivel global del sistema, definido como el mínimo entre los niveles alcanzados por cada subdimensión (sección 2.6).
+  \item[Regla de piso mínimo] Criterio de agregación del nivel global del sistema. Se aplica en dos constructos: sobre las subdimensiones técnicas D1 a D4 para obtener el nivel técnico verificado, y sobre las cinco subdimensiones (condicionado a la existencia de auditoría declarativa) para obtener el nivel integral. Véase la sección~\ref{mad:constructos-agregacion}.
 
   \item[Retrieval] Etapa del flujo RAG en que se seleccionan los fragmentos del corpus semánticamente más próximos a la consulta del usuario.
 
