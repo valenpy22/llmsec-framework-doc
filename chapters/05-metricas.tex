@@ -107,12 +107,35 @@ resultados.
 
 \subsection{Prueba estadística}
 
-Para determinar si la diferencia entre escenarios es estadísticamente
-significativa, el marco prescribe la prueba exacta de Fisher como prueba
-principal, por ser robusta ante frecuencias esperadas bajas en la tabla
-de contingencia. Como prueba alternativa se declara el Z-test de
-proporciones, aplicable cuando el tamaño muestral por vector es
-suficientemente grande. La métrica se reporta desglosada por vector para
+La prueba de significancia aplicable depende de la estructura de
+independencia de las observaciones que produce el diseño del evaluador.
+
+Cuando las observaciones son genuinamente independientes, esto es,
+cuando cada unidad experimental (por ejemplo, un prompt) se evalúa una
+sola vez por escenario, el marco prescribe la prueba exacta de Fisher
+sobre la tabla de contingencia agregada como prueba principal, por ser
+robusta ante frecuencias esperadas bajas. Como prueba alternativa se
+declara el Z-test de proporciones, aplicable cuando el tamaño muestral
+por vector es suficientemente grande.
+
+Cuando el diseño del evaluador produce observaciones repetidas sobre la
+misma unidad experimental (por ejemplo, múltiples muestras generativas
+por prompt para capturar varianza estocástica, o múltiples corridas de
+la misma batería), aplicar Fisher o el Z-test directamente sobre las
+observaciones individuales viola el supuesto de independencia y puede
+producir valores $p$ artificialmente pequeños (pseudorreplicación). En
+ese caso, el evaluador debe primero agregar las repeticiones en una
+estadística resumen por unidad, por ejemplo la tasa de éxito del ataque
+sobre sus repeticiones, y aplicar la prueba de significancia sobre esas
+unidades agregadas: una prueba no paramétrica pareada (por ejemplo,
+Wilcoxon signed-rank) cuando la misma unidad se evalúa en ambos
+escenarios, o una prueba no paramétrica para muestras independientes
+(por ejemplo, Mann-Whitney U) cuando los escenarios no comparten las
+mismas unidades. Como mínimo, debe reportarse un intervalo de confianza
+por remuestreo agrupado (bootstrap por clúster, con la unidad
+experimental como clúster).
+
+En ambos casos, la métrica se reporta desglosada por vector para
 verificar si el efecto defensivo es homogéneo entre subdimensiones.
 
 \subsection{Tasa de falsos positivos}
@@ -172,9 +195,26 @@ media sin afectar la mediana.
 
 \subsection{Prueba estadística}
 
-La prueba estadística prescrita es Mann-Whitney U, prueba no paramétrica
-que opera sobre rangos y no asume ninguna distribución subyacente. El
-evaluador debe reportar adicionalmente el rango intercuartílico (IQR)
+La prueba de significancia aplicable depende, igual que en la
+sección~\ref{sec:tfa}, de la estructura de independencia de las
+observaciones que produce el diseño del evaluador.
+
+Cuando cada unidad experimental aporta una sola medición de latencia
+por escenario, el marco prescribe Mann-Whitney U, prueba no paramétrica
+que opera sobre rangos y no asume ninguna distribución subyacente,
+como prueba principal.
+
+Cuando el diseño del evaluador produce mediciones repetidas de latencia
+sobre la misma unidad experimental, aplicar Mann-Whitney U directamente
+sobre las mediciones individuales viola el supuesto de independencia.
+En ese caso, el evaluador debe primero agregar las repeticiones en una
+mediana de latencia por unidad y aplicar la prueba de significancia
+sobre esas medianas agregadas: una prueba no paramétrica pareada (por
+ejemplo, Wilcoxon signed-rank) cuando la misma unidad se mide en ambos
+escenarios, o Mann-Whitney U cuando los escenarios no comparten las
+mismas unidades.
+
+El evaluador debe reportar adicionalmente el rango intercuartílico (IQR)
 de cada escenario para caracterizar la variabilidad de las mediciones.
 La LAS debe calcularse de forma segmentada entre prompts adversariales
 y prompts legítimos, dado que la capa defensiva introduce asimetrías
